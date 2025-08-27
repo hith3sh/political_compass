@@ -16,6 +16,11 @@ export interface DatabaseStats {
 // Initialize database schema
 export async function initializeDatabase() {
   try {
+    // Check if we have a valid connection string
+    if (!process.env.POSTGRES_URL) {
+      throw new Error('POSTGRES_URL environment variable is not set');
+    }
+
     // Create the results table if it doesn't exist
     await sql`
       CREATE TABLE IF NOT EXISTS user_results (
@@ -40,6 +45,13 @@ export async function initializeDatabase() {
     console.log('Database initialized successfully');
   } catch (error) {
     console.error('Database initialization failed:', error);
+    
+    // Check if it's a connection string issue
+    if (error instanceof Error && error.message.includes('connection string')) {
+      console.error('Connection string issue detected. Please check your POSTGRES_URL environment variable.');
+      console.error('Make sure you are using the pooled connection string, not the direct connection string.');
+    }
+    
     throw error;
   }
 }

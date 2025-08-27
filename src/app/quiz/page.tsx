@@ -171,7 +171,7 @@ function QuizContent() {
             className={`px-6 py-3 rounded-lg font-semibold transition-all ${
               currentPage === 1
                 ? 'bg-gray-200 text-gray-400 cursor-not-allowed'
-                : 'bg-gray-300 text-gray-700 hover:bg-gray-400'
+                : 'bg-gray-300 text-gray-700 hover:bg-gray-400 cursor-pointer'
             }`}
           >
             {t('previous')}
@@ -182,7 +182,7 @@ function QuizContent() {
               <button
                 key={page}
                 onClick={() => router.push(`/quiz?page=${page}`)}
-                className={`w-3 h-3 rounded-full transition-all ${
+                className={`w-3 h-3 rounded-full transition-all cursor-pointer ${
                   page === currentPage
                     ? 'bg-blue-600'
                     : page < currentPage
@@ -199,7 +199,7 @@ function QuizContent() {
               disabled={!canProceed || isLoading}
               className={`px-8 py-3 rounded-lg font-semibold transition-all ${
                 canProceed && !isLoading
-                  ? 'bg-green-600 text-white hover:bg-green-700'
+                  ? 'bg-green-600 text-white hover:bg-green-700 cursor-pointer'
                   : 'bg-gray-300 text-gray-500 cursor-not-allowed'
               }`}
               whileHover={canProceed ? { scale: 1.05 } : {}}
@@ -220,7 +220,7 @@ function QuizContent() {
               disabled={!canProceed}
               className={`px-6 py-3 rounded-lg font-semibold transition-all ${
                 canProceed
-                  ? 'bg-blue-600 text-white hover:bg-blue-700'
+                  ? 'bg-blue-600 text-white hover:bg-blue-700 cursor-pointer'
                   : 'bg-gray-300 text-gray-500 cursor-not-allowed'
               }`}
             >

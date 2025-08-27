@@ -1,18 +1,18 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { 
-  saveUserResult, 
-  getRecentResults, 
-  getResultsWithPagination,
-  initializeDatabase 
-} from '../../../lib/database';
+import { initializeDatabase, saveUserResult, getRecentResults, getResultsWithPagination } from '../../../lib/database';
+import { SaveResultRequest } from '../../../lib/types';
 
-// Initialize database on first API call
 let dbInitialized = false;
 
 async function ensureDbInitialized() {
   if (!dbInitialized) {
-    await initializeDatabase();
-    dbInitialized = true;
+    try {
+      await initializeDatabase();
+      dbInitialized = true;
+    } catch (error) {
+      console.error('Database initialization failed:', error);
+      // Continue with mock data if database fails
+    }
   }
 }
 
@@ -21,61 +21,48 @@ export async function POST(request: NextRequest) {
   try {
     await ensureDbInitialized();
     
-    const body = await request.json();
-    const { name, economicScore, socialScore, quadrant } = body;
-
-    // Validation
-    if (!name || typeof name !== 'string' || name.trim().length === 0) {
+    if (!dbInitialized) {
       return NextResponse.json(
-        { error: 'Name is required and must be a non-empty string' },
+        { error: 'Database not available' },
+        { status: 503 }
+      );
+    }
+
+    const body: SaveResultRequest = await request.json();
+    
+    // Validate input
+    if (!body.name || typeof body.name !== 'string' || body.name.trim().length === 0) {
+      return NextResponse.json(
+        { error: 'Name is required' },
         { status: 400 }
       );
     }
 
-    if (name.length > 50) {
+    if (typeof body.economicScore !== 'number' || typeof body.socialScore !== 'number') {
       return NextResponse.json(
-        { error: 'Name must be 50 characters or less' },
+        { error: 'Economic and social scores are required' },
         { status: 400 }
       );
     }
 
-    if (typeof economicScore !== 'number' || economicScore < -10 || economicScore > 10) {
+    if (!body.quadrant || !['liberal-left', 'liberal-right', 'conservative-left', 'conservative-right'].includes(body.quadrant)) {
       return NextResponse.json(
-        { error: 'Economic score must be a number between -10 and 10' },
-        { status: 400 }
-      );
-    }
-
-    if (typeof socialScore !== 'number' || socialScore < -10 || socialScore > 10) {
-      return NextResponse.json(
-        { error: 'Social score must be a number between -10 and 10' },
-        { status: 400 }
-      );
-    }
-
-    const validQuadrants = ['liberal-left', 'liberal-right', 'conservative-left', 'conservative-right'];
-    if (!validQuadrants.includes(quadrant)) {
-      return NextResponse.json(
-        { error: 'Invalid quadrant' },
+        { error: 'Valid quadrant is required' },
         { status: 400 }
       );
     }
 
     const resultId = await saveUserResult(
-      name.trim(),
-      economicScore,
-      socialScore,
-      quadrant
+      body.name.trim(),
+      body.economicScore,
+      body.socialScore,
+      body.quadrant
     );
 
-    return NextResponse.json(
-      { 
-        success: true, 
-        id: resultId,
-        message: 'Result saved successfully' 
-      },
-      { status: 201 }
-    );
+    return NextResponse.json({
+      id: resultId,
+      success: true
+    });
 
   } catch (error) {
     console.error('POST /api/results error:', error);
@@ -86,32 +73,52 @@ export async function POST(request: NextRequest) {
   }
 }
 
-// GET - Fetch results with pagination or recent results
+// GET - Fetch results with optional pagination and search
 export async function GET(request: NextRequest) {
   try {
     await ensureDbInitialized();
     
+    if (!dbInitialized) {
+      // Return mock data if database is not available
+      return NextResponse.json({
+        results: [],
+        total: 0,
+        totalPages: 0
+      });
+    }
+
     const { searchParams } = new URL(request.url);
     const page = parseInt(searchParams.get('page') || '1');
-    const limit = parseInt(searchParams.get('limit') || '10');
+    const limit = parseInt(searchParams.get('limit') || '20');
     const search = searchParams.get('search') || undefined;
-    const mode = searchParams.get('mode') || 'recent'; // 'recent' or 'paginated'
 
-    if (mode === 'paginated') {
-      // Return paginated results with metadata
-      const results = await getResultsWithPagination(page, limit, search);
-      return NextResponse.json(results);
-    } else {
-      // Return recent results only
+    // If no search and no page specified, return recent results
+    if (!search && page === 1 && limit <= 50) {
       const results = await getRecentResults(limit);
-      return NextResponse.json({ results });
+      return NextResponse.json({
+        results,
+        total: results.length,
+        totalPages: 1
+      });
     }
+
+    // Otherwise, return paginated results
+    const { results, total, totalPages } = await getResultsWithPagination(page, limit, search);
+
+    return NextResponse.json({
+      results,
+      total,
+      totalPages
+    });
 
   } catch (error) {
     console.error('GET /api/results error:', error);
-    return NextResponse.json(
-      { error: 'Internal server error' },
-      { status: 500 }
-    );
+    
+    // Return mock data on error
+    return NextResponse.json({
+      results: [],
+      total: 0,
+      totalPages: 0
+    });
   }
 }

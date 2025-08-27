@@ -1,33 +1,35 @@
 import { NextResponse } from 'next/server';
-import { getTotalUserCount, initializeDatabase } from '../../../lib/database';
+import { initializeDatabase, getTotalUserCount } from '../../../lib/database';
 
-// Initialize database on first API call
 let dbInitialized = false;
 
 async function ensureDbInitialized() {
   if (!dbInitialized) {
-    await initializeDatabase();
-    dbInitialized = true;
+    try {
+      await initializeDatabase();
+      dbInitialized = true;
+    } catch (error) {
+      console.error('Database initialization failed:', error);
+      // Continue with mock data if database fails
+    }
   }
 }
 
-// GET - Fetch statistics
 export async function GET() {
   try {
     await ensureDbInitialized();
     
-    const totalUsers = await getTotalUserCount();
-
-    return NextResponse.json({
-      totalUsers,
-      success: true
-    });
-
+    if (dbInitialized) {
+      const totalUsers = await getTotalUserCount();
+      return NextResponse.json({ totalUsers });
+    } else {
+      // Return mock data if database is not available
+      return NextResponse.json({ totalUsers: 0 });
+    }
   } catch (error) {
     console.error('GET /api/stats error:', error);
-    return NextResponse.json(
-      { error: 'Internal server error' },
-      { status: 500 }
-    );
+    
+    // Return mock data on error
+    return NextResponse.json({ totalUsers: 0 });
   }
 }

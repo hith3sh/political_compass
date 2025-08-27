@@ -305,7 +305,7 @@ ${window.location.origin}`;
                 ? 'bg-green-500 text-white cursor-not-allowed'
                 : saveStatus === 'saving'
                 ? 'bg-gray-400 text-white cursor-not-allowed'
-                : 'bg-purple-600 text-white hover:bg-purple-700'
+                : 'bg-purple-600 text-white hover:bg-purple-700 cursor-pointer'
             }`}
             whileHover={!isSaved && saveStatus !== 'saving' ? { scale: 1.05, y: -2 } : {}}
             whileTap={!isSaved && saveStatus !== 'saving' ? { scale: 0.95 } : {}}
@@ -328,7 +328,7 @@ ${window.location.origin}`;
           <motion.button
             onClick={handleShare}
             disabled={shareStatus === 'copying'}
-            className="bg-green-600 text-white px-8 py-3 rounded-xl font-semibold shadow-lg hover:bg-green-700 transition-all duration-300 min-w-[160px]"
+            className="bg-green-600 text-white px-8 py-3 rounded-xl font-semibold shadow-lg hover:bg-green-700 transition-all duration-300 min-w-[160px] cursor-pointer"
             whileHover={{ scale: 1.05, y: -2 }}
             whileTap={{ scale: 0.95 }}
           >
@@ -344,9 +344,19 @@ ${window.location.origin}`;
             {shareStatus === 'idle' && t('shareResult')}
           </motion.button>
 
+          <Link href="/community-results">
+            <motion.button
+              className="bg-orange-600 text-white px-8 py-3 rounded-xl font-semibold shadow-lg hover:bg-orange-700 transition-all duration-300 min-w-[160px] cursor-pointer"
+              whileHover={{ scale: 1.05, y: -2 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              👥 {language === 'en' ? 'View Community' : 'ප්‍රජාව බලන්න'}
+            </motion.button>
+          </Link>
+
           <motion.button
             onClick={handleRetake}
-            className="bg-blue-600 text-white px-8 py-3 rounded-xl font-semibold shadow-lg hover:bg-blue-700 transition-all duration-300"
+            className="bg-blue-600 text-white px-8 py-3 rounded-xl font-semibold shadow-lg hover:bg-blue-700 transition-all duration-300 cursor-pointer"
             whileHover={{ scale: 1.05, y: -2 }}
             whileTap={{ scale: 0.95 }}
           >
@@ -410,7 +420,7 @@ ${window.location.origin}`;
               <div className="flex gap-4">
                 <button
                   onClick={() => setShowNameModal(false)}
-                  className="flex-1 px-4 py-3 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors"
+                  className="flex-1 px-4 py-3 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors cursor-pointer"
                 >
                   {language === 'en' ? 'Cancel' : 'අවලංගු කරන්න'}
                 </button>
@@ -420,7 +430,7 @@ ${window.location.origin}`;
                   className={`flex-1 px-4 py-3 rounded-lg font-semibold transition-colors ${
                     !userName.trim()
                       ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
-                      : 'bg-purple-600 text-white hover:bg-purple-700'
+                      : 'bg-purple-600 text-white hover:bg-purple-700 cursor-pointer'
                   }`}
                 >
                   {saveStatus === 'saving' ? (

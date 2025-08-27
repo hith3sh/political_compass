@@ -143,7 +143,7 @@ export default function Community() {
             />
             <button
               type="submit"
-              className="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors font-semibold"
+              className="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors font-semibold cursor-pointer"
             >
               {language === 'en' ? 'Search' : 'සොයන්න'}
             </button>
@@ -160,7 +160,7 @@ export default function Community() {
                   setSearchTerm('');
                   setCurrentPage(1);
                 }}
-                className="ml-2 text-blue-600 hover:text-blue-700 underline"
+                className="ml-2 text-blue-600 hover:text-blue-700 underline cursor-pointer"
               >
                 {language === 'en' ? 'Clear' : 'ඉවත් කරන්න'}
               </button>
@@ -187,7 +187,7 @@ export default function Community() {
               <p className="text-red-600 mb-4">{error}</p>
               <button
                 onClick={() => fetchResults(currentPage, searchQuery)}
-                className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors"
+                className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors cursor-pointer"
               >
                 {language === 'en' ? 'Try Again' : 'නැවත උත්සාහ කරන්න'}
               </button>
@@ -264,7 +264,7 @@ export default function Community() {
               className={`px-4 py-2 rounded-lg ${
                 currentPage === 1
                   ? 'bg-gray-200 text-gray-400 cursor-not-allowed'
-                  : 'bg-white text-gray-700 hover:bg-gray-50 shadow'
+                  : 'bg-white text-gray-700 hover:bg-gray-50 shadow cursor-pointer'
               } transition-colors`}
             >
               {language === 'en' ? 'Previous' : 'පෙර'}
@@ -277,7 +277,7 @@ export default function Community() {
                   <button
                     key={page}
                     onClick={() => handlePageChange(page)}
-                    className={`w-10 h-10 rounded-lg ${
+                    className={`w-10 h-10 rounded-lg cursor-pointer ${
                       currentPage === page
                         ? 'bg-blue-600 text-white'
                         : 'bg-white text-gray-700 hover:bg-gray-50 shadow'
@@ -295,7 +295,7 @@ export default function Community() {
               className={`px-4 py-2 rounded-lg ${
                 currentPage === totalPages
                   ? 'bg-gray-200 text-gray-400 cursor-not-allowed'
-                  : 'bg-white text-gray-700 hover:bg-gray-50 shadow'
+                  : 'bg-white text-gray-700 hover:bg-gray-50 shadow cursor-pointer'
               } transition-colors`}
             >
               {language === 'en' ? 'Next' : 'ඊළඟ'}
