@@ -10,8 +10,11 @@ import { useLanguage } from '../lib/LanguageContext';
 export default function Home() {
   const { language, setLanguage, t } = useLanguage();
   const [totalUsers, setTotalUsers] = useState<number | null>(null);
+  const [isClient, setIsClient] = useState(false);
 
   useEffect(() => {
+    setIsClient(true);
+    
     const fetchStats = async () => {
       try {
         const response = await fetch('/api/stats');
@@ -44,14 +47,14 @@ export default function Home() {
                 whileHover={{ scale: 1.02, y: -1 }}
                 whileTap={{ scale: 0.98 }}
               >
-                {language === 'en' ? '👥 Community Results' : '👥 ප්‍රජා ප්‍රතිඵල'}
+                {isClient ? (language === 'en' ? '👥 Community Results' : '👥 ප්‍රජා ප්‍රතිඵල') : '👥 Community Results'}
               </motion.button>
             </Link>
           </div>
           
           <div className="flex items-center space-x-4">
             {/* Quiz Completion Counter */}
-            {totalUsers !== null && totalUsers > 0 && (
+            {totalUsers !== null && (
               <Link href="/community-results">
                 <motion.button 
                   className="bg-white text-gray-700 px-4 py-2 rounded-lg font-medium shadow-md hover:shadow-lg transform transition-all duration-300 border border-gray-200 cursor-pointer"
@@ -69,7 +72,7 @@ export default function Home() {
                       {totalUsers.toLocaleString()}
                     </span>
                     <span className="text-sm">
-                      {language === 'en' ? 'people have taken this quiz' : 'දෙනෙක් මේ ප්‍රශ්නාවලිය ගෙන ඇත'}
+                      {isClient ? (language === 'en' ? 'people have taken this quiz' : 'දෙනෙක් මේ ප්‍රශ්නාවලිය ගෙන ඇත') : 'people have taken this quiz'}
                     </span>
                   </div>
                 </motion.button>
@@ -90,10 +93,10 @@ export default function Home() {
           transition={{ duration: 0.5, delay: 0.2 }}
         >
           <h1 className="text-5xl md:text-6xl font-bold text-gray-900 mb-4">
-            {t('title')}
+            {isClient ? t('title') : 'Political Compass'}
           </h1>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            {t('subtitle')}
+            {isClient ? t('subtitle') : 'Discover where you stand on the political spectrum'}
           </p>
         </motion.div>
 
@@ -124,7 +127,7 @@ export default function Home() {
               whileHover={{ scale: 1.05, y: -2 }}
               whileTap={{ scale: 0.95 }}
             >
-              {t('takeTest')}
+              {isClient ? t('takeTest') : 'Take the Test'}
             </motion.button>
           </Link>
           
@@ -134,7 +137,7 @@ export default function Home() {
             animate={{ opacity: 1 }}
             transition={{ delay: 1.1 }}
           >
-            {language === 'en' ? '24 questions • Takes about 5 minutes' : 'ප්‍රශ්න 24ක් • විනාඩි 5ක් පමණ ගතවේ'}
+            {isClient ? (language === 'en' ? '24 questions • Takes about 5 minutes' : 'ප්‍රශ්න 24ක් • විනාඩි 5ක් පමණ ගතවේ') : '24 questions • Takes about 5 minutes'}
           </motion.p>
         </motion.div>
       </div>

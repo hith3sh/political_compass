@@ -217,15 +217,9 @@ export default function CommunityResults() {
             </h3>
             <p className="text-gray-500 mb-6">
               {language === 'en' 
-                ? 'Be the first to take the political compass quiz!' 
-                : 'දේශපාලන කොම්පාස් ප්‍රශ්නාවලිය ගන්නා පළමු පුද්ගලයා වන්න!'}
+                ? '' 
+                : ''}
             </p>
-            <Link 
-              href="/quiz"
-              className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-blue-500 to-purple-500 text-white font-medium rounded-lg hover:from-blue-600 hover:to-purple-600 transition-colors cursor-pointer"
-            >
-              {language === 'en' ? 'Take the Quiz' : 'ප්‍රශ්නාවලිය ගන්න'}
-            </Link>
           </motion.div>
         )}
 

@@ -1,5 +1,6 @@
 import { Answer, Result, Question } from './types';
 import { questions } from '../data/questions';
+import { enhancedQuestions } from '../data/enhancedQuestions';
 import { getQuadrant } from './utils';
 
 export function calculateScore(answers: Answer[]): Result {
