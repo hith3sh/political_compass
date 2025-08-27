@@ -1,5 +1,5 @@
 import { Answer, Question } from './types';
-import { questions } from '../data/questions';
+import { optimizedQuestions } from '../data/optimizedQuestions';
 
 export interface GridPosition {
   x: number; // 0-9 economic position (0=left, 9=right)
@@ -79,7 +79,7 @@ export function calculateGridScore(answers: Answer[]): GridResult {
   let socialScore = 0;
   
   answers.forEach(answer => {
-    const question = questions.find(q => q.id === answer.questionId);
+    const question = optimizedQuestions.find(q => q.id === answer.questionId);
     if (!question) return;
     
     let scoreValue = answer.value;

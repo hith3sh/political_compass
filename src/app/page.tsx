@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
-import { PoliticalCompass } from '../components/PoliticalCompass';
+import { InteractiveGrid } from '../components/InteractiveGrid';
 import { LanguageSelector } from '../components/LanguageSelector';
 import { useLanguage } from '../lib/LanguageContext';
 
@@ -31,7 +31,7 @@ export default function Home() {
   }, []);
 
   return (
-    <main className="min-h-screen bg-gradient-to-br from-blue-50 to-purple-50">
+    <main className="min-h-screen bg-gradient-to-br from-blue-50 to-green-50">
       <div className="max-w-6xl mx-auto px-4 py-8">
         {/* Header */}
         <motion.div 
@@ -71,9 +71,6 @@ export default function Home() {
                     <span className="font-bold text-blue-600">
                       {totalUsers.toLocaleString()}
                     </span>
-                    <span className="text-sm">
-                      {isClient ? (language === 'en' ? 'people have taken this quiz' : 'දෙනෙක් මේ ප්‍රශ්නාවලිය ගෙන ඇත') : 'people have taken this quiz'}
-                    </span>
                   </div>
                 </motion.button>
               </Link>
@@ -100,18 +97,14 @@ export default function Home() {
           </p>
         </motion.div>
 
-        {/* Political Compass Visualization */}
+        {/* Interactive Political Compass Grid */}
         <motion.div 
           className="flex justify-center mb-12"
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.5, delay: 0.4 }}
         >
-          <PoliticalCompass 
-            size={500} 
-            showLabels={true} 
-            showPosition={false} 
-          />
+          <InteractiveGrid className="max-w-2xl w-full" />
         </motion.div>
 
         {/* Call to Action */}
@@ -123,7 +116,7 @@ export default function Home() {
         >
           <Link href="/quiz">
             <motion.button 
-              className="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-12 py-4 rounded-xl text-xl font-bold shadow-lg hover:shadow-xl transform transition-all duration-300 cursor-pointer"
+              className="bg-gradient-to-r from-blue-600 to-green-600 text-white px-12 py-4 rounded-xl text-xl font-bold shadow-lg hover:shadow-xl transform transition-all duration-300 cursor-pointer"
               whileHover={{ scale: 1.05, y: -2 }}
               whileTap={{ scale: 0.95 }}
             >

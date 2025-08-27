@@ -1,6 +1,5 @@
 import { Answer, Result, Question } from './types';
-import { questions } from '../data/questions';
-import { enhancedQuestions } from '../data/enhancedQuestions';
+import { optimizedQuestions } from '../data/optimizedQuestions';
 import { getQuadrant } from './utils';
 
 export function calculateScore(answers: Answer[]): Result {
@@ -8,7 +7,7 @@ export function calculateScore(answers: Answer[]): Result {
   let socialScore = 0;
   
   answers.forEach(answer => {
-    const question = questions.find(q => q.id === answer.questionId);
+    const question = optimizedQuestions.find(q => q.id === answer.questionId);
     if (!question) return;
     
     let scoreValue = answer.value;
@@ -43,17 +42,17 @@ export function calculateScore(answers: Answer[]): Result {
 export function getQuestionsForPage(page: number, questionsPerPage: number = 6): Question[] {
   const startIndex = (page - 1) * questionsPerPage;
   const endIndex = startIndex + questionsPerPage;
-  return questions.slice(startIndex, endIndex);
+  return optimizedQuestions.slice(startIndex, endIndex);
 }
 
 export function getTotalPages(questionsPerPage: number = 6): number {
-  return Math.ceil(questions.length / questionsPerPage);
+  return Math.ceil(optimizedQuestions.length / questionsPerPage);
 }
 
 export function isQuizComplete(answers: Answer[]): boolean {
-  return answers.length === questions.length;
+  return answers.length === optimizedQuestions.length;
 }
 
 export function getProgress(answers: Answer[]): number {
-  return Math.round((answers.length / questions.length) * 100);
+  return Math.round((answers.length / optimizedQuestions.length) * 100);
 }

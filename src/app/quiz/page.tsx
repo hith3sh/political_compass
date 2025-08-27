@@ -10,6 +10,7 @@ import { useLanguage } from '../../lib/LanguageContext';
 import { useLocalStorage } from '../../hooks/useLocalStorage';
 import { QuizState } from '../../lib/types';
 import { getQuestionsForPage, getTotalPages, isQuizComplete, getProgress } from '../../lib/scoring';
+import { optimizedQuestions } from '../../data/optimizedQuestions';
 
 function QuizContent() {
   const { language, setLanguage, t } = useLanguage();
@@ -23,16 +24,35 @@ function QuizContent() {
     totalPages: getTotalPages(),
     completed: false
   });
+  
+  // Ensure totalPages is always correct - only run once on mount
+  useEffect(() => {
+    const correctTotalPages = getTotalPages();
+    if (quizState.totalPages !== correctTotalPages) {
+      setQuizState(prev => ({
+        ...prev,
+        totalPages: correctTotalPages
+      }));
+    }
+  }, []); // Empty dependency array - only run once
 
   const [isLoading, setIsLoading] = useState(false);
   const questionsForPage = getQuestionsForPage(currentPage);
   const progress = getProgress(quizState.answers);
 
   useEffect(() => {
-    if (currentPage > quizState.totalPages) {
+    const totalPages = getTotalPages(); // Get the correct total pages directly
+    if (currentPage > totalPages) {
       router.push('/quiz?page=1');
     }
-  }, [currentPage, quizState.totalPages, router]);
+  }, [currentPage, router]);
+
+  // Reset quiz if user wants to start fresh
+  const handleResetQuiz = () => {
+    localStorage.removeItem('political-compass-quiz');
+    sessionStorage.removeItem('political-compass-quiz');
+    window.location.reload();
+  };
 
   const handleAnswerChange = (questionId: number, value: -2 | -1 | 1 | 2) => {
     const existingAnswerIndex = quizState.answers.findIndex(a => a.questionId === questionId);
@@ -71,21 +91,29 @@ function QuizContent() {
   };
 
   const handleSubmit = async () => {
+    console.log('Submit button clicked');
+    console.log('Quiz state answers:', quizState.answers);
+    console.log('Answers length:', quizState.answers.length);
+    console.log('Is quiz complete:', isQuizComplete(quizState.answers));
+    
     if (isQuizComplete(quizState.answers)) {
+      console.log('Quiz is complete, navigating to results...');
       setIsLoading(true);
       await new Promise(resolve => setTimeout(resolve, 1000)); // Simulate processing
       router.push('/result');
+    } else {
+      console.log('Quiz is not complete, missing answers');
     }
   };
 
+  const isLastPage = currentPage === quizState.totalPages;
+  
   const canProceed = questionsForPage.every(q => 
     quizState.answers.some(a => a.questionId === q.id)
   );
 
-  const isLastPage = currentPage === quizState.totalPages;
-
   return (
-    <main className="min-h-screen bg-gradient-to-br from-blue-50 to-purple-50">
+    <main className="min-h-screen bg-gradient-to-br from-blue-50 to-slate-100">
       <div className="max-w-4xl mx-auto px-4 py-8">
         {/* Header */}
         <motion.div 
@@ -93,16 +121,25 @@ function QuizContent() {
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
         >
-          <Link 
-            href="/"
-            className="text-blue-600 hover:text-blue-700 font-medium"
+          <button
+            onClick={() => router.push('/')}
+            className="text-blue-600 hover:text-blue-700 font-medium cursor-pointer"
           >
             ← {language === 'en' ? 'Back to Home' : 'මුල් පිටුවට'}
-          </Link>
-          <LanguageSelector 
-            currentLanguage={language}
-            onLanguageChange={setLanguage}
-          />
+          </button>
+          <div className="flex items-center gap-4">
+            <button
+              onClick={handleResetQuiz}
+              className="text-red-600 hover:text-red-700 font-medium text-sm"
+              title={language === 'en' ? 'Start fresh quiz' : 'නව ප්‍රශ්නාවලියක් ආරම්භ කරන්න'}
+            >
+              {language === 'en' ? 'Reset Quiz' : 'ප්‍රශ්නාවලිය යළි සකස් කරන්න'}
+            </button>
+            <LanguageSelector 
+              currentLanguage={language}
+              onLanguageChange={setLanguage}
+            />
+          </div>
         </motion.div>
 
         {/* Progress Bar */}
@@ -123,7 +160,7 @@ function QuizContent() {
           
           <div className="w-full bg-gray-200 rounded-full h-3 mb-2">
             <motion.div 
-              className="bg-gradient-to-r from-blue-500 to-purple-500 h-3 rounded-full"
+              className="bg-gradient-to-r from-blue-500 to-slate-600 h-3 rounded-full"
               initial={{ width: 0 }}
               animate={{ width: `${progress}%` }}
               transition={{ duration: 0.5 }}
@@ -204,6 +241,7 @@ function QuizContent() {
               }`}
               whileHover={canProceed ? { scale: 1.05 } : {}}
               whileTap={canProceed ? { scale: 0.95 } : {}}
+
             >
               {isLoading ? (
                 <div className="flex items-center">
@@ -240,6 +278,8 @@ function QuizContent() {
             ? 'Answer all questions on this page to continue' 
             : 'ඉදිරියට යාමට මෙම පිටුවේ සියලුම ප්‍රශ්න වලට පිළිතුරු දෙන්න'}
         </motion.p>
+        
+
       </div>
     </main>
   );
@@ -248,7 +288,7 @@ function QuizContent() {
 export default function Quiz() {
   return (
     <Suspense fallback={
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-purple-50 flex items-center justify-center">
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-slate-100 flex items-center justify-center">
         <div className="text-center">
           <div className="w-8 h-8 border-4 border-blue-500 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
           <p className="text-gray-600">Loading quiz...</p>

@@ -28,31 +28,10 @@ export async function initializeDatabase() {
     }
 
     // Create the results table if it doesn't exist using Supabase SQL
-    const { error } = await supabase.rpc('create_user_results_table');
-    
-    if (error) {
-      console.error('Table creation error:', error);
-      // If RPC doesn't exist, we'll need to create the table through the dashboard
-      console.log('Please create the user_results table in your Supabase dashboard with the following SQL:');
-      console.log(`
-        CREATE TABLE IF NOT EXISTS user_results (
-          id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-          name VARCHAR(255) NOT NULL,
-          economic_score DECIMAL(3,1) NOT NULL,
-          social_score DECIMAL(3,1) NOT NULL,
-          quadrant VARCHAR(50) NOT NULL,
-          created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
-          CONSTRAINT check_economic_score CHECK (economic_score >= -10.0 AND economic_score <= 10.0),
-          CONSTRAINT check_social_score CHECK (social_score >= -10.0 AND social_score <= 10.0),
-          CONSTRAINT check_quadrant CHECK (quadrant IN ('liberal-left', 'liberal-right', 'conservative-left', 'conservative-right'))
-        );
-        
-        CREATE INDEX IF NOT EXISTS idx_user_results_created_at 
-        ON user_results(created_at DESC);
-      `);
-    }
+    // const { error } = await supabase.rpc('create_user_results_table');
+    // console.log('Supabase environment variables are set. Table creation skipped (already exists).');
 
-    console.log('Database initialized successfully');
+    // console.log('Database initialized successfully');
   } catch (error) {
     console.error('Database initialization failed:', error);
     throw error;

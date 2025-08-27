@@ -75,7 +75,7 @@ export default function Community() {
   const getQuadrantColor = (quadrant: string) => {
     switch (quadrant) {
       case 'liberal-left': return 'bg-yellow-100 text-yellow-800';
-      case 'liberal-right': return 'bg-purple-100 text-purple-800';
+      case 'liberal-right': return 'bg-slate-100 text-slate-800';
       case 'conservative-left': return 'bg-red-100 text-red-800';
       case 'conservative-right': return 'bg-green-100 text-green-800';
       default: return 'bg-gray-100 text-gray-800';
@@ -83,7 +83,7 @@ export default function Community() {
   };
 
   return (
-    <main className="min-h-screen bg-gradient-to-br from-blue-50 to-purple-50">
+    <main className="min-h-screen bg-gradient-to-br from-blue-50 to-slate-100">
       <div className="max-w-6xl mx-auto px-4 py-8">
         {/* Header */}
         <motion.div 

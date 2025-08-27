@@ -1,6 +1,6 @@
 'use client';
 
-import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import React, { createContext, useContext, useState, useEffect, ReactNode, useCallback, useMemo } from 'react';
 import { Language, LanguageContextType } from './types';
 import { useLocalStorage } from '../hooks/useLocalStorage';
 
@@ -28,15 +28,15 @@ export function LanguageProvider({ children }: LanguageProviderProps) {
     loadTranslations();
   }, [language]);
 
-  const t = (key: string): string => {
+  const t = useCallback((key: string): string => {
     return translations[key] || key;
-  };
+  }, [translations]);
 
-  const contextValue: LanguageContextType = {
+  const contextValue: LanguageContextType = useMemo(() => ({
     language,
     setLanguage,
     t,
-  };
+  }), [language, setLanguage, t]);
 
   return (
     <LanguageContext.Provider value={contextValue}>

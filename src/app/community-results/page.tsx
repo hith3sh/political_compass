@@ -56,7 +56,7 @@ export default function CommunityResults() {
       case 'liberal-left':
         return 'bg-yellow-100 text-yellow-800 border-yellow-200';
       case 'liberal-right':
-        return 'bg-purple-100 text-purple-800 border-purple-200';
+        return 'bg-slate-100 text-slate-800 border-slate-200';
       case 'conservative-left':
         return 'bg-red-100 text-red-800 border-red-200';
       case 'conservative-right':
@@ -68,7 +68,7 @@ export default function CommunityResults() {
 
   if (loading) {
     return (
-      <main className="min-h-screen bg-gradient-to-br from-blue-50 to-purple-50">
+      <main className="min-h-screen bg-gradient-to-br from-blue-50 to-slate-100">
         <div className="max-w-6xl mx-auto px-4 py-8">
           <div className="animate-pulse">
             <div className="h-8 bg-gray-200 rounded mb-6 w-1/3"></div>
@@ -85,7 +85,7 @@ export default function CommunityResults() {
 
   if (error) {
     return (
-      <main className="min-h-screen bg-gradient-to-br from-blue-50 to-purple-50">
+      <main className="min-h-screen bg-gradient-to-br from-blue-50 to-slate-100">
         <div className="max-w-6xl mx-auto px-4 py-8">
           <div className="text-center">
             <h1 className="text-2xl font-bold text-gray-800 mb-4">
@@ -104,7 +104,7 @@ export default function CommunityResults() {
   }
 
   return (
-    <main className="min-h-screen bg-gradient-to-br from-blue-50 to-purple-50">
+    <main className="min-h-screen bg-gradient-to-br from-blue-50 to-slate-100">
       <div className="max-w-6xl mx-auto px-4 py-8">
         {/* Header */}
         <motion.div 
@@ -139,9 +139,6 @@ export default function CommunityResults() {
             <div className="text-center">
               <div className="text-4xl font-bold text-blue-600 mb-2">
                 {stats.totalUsers}
-              </div>
-              <div className="text-gray-600">
-                {language === 'en' ? 'people have completed the quiz' : 'දෙනෙක් ප්‍රශ්නාවලිය සම්පූර්ණ කර ඇත'}
               </div>
             </div>
           </motion.div>

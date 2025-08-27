@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { PoliticalCompass } from '../../components/PoliticalCompass';
+import { InteractiveGrid } from '../../components/InteractiveGrid';
 import { ConfettiAnimation } from '../../components/ConfettiAnimation';
 import { LanguageSelector } from '../../components/LanguageSelector';
 import { useLanguage } from '../../lib/LanguageContext';
@@ -31,20 +31,39 @@ export default function ResultPage() {
   });
 
   const [result, setResult] = useState<Result | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    if (quizState.answers.length === 24) {
-      const calculatedResult = calculateScore(quizState.answers);
-      setResult(calculatedResult);
-      setShowConfetti(true);
-    } else {
-      router.push('/quiz');
-    }
+    console.log('Result page useEffect triggered');
+    console.log('Quiz answers length:', quizState.answers.length);
+    console.log('Quiz answers:', quizState.answers);
+    
+    // Give localStorage time to load
+    const timer = setTimeout(() => {
+      if (quizState.answers.length === 24) {
+        console.log('Quiz complete, calculating results...');
+        const calculatedResult = calculateScore(quizState.answers);
+        setResult(calculatedResult);
+        setShowConfetti(true);
+        setIsLoading(false);
+      } else {
+        console.log('Quiz incomplete, redirecting to quiz page');
+        router.push('/quiz');
+      }
+    }, 100); // Small delay to ensure localStorage has loaded
+
+    return () => clearTimeout(timer);
   }, [quizState.answers, router]);
 
   const handleRetake = () => {
+    // Clear all quiz-related data
     localStorage.removeItem('political-compass-quiz');
-    router.push('/');
+    
+    // Also clear any other potential quiz state
+    sessionStorage.removeItem('political-compass-quiz');
+    
+    // Force a page reload to ensure clean state
+    router.push('/quiz?page=1');
   };
 
   const handleSaveToDatabase = async () => {
@@ -121,9 +140,9 @@ ${window.location.origin}`;
     }
   };
 
-  if (!result) {
+  if (!result || isLoading) {
     return (
-      <main className="min-h-screen bg-gradient-to-br from-blue-50 to-purple-50 flex items-center justify-center">
+      <main className="min-h-screen bg-gradient-to-br from-blue-50 to-slate-100 flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-blue-600 mx-auto mb-4"></div>
           <p className="text-gray-600">{t('loading')}</p>
@@ -133,7 +152,7 @@ ${window.location.origin}`;
   }
 
   return (
-    <main className="min-h-screen bg-gradient-to-br from-blue-50 to-purple-50">
+    <main className="min-h-screen bg-gradient-to-br from-blue-50 to-slate-100">
       <ConfettiAnimation trigger={showConfetti} duration={4000} />
       
       <div className="max-w-6xl mx-auto px-4 py-8">
@@ -175,18 +194,17 @@ ${window.location.origin}`;
 
         {/* Results Display */}
         <div className="grid lg:grid-cols-2 gap-12 items-start mb-12">
-          {/* Political Compass */}
+          {/* Interactive Grid */}
           <motion.div
             className="flex justify-center"
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ delay: 0.4, type: "spring", stiffness: 100 }}
           >
-            <PoliticalCompass 
+            <InteractiveGrid 
               result={result}
-              size={450}
-              showLabels={true}
-              showPosition={true}
+              className="max-w-lg w-full"
+              showUserPosition={true}
             />
           </motion.div>
 
@@ -236,7 +254,7 @@ ${window.location.origin}`;
                     <span className="font-semibold text-gray-700">
                       {t('socialAxis')}
                     </span>
-                    <span className="text-2xl font-bold text-purple-600">
+                    <span className="text-2xl font-bold text-slate-600">
                       {formatScore(result.social)}
                     </span>
                   </div>
@@ -246,7 +264,7 @@ ${window.location.origin}`;
                       style={{ width: '100%' }}
                     >
                       <div 
-                        className="absolute w-4 h-4 bg-white border-2 border-purple-600 rounded-full shadow-md"
+                        className="absolute w-4 h-4 bg-white border-2 border-slate-600 rounded-full shadow-md"
                         style={{ left: `${((result.social + 10) / 20) * 100}%`, transform: 'translateX(-50%)' }}
                       />
                     </div>
@@ -305,7 +323,7 @@ ${window.location.origin}`;
                 ? 'bg-green-500 text-white cursor-not-allowed'
                 : saveStatus === 'saving'
                 ? 'bg-gray-400 text-white cursor-not-allowed'
-                : 'bg-purple-600 text-white hover:bg-purple-700 cursor-pointer'
+                : 'bg-slate-600 text-white hover:bg-slate-700 cursor-pointer'
             }`}
             whileHover={!isSaved && saveStatus !== 'saving' ? { scale: 1.05, y: -2 } : {}}
             whileTap={!isSaved && saveStatus !== 'saving' ? { scale: 0.95 } : {}}
@@ -407,7 +425,7 @@ ${window.location.origin}`;
                 value={userName}
                 onChange={(e) => setUserName(e.target.value)}
                 placeholder={language === 'en' ? 'Enter your name' : 'ඔබේ නම ඇතුළත් කරන්න'}
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg mb-4 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                className="w-full px-4 py-3 border border-gray-300 rounded-lg mb-4 focus:outline-none focus:ring-2 focus:ring-slate-500 focus:border-transparent"
                 maxLength={50}
                 autoFocus
                 onKeyPress={(e) => {
@@ -430,7 +448,7 @@ ${window.location.origin}`;
                   className={`flex-1 px-4 py-3 rounded-lg font-semibold transition-colors ${
                     !userName.trim()
                       ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
-                      : 'bg-purple-600 text-white hover:bg-purple-700 cursor-pointer'
+                      : 'bg-slate-600 text-white hover:bg-slate-700 cursor-pointer'
                   }`}
                 >
                   {saveStatus === 'saving' ? (
