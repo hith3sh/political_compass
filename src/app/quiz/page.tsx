@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Suspense } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
@@ -8,10 +8,10 @@ import { QuizQuestion } from '../../components/QuizQuestion';
 import { LanguageSelector } from '../../components/LanguageSelector';
 import { useLanguage } from '../../lib/LanguageContext';
 import { useLocalStorage } from '../../hooks/useLocalStorage';
-import { Answer, QuizState } from '../../lib/types';
+import { QuizState } from '../../lib/types';
 import { getQuestionsForPage, getTotalPages, isQuizComplete, getProgress } from '../../lib/scoring';
 
-export default function Quiz() {
+function QuizContent() {
   const { language, setLanguage, t } = useLanguage();
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -242,5 +242,20 @@ export default function Quiz() {
         </motion.p>
       </div>
     </main>
+  );
+}
+
+export default function Quiz() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-purple-50 flex items-center justify-center">
+        <div className="text-center">
+          <div className="w-8 h-8 border-4 border-blue-500 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+          <p className="text-gray-600">Loading quiz...</p>
+        </div>
+      </div>
+    }>
+      <QuizContent />
+    </Suspense>
   );
 }

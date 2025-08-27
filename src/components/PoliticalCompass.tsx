@@ -20,7 +20,6 @@ export function PoliticalCompass({
 }: PoliticalCompassProps) {
   const center = size / 2;
   const gridSize = size * 0.8;
-  const gridOffset = size * 0.1;
 
   // Convert political coordinates (-10 to +10) to pixel coordinates
   const getPixelPosition = (economic: number, social: number) => {

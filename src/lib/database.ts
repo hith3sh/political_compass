@@ -114,11 +114,9 @@ export async function getResultsWithPagination(
   try {
     const offset = (page - 1) * limit;
     
-    let whereClause = '';
     let searchParam = null;
     
     if (search && search.trim()) {
-      whereClause = 'WHERE LOWER(name) LIKE LOWER($1)';
       searchParam = `%${search.trim()}%`;
     }
 

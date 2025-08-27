@@ -6,9 +6,6 @@ export function calculateScore(answers: Answer[]): Result {
   let economicScore = 0;
   let socialScore = 0;
   
-  const economicQuestions = questions.filter(q => q.category === 'economic');
-  const socialQuestions = questions.filter(q => q.category === 'social');
-  
   answers.forEach(answer => {
     const question = questions.find(q => q.id === answer.questionId);
     if (!question) return;
@@ -17,7 +14,7 @@ export function calculateScore(answers: Answer[]): Result {
     
     // Reverse score if question is marked as reversed
     if (question.reversed) {
-      scoreValue = -scoreValue;
+      scoreValue = -scoreValue as -2 | -1 | 1 | 2;
     }
     
     if (question.category === 'economic') {
