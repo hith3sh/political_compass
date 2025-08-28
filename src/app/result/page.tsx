@@ -246,8 +246,8 @@ export default function ResultPage() {
               {/* Mobile Instructions */}
               <p className="text-xs text-gray-500 text-center mt-2 sm:hidden">
                 {language === 'en' 
-                  ? 'Tap dots to see political figures' 
-                  : 'දේශපාලන චරිත බලන්න ඇස් තියන්න'}
+                  ? 'Tap person icons to see political figures' 
+                  : 'දේශපාලන චරිත බලන්න පුද්ගල අයිකන තට්ටු කරන්න'}
               </p>
             </div>
           </motion.div>

@@ -203,10 +203,16 @@ export function InteractiveGrid({ userPosition, className = '' }: InteractiveGri
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.95 }}
           >
-            {/* Avatar indicator for people */}
+            {/* Person icon for people */}
             {block.personImage && (
               <div className="absolute inset-0 flex items-center justify-center">
-                <div className="w-3 h-3 sm:w-2 sm:h-2 bg-gray-700 rounded-full border border-white shadow-sm"></div>
+                <svg 
+                  className="w-4 h-4 sm:w-3 sm:h-3 text-gray-700 drop-shadow-sm" 
+                  fill="currentColor" 
+                  viewBox="0 0 24 24"
+                >
+                  <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+                </svg>
               </div>
             )}
           </motion.div>
