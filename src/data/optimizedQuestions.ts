@@ -34,7 +34,7 @@ export const optimizedQuestions: Question[] = [
     id: 4,
     text: {
       en: "The government should provide free sugar, Thriposha and other essentials.",
-      si: "රජයෙන් රතු සීනි , ත්‍රිපෝෂ වැනි කඩ දානවට කැමති "
+      si: "රජයෙන් රතු සීනි, ත්‍රිපෝෂ වැනි කඩ දානවට කැමති "
     },
     category: 'economic',
     reversed: true
@@ -51,10 +51,11 @@ export const optimizedQuestions: Question[] = [
   {
     id: 6,
     text: {
-      en: "Private property rights are fundamental to economic freedom.",
-      si: "පෞද්ගලික දේපල හිමිකම් ආර්ථික නිදහස සඳහා මූලික වී යයි පිලිගනිමි."
+      en: "CEB shouldn't be restructured.",
+      si: "CEB එක restructure කරනවට කැමති නැ"
     },
-    category: 'economic'
+    category: 'economic',
+    reversed: true
   },
   {
     id: 7,
@@ -148,7 +149,7 @@ export const optimizedQuestions: Question[] = [
     id: 17,
     text: {
       en: "The Aragalaya protest did not benefit the country.",
-      si: "අරගලයෙන් රටට උණු සේවයක් නැ"
+      si: "අරගලයෙන් රටට වුනු සේවයක් නැ"
     },
     category: 'social'
   },
