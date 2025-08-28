@@ -20,21 +20,13 @@ export default function RootLayout({
           {children}
         </LanguageProvider>
         <Analytics />
+        
+        {/* Iframe Ad */}
+        
+        {/* Popunder Ad - One per page */}
         <script
-          dangerouslySetInnerHTML={{
-            __html: `
-              atOptions = {
-                'key' : 'b34a8ef0e6cd2bcb0679b13b9843c7ca',
-                'format' : 'iframe',
-                'height' : 300,
-                'width' : 160,
-                'params' : {}
-              };
-            `,
-          }}
-        />
-        <script
-          src="//www.highperformanceformat.com/b34a8ef0e6cd2bcb0679b13b9843c7ca/invoke.js"
+          type="text/javascript"
+          src="//pl27528300.effectivecpmrate.com/12/0c/4b/120c4bcb1c2545ec2113195288dcad95.js"
           async
         />
       </body>
