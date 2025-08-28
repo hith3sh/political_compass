@@ -12,6 +12,7 @@
   "submit": "Submit Quiz",
   "stronglyDisagree": "Strongly Disagree",
   "disagree": "Disagree",
+  "neutral": "Neutral",
   "agree": "Agree",
   "stronglyAgree": "Strongly Agree",
   "economicAxis": "Economic Axis",
@@ -26,7 +27,8 @@
     "libertarian-left": "Libertarian Socialist",
     "libertarian-right": "Libertarian Capitalist",
     "authoritarian-left": "Authoritarian Socialist",
-    "authoritarian-right": "Authoritarian Capitalist"
+    "authoritarian-right": "Authoritarian Capitalist",
+    "centrist": "Centrist"
   },
   "loading": "Loading...",
   "error": "An error occurred",

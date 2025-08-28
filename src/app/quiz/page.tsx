@@ -52,7 +52,7 @@ function QuizContent() {
     window.location.reload();
   };
 
-  const handleAnswerChange = (questionId: number, value: -2 | -1 | 1 | 2) => {
+  const handleAnswerChange = (questionId: number, value: -2 | -1 | 0 | 1 | 2) => {
     const existingAnswerIndex = quizState.answers.findIndex(a => a.questionId === questionId);
     const newAnswers = [...quizState.answers];
     

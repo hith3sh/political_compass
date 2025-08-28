@@ -10,13 +10,13 @@ export interface Question {
 
 export interface Answer {
   questionId: number;
-  value: -2 | -1 | 1 | 2;
+  value: -2 | -1 | 0 | 1 | 2;
 }
 
 export interface Result {
   economic: number; // -10 to +10
   social: number;   // -10 to +10
-  quadrant: 'libertarian-left' | 'libertarian-right' | 'authoritarian-left' | 'authoritarian-right';
+  quadrant: 'libertarian-left' | 'libertarian-right' | 'authoritarian-left' | 'authoritarian-right' | 'centrist';
 }
 
 export interface UserResult {

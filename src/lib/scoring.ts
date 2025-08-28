@@ -14,7 +14,7 @@ export function calculateScore(answers: Answer[]): Result {
     
     // Reverse score if question is marked as reversed
     if (question.reversed) {
-      scoreValue = -scoreValue as -2 | -1 | 1 | 2;
+      scoreValue = -scoreValue as -2 | -1 | 0 | 1 | 2;
     }
     
     if (question.category === 'economic') {
@@ -35,7 +35,7 @@ export function calculateScore(answers: Answer[]): Result {
   return {
     economic: Math.round(normalizedEconomic * 10) / 10, // Round to 1 decimal place
     social: Math.round(normalizedSocial * 10) / 10,
-    quadrant: quadrant as 'libertarian-left' | 'libertarian-right' | 'authoritarian-left' | 'authoritarian-right'
+    quadrant: quadrant as 'libertarian-left' | 'libertarian-right' | 'authoritarian-left' | 'authoritarian-right' | 'centrist'
   };
 }
 

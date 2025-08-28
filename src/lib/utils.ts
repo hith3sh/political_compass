@@ -6,6 +6,12 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 export function getQuadrant(economic: number, social: number) {
+  // Check for centrist position (both scores very close to 0)
+  const threshold = 1.0; // Within 1 point of center
+  if (Math.abs(economic) <= threshold && Math.abs(social) <= threshold) {
+    return 'centrist';
+  }
+  
   if (economic <= 0 && social <= 0) {
     return 'libertarian-left';
   } else if (economic > 0 && social <= 0) {
@@ -28,6 +34,7 @@ export function getQuadrantLabel(quadrant: string, language: 'en' | 'si'): strin
       'libertarian-right': 'Libertarian Capitalist',
       'authoritarian-left': 'Authoritarian Socialist',
       'authoritarian-right': 'Authoritarian Capitalist',
+      'centrist': 'Centrist',
       // Legacy names for backward compatibility
       'liberal-left': 'Libertarian Socialist',
       'liberal-right': 'Libertarian Capitalist',
@@ -39,6 +46,7 @@ export function getQuadrantLabel(quadrant: string, language: 'en' | 'si'): strin
       'libertarian-right': 'ටොයියෙක්',
       'authoritarian-left': 'පරණ ජෙප්පෙක්',
       'authoritarian-right': 'බයියෙක්',
+      'centrist': 'මධ්‍යස්ථවාදී',
       // Legacy names for backward compatibility
       'liberal-left': 'NPP ජෙප්පෙක් ',
       'liberal-right': 'ටොයියෙක්',

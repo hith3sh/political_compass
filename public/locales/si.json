@@ -12,6 +12,7 @@
   "submit": "ප්‍රතිපල බලමු",
   "stronglyDisagree": "දැඩි ලෙස එකඟ නොවෙමි",
   "disagree": "එකඟ නොවෙමි",
+  "neutral": "මධ්‍යස්ථ",
   "agree": "එකඟවෙමි",
   "stronglyAgree": "දැඩි ලෙස එකඟවෙමි",
   "economicAxis": "ආර්ථික අක්ෂය",
@@ -26,7 +27,8 @@
     "libertarian-left": "NPP ජෙප්පෙක් ",
     "libertarian-right": "ටොයියෙක්",
     "authoritarian-left": "පරණ ජෙප්පෙක්",
-    "authoritarian-right": "බයියෙක්"
+    "authoritarian-right": "බයියෙක්",
+    "centrist": "මධ්‍යස්ථවාදී"
   },
   "loading": "පූරණය වෙමින්...",
   "error": "දෝෂයක් ඇතිවිය",

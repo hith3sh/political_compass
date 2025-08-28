@@ -7,13 +7,14 @@ import { Question, Answer } from '../lib/types';
 interface QuizQuestionProps {
   question: Question;
   answer?: Answer;
-  onAnswerChange: (questionId: number, value: -2 | -1 | 1 | 2) => void;
+  onAnswerChange: (questionId: number, value: -2 | -1 | 0 | 1 | 2) => void;
   language: 'en' | 'si';
 }
 
 const answerOptions = [
   { value: -2 as const, labelEn: 'Strongly Disagree', labelSi: 'දැඩි ලෙස එකඟ නොවෙමි' },
   { value: -1 as const, labelEn: 'Disagree', labelSi: 'එකඟ නොවෙමි' },
+  { value: 0 as const, labelEn: 'Neutral', labelSi: 'මධ්‍යස්ථ' },
   { value: 1 as const, labelEn: 'Agree', labelSi: 'එකඟවෙමි' },
   { value: 2 as const, labelEn: 'Strongly Agree', labelSi: 'දැඩි ලෙස එකඟවෙමි' },
 ];
