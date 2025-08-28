@@ -1,42 +1,29 @@
 import { Question } from '../lib/types';
 
 export const optimizedQuestions: Question[] = [
-  // =====================================
-  // ECONOMIC QUESTIONS (12 questions)
-  // =====================================
-  
+  // Economic Questions (12 questions)
+
+  //reversed means socialist
+  //normal ones are capitalist
   {
     id: 1,
-    // AGREE → Socialist | DISAGREE → Capitalist (REVERSED)
     text: {
-      en: "Free markets should be regulated to protect workers and consumers.",
-      si: "කම්කරුවන් සහ පාරිභෝගිකයන් ආරක්ෂා කිරීම සඳහා නිදහස් වෙලඳපල නියාමනය කළ යුතුය."
-    },
-    category: 'economic',
-    reversed: true
-  },
-  {
-    id: 2,
-    // AGREE → Capitalist | DISAGREE → Socialist
-    text: {
-      en: "A company should be able to hire and fire employees without government interference.",
-      si: "සමාගමකට රජයේ මැදිහත්වීමකින් තොරව සේවකයන් බඳවා ගැනීමට සහ සේවයෙන් පහ කිරීමට හැකි විය යුතුය."
+      en: "Sri Lankan Airlines should be privatized.",
+      si: "ශ්‍රී ලන්කන්(Ariline) එක ප්රිවට් කල යුතුයි "
     },
     category: 'economic'
   },
   {
-    id: 3,
-    // AGREE → Socialist | DISAGREE → Capitalist (REVERSED)
+    id: 2,
     text: {
-      en: "High taxes on the wealthy are necessary for a fair society.",
-      si: "සාධාරණ සමාජයක් සඳහා ධනවතුන්ට ඉහළ බදු අවශ්‍ය වේ."
+      en: "The government should provide subsidies to the people.",
+      si: "අස්වැසුම දෙනවට කැමති "
     },
     category: 'economic',
     reversed: true
   },
   {
-    id: 4,
-    // AGREE → Capitalist | DISAGREE → Socialist
+    id: 3,
     text: {
       en: "Private healthcare is more efficient than government-run healthcare.",
       si: "රජය විසින් පවත්වාගෙන යනු ලබන සෞඛ්‍ය සේවාවට වඩා පුද්ගලික සෞඛ්‍ය සේවාව වඩා කාර්යක්ෂම ය."
@@ -44,74 +31,74 @@ export const optimizedQuestions: Question[] = [
     category: 'economic'
   },
   {
-    id: 5,
-    // AGREE → Socialist | DISAGREE → Capitalist (REVERSED)
+    id: 4,
     text: {
-      en: "The government should provide universal basic income to all citizens.",
-      si: "රජය සියලුම පුරවැසියන්ට විශ්වීය මූලික ආදායමක් ලබා දිය යුතුය."
+      en: "The government should provide free sugar, Thriposha and other essentials.",
+      si: "රජයෙන් රතු සීනි , ත්‍රිපෝෂ වැනි කඩ දානවට කැමති "
+    },
+    category: 'economic',
+    reversed: true
+  },
+  {
+    id: 5,
+    text: {
+      en: "The government should engage in business activities.",
+      si: "රජය බිස්නස් කල යුතුයි "
     },
     category: 'economic',
     reversed: true
   },
   {
     id: 6,
-    // AGREE → Capitalist | DISAGREE → Socialist
     text: {
-      en: "Labor unions do more harm than good to the economy.",
-      si: "කම්කරු සංගම් ආර්ථිකයට යහපත්ට වඩා අහිතකර ය."
+      en: "Private property rights are fundamental to economic freedom.",
+      si: "පෞද්ගලික දේපල හිමිකම් ආර්ථික නිදහස සඳහා මූලික වී යයි පිලිගනිමි."
     },
     category: 'economic'
   },
   {
     id: 7,
-    // AGREE → Capitalist | DISAGREE → Socialist
     text: {
-      en: "Economic inequality is a necessary part of a competitive society.",
-      si: "ආර්ථික අසමානතාවය තරඟකාරී සමාජයක අත්‍යවශ්‍ය කොටසකි."
+      en: "Trade unions should be abolished.",
+      si: "කම්කරු සංගම් අහෝසි කල යුතුයි "
     },
     category: 'economic'
   },
   {
     id: 8,
-    // AGREE → Socialist | DISAGREE → Capitalist (REVERSED)
     text: {
-      en: "The government should own and control major industries.",
-      si: "රජය ප්‍රධාන කර්මාන්ත හිමි කර ගෙන පාලනය කළ යුතුය."
+      en: "The government should tax the wealthy more heavily.",
+      si: "රජය ධනවතුන්ගෙන් වැඩියෙන් බදු අය කල යුතුයි "
     },
     category: 'economic',
     reversed: true
   },
   {
     id: 9,
-    // AGREE → Capitalist | DISAGREE → Socialist
     text: {
-      en: "Free trade benefits all countries involved.",
-      si: "නිදහස් වෙළඳාම සම්බන්ධ සියලුම රටවලට ප්‍රයෝජනවත් වේ."
+      en: "Sri Lanka should withdraw from the IMF.",
+      si: "IMF එකෙන් ඉවත්ව යා යුතුයි "
     },
     category: 'economic'
   },
   {
     id: 10,
-    // AGREE → Capitalist | DISAGREE → Socialist
     text: {
-      en: "The minimum wage should be abolished to allow market forces to work.",
-      si: "වෙළඳපල බලවේගයන්ට ක්‍රියා කිරීමට ඉඩ දීම සඳහා අවම වැටුප අහෝසි කළ යුතුය."
+      en: "Private institutions like SLIIT and KDU should not be taken over by the government.",
+      si: "SLIIT, KDU වැනි ආයතන රජයට පවරා ගත යුතු නොවේ "
     },
     category: 'economic'
   },
   {
     id: 11,
-    // AGREE → Socialist | DISAGREE → Capitalist (REVERSED)
     text: {
-      en: "Multinational corporations have too much power over national governments.",
-      si: "බහුජාතික සමාගම්වලට ජාතික ආන්ඩු මත ඕනෑවට වඩා බලයක් ඇත."
+      en: "The minimum wage should be abolished to allow market forces to work.",
+      si: "වෙළඳපල බලවේගයන්ට ක්‍රියා කිරීමට ඉඩ දීම සඳහා අවම වැටුප් කියන ඒවා අහෝසි කළ යුතුය"
     },
-    category: 'economic',
-    reversed: true
+    category: 'economic'
   },
   {
     id: 12,
-    // AGREE → Socialist | DISAGREE → Capitalist (REVERSED)
     text: {
       en: "Government spending on social programs should be increased.",
       si: "සමාජ වැඩසටහන් සඳහා රජයේ වියදම් වැඩි කළ යුතුය."
@@ -120,121 +107,107 @@ export const optimizedQuestions: Question[] = [
     reversed: true
   },
 
-  // =====================================
-  // SOCIAL QUESTIONS (12 questions)
-  // =====================================
-  
+  // Social Questions (12 questions)
+  //normal means authoritative
   {
     id: 13,
-    // AGREE → Authoritarian | DISAGREE → Libertarian
     text: {
-      en: "The government should have the right to monitor private communications for security purposes.",
-      si: "ආරක්ෂක අරමුණු සඳහා පුද්ගලික සන්නිවේදනයන් අධීක්ෂණය කිරීමේ අයිතිය රජයට තිබිය යුතුය."
-    },
-    category: 'social'
-  },
-  {
-    id: 14,
-    // AGREE → Libertarian | DISAGREE → Authoritarian (REVERSED)
-    text: {
-      en: "Individual freedom should be prioritized over collective security.",
-      si: "සාමූහික ආරක්ෂාවට වඩා පුද්ගල නිදහසට ප්‍රමුඛත්වය දිය යුතුය."
+      en: "Goverment should focus more on investigating the Chemmani mass grave in Sri Lanka.",
+      si: "චෙම්මනි මිනි වල ගැන පරීක්ශන කරනවට කැමති."
     },
     category: 'social',
     reversed: true
   },
   {
-    id: 15,
-    // AGREE → Authoritarian | DISAGREE → Libertarian
+    id: 14,
     text: {
-      en: "Traditional values should be preserved and promoted by society.",
-      si: "සම්ප්‍රදායික වටිනාකම් සමාජය විසින් සංරක්ෂණය කර ප්‍රවර්ධනය කළ යුතුය."
+      en: "Buddhism should have a place in government.",
+      si: "රජයෙන් බුද්දාගමට තැනක් ලැබිය යුතුවේ "
     },
-    category: 'social'
+    category: 'social',
+  },
+  {
+    id: 15,
+    text: {
+      en: "Same-sex marriage should be legalized.",
+      si: "සමලිංගික විවාහ අනුමත කල යුතුයි "
+    },
+    category: 'social',
+    reversed: true
   },
   {
     id: 16,
-    // AGREE → Libertarian | DISAGREE → Authoritarian (REVERSED)
     text: {
       en: "People should be free to live their lives as they choose, even if it goes against social norms.",
-      si: "එය සමාජ සාමාන්‍යයන්ට විරුද්ධ වුවද මිනිසුන්ට තමන් කැමති ආකාරයට ජීවත් වීමට නිදහස තිබිය යුතුය."
+      si: " මිනිසුන්ට තමන් කැමති ආකාරයට ජීවත් වීමට නිදහස තිබිය යුතුය."
     },
     category: 'social',
     reversed: true
   },
   {
     id: 17,
-    // AGREE → Authoritarian | DISAGREE → Libertarian
     text: {
-      en: "Strict law enforcement is necessary to maintain social order.",
-      si: "සමාජ සාමය පවත්වා ගැනීම සඳහා දැඩි නීති ක්‍රියාත්මක කිරීම අවශ්‍ය වේ."
+      en: "The Aragalaya protest did not benefit the country.",
+      si: "අරගලයෙන් රටට උණු සේවයක් නැ"
     },
     category: 'social'
   },
   {
     id: 18,
-    // AGREE → Authoritarian | DISAGREE → Libertarian
     text: {
-      en: "Censorship of offensive content in media is sometimes justified.",
-      si: "මාධ්‍යයේ අහිතකර අන්තර්ගත වාරණය කිරීම සමහර විට යුක්ති සහගත ය."
-    },
-    category: 'social'
-  },
-  {
-    id: 19,
-    // AGREE → Libertarian | DISAGREE → Authoritarian (REVERSED)
-    text: {
-      en: "Religious beliefs should not influence government policy.",
-      si: "ආගමික විශ්වාස රජයේ ප්‍රතිපත්තිවලට බලපාන්නේ නැත."
+      en: "The government should pay more attention to development of Northern province.",
+      si: "ආණ්ඩුවෙන් උතුර සංවර්දනයට වැඩි උනන්දුවක් දෙනවට කැමති "
     },
     category: 'social',
     reversed: true
   },
   {
-    id: 20,
-    // AGREE → Authoritarian | DISAGREE → Libertarian
+    id: 19,
     text: {
-      en: "Citizens should accept government authority without question.",
-      si: "පුරවැසියන් ප්‍රශ්න නොකර රජයේ අධිකාරිත්වය පිළිගත යුතුය."
+      en: "Foreign NGOs are conspiring to harm our country's nationalism.",
+      si: "පිටරවටල් වලින් අපේ රටේ ජාතිකත්වයට හානි සිදු කරන කුමන්ත්‍රණ සිදුවේ "
+    },
+    category: 'social',
+  },
+  {
+    id: 20,
+    text: {
+      en: "I'm willing to lose some freedom if the country's laws are strengthened.",
+      si: "නිදහස ටිකක් අහිමි උනත් රටේ නිතිය දැඩි කරනවනම් කැමති "
     },
     category: 'social'
   },
   {
     id: 21,
-    // AGREE → Libertarian | DISAGREE → Authoritarian (REVERSED)
     text: {
-      en: "Civil disobedience is acceptable when laws are unjust.",
-      si: "නීති අසාධාරණ වූ විට සිවිල් අකීකරුකම පිළිගත හැකිය."
+      en: "Since this is the only country for Sinhalese, Sinhalese should get more privileges.",
+      si: "ලාංකිකයන් සිටින එකම රට නිසා, සිංහල ජාතියට වැඩි වරප්‍රසාදයක් ලැබිය යුතුයි"
+    },
+    category: 'social',
+  },
+  {
+    id: 22,
+    text: {
+      en: "TV channels that spread racism should be banned.",
+      si: "ජාතිවාදය පතුරවන tv channel තහනම් කර යුතුයි "
     },
     category: 'social',
     reversed: true
   },
   {
-    id: 22,
-    // AGREE → Authoritarian | DISAGREE → Libertarian
-    text: {
-      en: "The death penalty is an appropriate punishment for serious crimes.",
-      si: "බරපතළ අපරාධ සඳහා මරණ දණුවම සුදුසු දඬුවමකි."
-    },
-    category: 'social'
-  },
-  {
     id: 23,
-    // AGREE → Authoritarian | DISAGREE → Libertarian
     text: {
-      en: "Immigration should be strictly controlled to preserve national identity.",
-      si: "ජාතික අනන්‍යතාවය ආරක්ෂා කිරීම සඳහා ආගමනය දැඩි ලෙස පාලනය කළ යුතුය."
+      en: "A Sinhalese person should always be appointed as president of the country.",
+      si: "රටේ ජනාදිපති වීමට සැමවිටම සිංහලයෙක් පත් විය යුතුයි "
     },
     category: 'social'
   },
   {
     id: 24,
-    // AGREE → Libertarian | DISAGREE → Authoritarian (REVERSED)
     text: {
-      en: "Personal drug use should be decriminalized.",
-      si: "පුද්ගලික මත්ද්‍රව්‍ය භාවිතය අපරාධකරණයෙන් ඉවත් කළ යුතුය."
+      en: "Those who mock religion should be punished.",
+      si: "ආගම විහිලුවට ලක් කරන්නන්ට දඩුවම් කල යුතුයි "
     },
     category: 'social',
-    reversed: true
   }
 ];

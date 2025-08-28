@@ -105,7 +105,7 @@ export async function getRecentResults(limit: number = 10, offset: number = 0): 
       economic_score: parseFloat(row.economic_score),
       social_score: parseFloat(row.social_score),
       quadrant: row.quadrant,
-      avatar: row.avatar || 'memo_1.png',
+      avatar: row.avatar || 'anura.jpg',
       created_at: row.created_at
     }));
   } catch (error) {
@@ -171,7 +171,7 @@ export async function getResultsWithPagination(
         economic_score: parseFloat(row.economic_score),
         social_score: parseFloat(row.social_score),
         quadrant: row.quadrant,
-        avatar: row.avatar || 'memo_1.png',
+        avatar: row.avatar || 'anura.jpg',
         created_at: row.created_at
       })),
       total,

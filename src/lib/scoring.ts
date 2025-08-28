@@ -35,7 +35,7 @@ export function calculateScore(answers: Answer[]): Result {
   return {
     economic: Math.round(normalizedEconomic * 10) / 10, // Round to 1 decimal place
     social: Math.round(normalizedSocial * 10) / 10,
-    quadrant: quadrant as 'liberal-left' | 'liberal-right' | 'authoritative-left' | 'authoritative-right'
+    quadrant: quadrant as 'libertarian-left' | 'libertarian-right' | 'authoritarian-left' | 'authoritarian-right'
   };
 }
 

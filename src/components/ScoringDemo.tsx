@@ -2,15 +2,14 @@
 
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { enhancedQuestions } from '../data/enhancedQuestions';
-import { calculateGridScore } from '../lib/gridScoring';
+import { optimizedQuestions } from '../data/optimizedQuestions';
 import { Answer } from '../lib/types';
 
 export function ScoringDemo() {
   const [selectedAnswers, setSelectedAnswers] = useState<Answer[]>([]);
   
   // Show first 6 questions (3 economic, 3 social) as examples
-  const demoQuestions = enhancedQuestions.slice(0, 6);
+  const demoQuestions = optimizedQuestions.slice(0, 6);
   
   const handleAnswerChange = (questionId: number, value: -2 | -1 | 1 | 2) => {
     setSelectedAnswers(prev => {
@@ -25,12 +24,12 @@ export function ScoringDemo() {
   };
 
   const getScoreForQuestion = (questionId: number, answerValue: number) => {
-    const question = enhancedQuestions.find(q => q.id === questionId);
+    const question = optimizedQuestions.find(q => q.id === questionId);
     if (!question) return 0;
     
     let score = answerValue;
     if (question.reversed) {
-      score = -score;
+      score = (-score) as -2 | -1 | 1 | 2;
     }
     return score;
   };
@@ -44,11 +43,11 @@ export function ScoringDemo() {
     let socialCount = 0;
 
     selectedAnswers.forEach(answer => {
-      const question = enhancedQuestions.find(q => q.id === answer.questionId);
+      const question = optimizedQuestions.find(q => q.id === answer.questionId);
       if (!question) return;
 
       let score = answer.value;
-      if (question.reversed) score = -score;
+      if (question.reversed) score = (-score) as -2 | -1 | 1 | 2;
 
       if (question.category === 'economic') {
         economicTotal += score;

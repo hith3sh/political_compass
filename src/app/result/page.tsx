@@ -222,7 +222,7 @@ export default function ResultPage() {
           <div className="text-center mb-8">
             <div className="text-2xl font-bold text-gray-800">
               {language === 'en'
-                ? <>You're a <span className="font-extrabold">{getQuadrantLabel(result.quadrant, language)}</span></>
+                ? <>You&apos;re a <span className="font-extrabold">{getQuadrantLabel(result.quadrant, language)}</span></>
                 : <>ඔබ <span className="font-extrabold">{getQuadrantLabel(result.quadrant, language)}</span></>
               }
             </div>
@@ -326,7 +326,7 @@ export default function ResultPage() {
                 {result.quadrant === 'libertarian-right' && (
                   language === 'en'
                     ? 'You value free markets, individual choice, and minimal government intervention. You support both economic freedom and personal liberties, favoring private solutions over government programs.'
-                    : 'ඔයා කියන්නේ “අපිට අපේ ජීවිතේ තීරණ අපිම ගන්න හරි” කියන එක. වෙළඳපොළ නිදහස්ව ක්‍රියාකරලා, රජය ගොඩක්ම මැදිහත්වෙන්න එපා කියන අදහසට කැමති. පෞද්ගලික ව්‍යාපාර, ව්‍යාපාරිකයින්ට ඉඩ තියෙන්න ඕන, එහෙම අය තමයි රටේ ආර්ථිකය ඉස්සරහට ගන්නෙ. සමාජයෙත් හැමෝම තමන්ට කැමති විදිහට ජීවත් වෙන්න ඉඩ තියෙන්න ඕන කියන එකේ විශ්වාසයක් තියෙනවා.'
+                    : 'ඔයා කියන්නේ “අපිට අපේ ජීවිතේ තීරණ අපිම ගන්න එක හරි” කියන එක. වෙළඳපොළ නිදහස්ව ක්‍රියාකරලා, රජය ගොඩක්ම මැදිහත්වෙන්න එපා කියන අදහසට කැමති. පෞද්ගලික ව්‍යාපාර, ව්‍යාපාරිකයින්ට ඉඩ තියෙන්න ඕන, එහෙම අය තමයි රටේ ආර්ථිකය ඉස්සරහට ගන්නෙ. සමාජයෙත් හැමෝම තමන්ට කැමති විදිහට ජීවත් වෙන්න ඉඩ තියෙන්න ඕන කියන එකේ විශ්වාසයක් තියෙනවා.'
                 )}
                 {result.quadrant === 'authoritarian-left' && (
                   language === 'en'
@@ -458,7 +458,7 @@ export default function ResultPage() {
                 value={userName}
                 onChange={(e) => setUserName(e.target.value)}
                 placeholder={language === 'en' ? 'Enter your name' : 'ඔබේ නම ඇතුළත් කරන්න'}
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg mb-4 focus:outline-none focus:ring-2 focus:ring-slate-500 focus:border-transparent"
+                className="w-full px-4 py-3 border border-gray-300 rounded-lg mb-4 focus:outline-none focus:ring-2 focus:ring-slate-500 focus:border-transparent text-black"
                 maxLength={50}
                 autoFocus
                 onKeyPress={(e) => {

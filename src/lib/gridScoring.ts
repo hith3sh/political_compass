@@ -1,4 +1,4 @@
-import { Answer, Question } from './types';
+import { Answer } from './types';
 import { optimizedQuestions } from '../data/optimizedQuestions';
 
 export interface GridPosition {

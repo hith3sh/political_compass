@@ -1,20 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { initializeDatabase, saveUserResult, getRecentResults, getResultsWithPagination } from '../../../lib/database';
+import { saveUserResult, getRecentResults, getResultsWithPagination } from '../../../lib/database';
 import { SaveResultRequest } from '../../../lib/types';
-
-let dbInitialized = false;
-
-async function ensureDbInitialized() {
-  if (!dbInitialized) {
-    try {
-      await initializeDatabase();
-      dbInitialized = true;
-    } catch (error) {
-      console.error('Database initialization failed:', error);
-      // Continue with mock data if database fails
-    }
-  }
-}
 
 // POST - Save a new result
 export async function POST(request: NextRequest) {
@@ -38,7 +24,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    if (!body.quadrant || !['liberal-left', 'liberal-right', 'authoritative-left', 'authoritative-right'].includes(body.quadrant)) {
+    if (!body.quadrant || !['libertarian-left', 'libertarian-right', 'authoritarian-left', 'authoritarian-right'].includes(body.quadrant)) {
       return NextResponse.json(
         { error: 'Valid quadrant is required' },
         { status: 400 }

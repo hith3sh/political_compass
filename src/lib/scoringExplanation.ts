@@ -1,5 +1,5 @@
 import { Answer } from './types';
-import { enhancedQuestions } from '../data/enhancedQuestions';
+import { optimizedQuestions } from '../data/optimizedQuestions';
 
 /**
  * SCORING SYSTEM EXPLANATION
@@ -22,10 +22,10 @@ export function demonstrateScoring() {
   console.log("=== POLITICAL COMPASS SCORING DEMONSTRATION ===\n");
 
   // Example questions to demonstrate scoring
-  const economicQuestion = enhancedQuestions.find(q => q.id === 2); // "Company should hire/fire without government interference"
-  const reversedEconomicQuestion = enhancedQuestions.find(q => q.id === 1); // "Free markets should be regulated" (reversed)
-  const socialQuestion = enhancedQuestions.find(q => q.id === 26); // "Government should monitor communications"
-  const reversedSocialQuestion = enhancedQuestions.find(q => q.id === 25); // "Individual freedom over security" (reversed)
+  const economicQuestion = optimizedQuestions.find(q => q.id === 2); // "Company should hire/fire without government interference"
+  const reversedEconomicQuestion = optimizedQuestions.find(q => q.id === 1); // "Free markets should be regulated" (reversed)
+  const socialQuestion = optimizedQuestions.find(q => q.id === 26); // "Government should monitor communications"
+  const reversedSocialQuestion = optimizedQuestions.find(q => q.id === 25); // "Individual freedom over security" (reversed)
 
   console.log("🏢 ECONOMIC AXIS EXAMPLES:");
   console.log("━━━━━━━━━━━━━━━━━━━━━━━━━");
@@ -79,13 +79,13 @@ export function scoreWalkthrough(answers: Answer[]): {
   finalScores: { economic: number, social: number };
   gridPosition: { x: number, y: number, block: number };
 } {
-  const economicBreakdown: any[] = [];
-  const socialBreakdown: any[] = [];
+  const economicBreakdown: { questionId: number, question: string, answer: number, points: number, isReversed: boolean }[] = [];
+  const socialBreakdown: { questionId: number, question: string, answer: number, points: number, isReversed: boolean }[] = [];
   let economicTotal = 0;
   let socialTotal = 0;
 
   answers.forEach(answer => {
-    const question = enhancedQuestions.find(q => q.id === answer.questionId);
+    const question = optimizedQuestions.find(q => q.id === answer.questionId);
     if (!question) return;
 
     let scoreValue = answer.value;

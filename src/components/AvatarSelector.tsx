@@ -17,7 +17,7 @@ export function AvatarSelector({ selectedAvatar, onAvatarSelect, language }: Ava
   return (
     <div className="mb-4">
       <label className="block text-sm font-medium text-gray-700 mb-2">
-        {language === 'en' ? 'Choose your avatar' : 'ඔබේ අවතාරය තෝරන්න'}
+        {language === 'en' ? 'Choose your avatar' : 'පොරක්ව තෝරාගන්න'}
       </label>
       
       {/* Selected Avatar Display */}
@@ -39,7 +39,7 @@ export function AvatarSelector({ selectedAvatar, onAvatarSelect, language }: Ava
                 />
               </div>
               <span className="text-gray-700">
-                {language === 'en' ? 'Selected Avatar' : 'තේරුම් කළ අවතාරය'}
+                {language === 'en' ? 'Selected Avatar' : 'තෝරගත්තු පොර '}
               </span>
             </>
           ) : (
@@ -48,7 +48,7 @@ export function AvatarSelector({ selectedAvatar, onAvatarSelect, language }: Ava
                 <span className="text-gray-400 text-xs">?</span>
               </div>
               <span className="text-gray-500">
-                {language === 'en' ? 'Select an avatar' : 'අවතාරයක් තෝරන්න'}
+                {language === 'en' ? 'Select an avatar' : 'පොරක්ව තෝරාගන්න'}
               </span>
             </>
           )}

@@ -3,14 +3,12 @@
 import React, { useState, useEffect, Suspense } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useRouter, useSearchParams } from 'next/navigation';
-import Link from 'next/link';
 import { QuizQuestion } from '../../components/QuizQuestion';
 import { LanguageSelector } from '../../components/LanguageSelector';
 import { useLanguage } from '../../lib/LanguageContext';
 import { useLocalStorage } from '../../hooks/useLocalStorage';
 import { QuizState } from '../../lib/types';
 import { getQuestionsForPage, getTotalPages, isQuizComplete, getProgress } from '../../lib/scoring';
-import { optimizedQuestions } from '../../data/optimizedQuestions';
 
 function QuizContent() {
   const { language, setLanguage, t } = useLanguage();
@@ -34,7 +32,7 @@ function QuizContent() {
         totalPages: correctTotalPages
       }));
     }
-  }, []); // Empty dependency array - only run once
+  }, [quizState.totalPages, setQuizState]); // Add missing dependencies
 
   const [isLoading, setIsLoading] = useState(false);
   const questionsForPage = getQuestionsForPage(currentPage);
