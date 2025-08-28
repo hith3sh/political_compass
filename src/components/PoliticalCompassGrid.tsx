@@ -41,7 +41,7 @@ export function PoliticalCompassGrid({
               fillColor = '#fef3c7'; // Yellow/Socialist
               break;
             case 'authoritarian-right':
-              fillColor = '#bbf7d0'; // Green/Conservative Capitalist
+              fillColor = '#bbf7d0'; // Green/Authoritarian Capitalist
               break;
             case 'libertarian-left':
               fillColor = '#fecaca'; // Red/Liberal Socialist
@@ -139,7 +139,7 @@ export function PoliticalCompassGrid({
               dominantBaseline="middle" 
               className="fill-gray-700 text-sm font-bold"
             >
-              Conservative
+              Authoritarian
             </text>
             <text 
               x={center / 2} 
@@ -159,7 +159,7 @@ export function PoliticalCompassGrid({
               dominantBaseline="middle" 
               className="fill-gray-700 text-sm font-bold"
             >
-              Conservative
+              Authoritarian
             </text>
             <text 
               x={center + center / 2} 

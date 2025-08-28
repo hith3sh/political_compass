@@ -23,12 +23,12 @@
   "libertarian": "නිදහස්වාදී",
   "authoritarian": "අධිකාරිවාදී",
   "quadrants": {
-    "liberal-left": "ලිබරල් සමාජවාදී",
-    "liberal-right": "ලිබරල් ධනවාදී",
-    "authoritarian-left": "අධිකාරිවාදී සමාජවාදී",
-    "authoritarian-right": "අධිකාරිවාදී ධනවාදී"
+    "libertarian-left": "NPP ජෙප්පෙක් ",
+    "libertarian-right": "ටොයියෙක්",
+    "authoritarian-left": "පරණ ජෙප්පෙක්",
+    "authoritarian-right": "බයියෙක්"
   },
   "loading": "පූරණය වෙමින්...",
   "error": "දෝෂයක් ඇතිවිය",
-  "congratulations": "සුපිරි "
+  "congratulations": "නියමයි ! ඔබ පරීක්ෂණය අවසන් කළා"
 }

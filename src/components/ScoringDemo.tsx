@@ -250,8 +250,8 @@ export function ScoringDemo() {
             <div className="bg-white/20 rounded-lg p-4">
               <div className="text-sm opacity-90">Quadrant</div>
               <div className="text-lg font-bold">
-                {currentScore.economic <= 0 && currentScore.social >= 0 ? 'Conservative Socialist' :
-                 currentScore.economic > 0 && currentScore.social >= 0 ? 'Conservative Capitalist' :
+                {currentScore.economic <= 0 && currentScore.social >= 0 ? 'authoritative Socialist' :
+                 currentScore.economic > 0 && currentScore.social >= 0 ? 'authoritative Capitalist' :
                  currentScore.economic <= 0 && currentScore.social < 0 ? 'Liberal Socialist' :
                  'Liberal Capitalist'}
               </div>

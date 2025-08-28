@@ -38,7 +38,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    if (!body.quadrant || !['liberal-left', 'liberal-right', 'conservative-left', 'conservative-right'].includes(body.quadrant)) {
+    if (!body.quadrant || !['liberal-left', 'liberal-right', 'authoritative-left', 'authoritative-right'].includes(body.quadrant)) {
       return NextResponse.json(
         { error: 'Valid quadrant is required' },
         { status: 400 }

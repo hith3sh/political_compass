@@ -74,10 +74,10 @@ export default function Community() {
 
   const getQuadrantColor = (quadrant: string) => {
     switch (quadrant) {
-      case 'liberal-left': return 'bg-yellow-100 text-yellow-800';
-      case 'liberal-right': return 'bg-slate-100 text-slate-800';
-      case 'conservative-left': return 'bg-red-100 text-red-800';
-      case 'conservative-right': return 'bg-green-100 text-green-800';
+      case 'libertarian-left': return 'bg-yellow-100 text-yellow-800';
+      case 'libertarian-right': return 'bg-slate-100 text-slate-800';
+      case 'authoritarian-left': return 'bg-red-100 text-red-800';
+      case 'authoritarian-right': return 'bg-green-100 text-green-800';
       default: return 'bg-gray-100 text-gray-800';
     }
   };

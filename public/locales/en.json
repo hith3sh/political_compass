@@ -23,10 +23,10 @@
   "libertarian": "Libertarian",
   "authoritarian": "Authoritarian",
   "quadrants": {
-    "liberal-left": "Liberal Socialist",
-    "liberal-right": "Liberal Capitalist",
-    "authoritarian-left": "Authoritative Socialist",
-    "authoritarian-right": "Authoritative Capitalist"
+    "libertarian-left": "Libertarian Socialist",
+    "libertarian-right": "Libertarian Capitalist",
+    "authoritarian-left": "Authoritarian Socialist",
+    "authoritarian-right": "Authoritarian Capitalist"
   },
   "loading": "Loading...",
   "error": "An error occurred",

@@ -39,52 +39,87 @@ const gridData: GridBlock[] = Array.from({ length: 100 }, (_, i) => {
 // Grid coordinates: x = Economic axis (-9 to +9), y = Social axis (+9 to -9)
 // 
 // Grid ID mapping:
-//    0   1   2   3   4   5   6   7   8   9
-// 0 (-9,9) (-7,9) (-5,9) (-3,9) (-1,9) (1,9) (3,9) (5,9) (7,9) (9,9)
-// 1 (-9,7) (-7,7) (-5,7) (-3,7) (-1,7) (1,7) (3,7) (5,7) (7,7) (9,7)
-// 2 (-9,5) (-7,5) (-5,5) (-3,5) (-1,5) (1,5) (3,5) (5,5) (7,5) (9,5)
-// 3 (-9,3) (-7,3) (-5,3) (-3,3) (-1,3) (1,3) (3,3) (5,3) (7,3) (9,3)
-// 4 (-9,1) (-7,1) (-5,1) (-3,1) (-1,1) (1,1) (3,1) (5,1) (7,1) (9,1)
+//    0        1      2      3      4     5     6     7     8     9
+// 0 (-9,9)  (-7,9)   (-5,9) (-3,9) (-1,9) (1,9) (3,9) (5,9) (7,9) (9,9)
+// 1 (-9,7)  (-7,7)   (-5,7) (-3,7) (-1,7) (1,7) (3,7) (5,7) (7,7) (9,7)
+// 2 (-9,5)  (-7,5)   (-5,5) (-3,5) (-1,5) (1,5) (3,5) (5,5) (7,5) (9,5)
+// 3 (-9,3)  (-7,3)   (-5,3) (-3,3) (-1,3) (1,3) (3,3) (5,3) (7,3) (9,3)
+// 4 (-9,1)  (-7,1)   (-5,1) (-3,1) (-1,1) (1,1) (3,1) (5,1) (7,1) (9,1)
 // 5 (-9,-1) (-7,-1) (-5,-1) (-3,-1) (-1,-1) (1,-1) (3,-1) (5,-1) (7,-1) (9,-1)
 // 6 (-9,-3) (-7,-3) (-5,-3) (-3,-3) (-1,-3) (1,-3) (3,-3) (5,-3) (7,-3) (9,-3)
 // 7 (-9,-5) (-7,-5) (-5,-5) (-3,-5) (-1,-5) (1,-5) (3,-5) (5,-5) (7,-5) (9,-5)
 // 8 (-9,-7) (-7,-7) (-5,-7) (-3,-7) (-1,-7) (1,-7) (3,-7) (5,-7) (7,-7) (9,-7)
 // 9 (-9,-9) (-7,-9) (-5,-9) (-3,-9) (-1,-9) (1,-9) (3,-9) (5,-9) (7,-9) (9,-9)
 
-// Political figures data with their approximate positions
-const peopleData: { [key: number]: { image: string; name: string } } = {
-  // Liberal Left Quadrant (Top Left)
-  1: { image: 'anura.jpg', name: 'Anura Kumara Dissanayake' }, // (-7, 9) - Far left, very liberal
-  3: { image: 'mahinda.jpg', name: 'Mahinda Rajapaksa' }, // (-3, 9) - Center-left, liberal
-  12: { image: 'chandrika.jpg', name: 'Chandrika Bandaranaike' }, // (-5, 7) - Left, liberal
+// Helper function to convert x, y coordinates to grid ID
+const getGridIdFromCoordinates = (x: number, y: number): number => {
+  // Convert coordinates (-10 to +10) to grid position (0-9)
+  // Each grid cell represents 2 units, so we need to map accordingly
+  const col = Math.round((x + 9) / 2); // Map x (-9 to +9) to col (0-9)
+  const row = Math.round((9 - y) / 2); // Map y (+9 to -9) to row (0-9)
   
-  // Liberal Right Quadrant (Top Right)
-  5: { image: 'ranil.jpg', name: 'Ranil Wickremesinghe' }, // (1, 9) - Center-right, very liberal
-  7: { image: 'sajith.jpg', name: 'Sajith Premadasa' }, // (5, 9) - Right, liberal
-  8: { image: 'karu.jpg', name: 'Karu Jayasuriya' }, // (7, 9) - Far right, liberal
+  // Clamp values to valid grid range
+  const clampedCol = Math.max(0, Math.min(9, col));
+  const clampedRow = Math.max(0, Math.min(9, row));
   
-  // Conservative Left Quadrant (Bottom Left)
-  61: { image: 'swrd.jpg', name: 'S.W.R.D. Bandaranaike' }, // (-7, -1) - Left, slightly conservative
-  71: { image: 'sirimavo.jpg', name: 'Sirimavo Bandaranaike' }, // (-7, -5) - Left, conservative
-  81: { image: 'dinesh.jpg', name: 'Dinesh Gunawardena' }, // (-7, -7) - Left, very conservative
-  
-  // Conservative Right Quadrant (Bottom Right)
-  55: { image: 'JR.jpg', name: 'J.R. Jayewardene' }, // (1, -1) - Center-right, slightly conservative
-  66: { image: 'premadasa.jpg', name: 'Ranasinghe Premadasa' }, // (3, -3) - Right, conservative
-  77: { image: 'gotabaya.jpg', name: 'Gotabaya Rajapaksa' }, // (5, -5) - Right, very conservative
-  88: { image: 'wimal.jpg', name: 'Wimal Weerawansa' }, // (7, -7) - Far right, very conservative
-  
-  // Center positions
-  44: { image: 'maithripala.jpg', name: 'Maithripala Sirisena' }, // (-1, 1) - Slightly left, slightly liberal
-  45: { image: 'ravi.jpg', name: 'Ravi Karunanayake' }, // (1, 1) - Slightly right, slightly liberal
-  54: { image: 'patali.jpg', name: 'Patali Champika Ranawaka' }, // (-1, -1) - Slightly left, slightly conservative
-  
-  // Additional figures
-  22: { image: 'sarath.jpg', name: 'Sarath Fonseka' }, // (-5, 5) - Left, liberal
-  33: { image: 'mangala.jpg', name: 'Mangala Samaraweera' }, // (-3, 3) - Center-left, liberal
-  67: { image: 'basil.jpg', name: 'Basil Rajapaksa' }, // (5, -3) - Right, conservative
-  78: { image: 'namal.jpg', name: 'Namal Rajapaksa' }, // (7, -7) - Far right, very conservative
+  return clampedRow * 10 + clampedCol;
 };
+
+// Political figures data using simple x, y coordinates (-10 to +10 range)
+// Economic axis (x): -10 = Far Left, 0 = Center, +10 = Far Right
+// Social axis (y): +10 = Very Authoritarian, 0 = Center, -10 = Very Libertarian
+const peopleCoordinates: Array<{ x: number; y: number; image: string; name: string }> = [
+  // Authoritarian Left Quadrant (Top Left: x < 0, y > 0)
+  { x: -9, y: 6, image: 'tilvin.jpg', name: 'Tilvin Perera' },
+  { x: -7, y: 8, image: 'mathini.jpg', name: 'Sirimawo Bandaranyake' }, //?
+  { x: -5, y: 8, image: 'dayan.jpg', name: 'Dayan Jayatilaka' },
+  { x: -6, y: 5, image: 'deepthi.jpg', name: 'Deepthi Kumara' },
+
+  
+  // Authoritarian Right Quadrant (Top Right: x > 0, y > 0)
+  { x: 1, y: 7, image: 'mahinda.jpeg', name: 'Mahinda Rajapaksa' },
+  { x: 7, y: 7, image: 'nalin.jpg', name: 'Nalin De Silva' },
+  { x: 7, y: 5, image: 'thamalu.jpg', name: 'Thamalu Piyadigama' }, 
+  { x: 6, y: 3, image: 'upali_kohomban.jpg', name: 'Upali Kohomban' },
+  { x: 9, y: 9, image: 'JR.jpg', name: 'JR Jayawardena' },
+  { x: 5, y: 4, image: 'swrd.jpg', name: 'S.W.R.D. Bandaranaike' },
+  { x: 8, y: 6, image: 'eranda.jpg', name: 'Eranda Ginige' },
+
+
+
+  // Libertarian Left Quadrant (Bottom Left: x < 0, y < 0)
+  { x: -2, y: -1, image: 'bruno.jpeg', name: 'Burno Diwakara' },
+  { x: -4, y: -5, image: 'wangeesa.jpg', name: 'Wangeesa Sumanasekara' },
+  { x: -9, y: -2, image: 'pubudu_jagoda.jpg', name: 'Pubudu Jagoda' },
+  { x: -9, y: -8, image: 'melani.jpeg', name: 'Melani Gunathilake' },
+  { x: -4, y: -4, image: 'harini.jpg', name: 'Harini Amarasooriya' },
+  { x: -9, y: -7, image: 'sandakath.jpg', name: 'Sandakath Mahagamaarachchi' },
+  { x: -2, y: -5, image: 'nirmal_dewasiri.jpg', name: 'Nirmal Dewasiri' },
+
+
+  // Libertarian Right Quadrant (Bottom Right: x > 0, y < 0)
+  { x: 4, y: -3, image: 'sajithpremadasa.jpg', name: 'Sajith Premdasa' },
+  { x: 7, y: -4, image: 'ranil.jpg', name: 'Ranil Wickremesinghe' },
+  { x: 7, y: -1, image: 'iraj.jpg', name: 'Iraj' },
+  { x: 7, y: -8, image: 'chinthana.jpg', name: 'Chinthana Darmadasa' },
+
+
+
+  // Dont know
+  //{ x: 1, y: -1, image: 'shiral_lakthilaka.jpg', name: 'Shiral Lakthilaka' },
+  // { x: 1, y: 9, image: 'Sarath_Wijesuriya.jpg', name: 'Sarath Wijesuriya' },
+
+];
+
+// Convert coordinate-based data to grid ID-based data for compatibility
+const peopleData: { [key: number]: { image: string; name: string } } = {};
+peopleCoordinates.forEach(person => {
+  const gridId = getGridIdFromCoordinates(person.x, person.y);
+  peopleData[gridId] = {
+    image: person.image,
+    name: person.name
+  };
+});
 
 // Update grid data with people
 gridData.forEach(block => {
@@ -95,7 +130,7 @@ gridData.forEach(block => {
 });
 
 export function InteractiveGrid({ userPosition, className = '' }: InteractiveGridProps) {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   const [hoveredBlock, setHoveredBlock] = useState<GridBlock | null>(null);
   const [popupPosition, setPopupPosition] = useState({ x: 0, y: 0 });
   const gridRef = useRef<HTMLDivElement>(null);
@@ -119,8 +154,8 @@ export function InteractiveGrid({ userPosition, className = '' }: InteractiveGri
   };
 
   const getQuadrantColor = (x: number, y: number) => {
-    if (x < 0 && y > 0) return 'bg-red-200 hover:bg-red-300'; // conservative Left
-    if (x > 0 && y > 0) return 'bg-blue-200 hover:bg-blue-300'; // conservative Right  
+    if (x < 0 && y > 0) return 'bg-red-200 hover:bg-red-300'; // Authoritarian Left
+    if (x > 0 && y > 0) return 'bg-blue-200 hover:bg-blue-300'; // Authoritarian Right  
     if (x < 0 && y < 0) return 'bg-green-200 hover:bg-green-300'; // Libertarian Left
     if (x > 0 && y < 0) return 'bg-purple-200 hover:bg-purple-300'; // Libertarian Right
     return 'bg-gray-100 hover:bg-gray-200'; // Center
@@ -223,9 +258,9 @@ export function InteractiveGrid({ userPosition, className = '' }: InteractiveGri
 
       {/* Axis Labels */}
       <div className="absolute inset-0 pointer-events-none">
-        {/* conservative label at top */}
+        {/* Authoritarian label at top */}
         <div className="absolute -top-3 left-1/2 transform -translate-x-1/2 text-sm font-medium text-gray-700">
-          {t('conservative')}
+          {t('authoritarian')}
         </div>
         
         {/* Libertarian label at bottom */}
@@ -315,12 +350,14 @@ export function InteractiveGrid({ userPosition, className = '' }: InteractiveGri
             }}
           >
             <div className="bg-gradient-to-r from-purple-600 to-pink-600 text-white rounded-lg shadow-xl p-3">
-              <p className="text-sm font-semibold">🎯 Your Position</p>
-              <p className="text-xs">
-                Economic: {userPosition.x.toFixed(1)}
+              <p className="text-sm font-semibold">
+                🎯 {language === 'si' ? 'ඔබේ තැන ' : 'Your Position'}
               </p>
               <p className="text-xs">
-                Social: {userPosition.y.toFixed(1)}
+                {language === 'si' ? 'ආර්ථික' : 'Economic'}: {userPosition.x.toFixed(1)}
+              </p>
+              <p className="text-xs">
+                {language === 'si' ? 'සමාජ' : 'Social'}: {userPosition.y.toFixed(1)}
               </p>
             </div>
           </motion.div>

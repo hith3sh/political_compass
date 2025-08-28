@@ -108,10 +108,10 @@ export function calculateGridScore(answers: Answer[]): GridResult {
   let quadrant: string;
   switch (gridPosition.quadrant) {
     case 'authoritarian-left':
-      quadrant = 'conservative-left';
+      quadrant = 'authoritative-left';
       break;
     case 'authoritarian-right':
-      quadrant = 'conservative-right';
+      quadrant = 'authoritative-right';
       break;
     case 'libertarian-left':
       quadrant = 'liberal-left';
@@ -159,7 +159,7 @@ export function getGridPositionDescription(position: GridPosition): string {
   
   const baseDescriptions = {
     'authoritarian-left': 'Socialist with traditional values',
-    'authoritarian-right': 'Conservative capitalist', 
+    'authoritarian-right': 'authoritative capitalist', 
     'libertarian-left': 'Progressive socialist',
     'libertarian-right': 'Liberal capitalist'
   };

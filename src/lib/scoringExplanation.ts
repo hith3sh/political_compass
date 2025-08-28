@@ -155,7 +155,7 @@ export const scoringExamples = {
   },
 
   strongAuthoritarianLeft: {
-    description: "Strong Authoritarian Left (Conservative Socialist)", 
+    description: "Strong Authoritarian Left (authoritative Socialist)", 
     answers: [
       // Economic questions - pro-socialist answers
       { questionId: 2, value: -2 }, // Strongly disagree with hiring/firing freedom  

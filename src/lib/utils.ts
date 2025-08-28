@@ -7,13 +7,13 @@ export function cn(...inputs: ClassValue[]) {
 
 export function getQuadrant(economic: number, social: number) {
   if (economic <= 0 && social <= 0) {
-    return 'liberal-left';
+    return 'libertarian-left';
   } else if (economic > 0 && social <= 0) {
-    return 'liberal-right';
+    return 'libertarian-right';
   } else if (economic <= 0 && social > 0) {
-    return 'conservative-left';
+    return 'authoritarian-left';
   } else {
-    return 'conservative-right';
+    return 'authoritarian-right';
   }
 }
 
@@ -24,16 +24,26 @@ export function formatScore(score: number): string {
 export function getQuadrantLabel(quadrant: string, language: 'en' | 'si'): string {
   const labels = {
     en: {
-      'liberal-left': 'Liberal Socialist',
-      'liberal-right': 'Liberal Capitalist',
-      'conservative-left': 'Conservative Socialist',
-      'conservative-right': 'Conservative Capitalist',
+      'libertarian-left': 'Libertarian Socialist',
+      'libertarian-right': 'Libertarian Capitalist',
+      'authoritarian-left': 'Authoritarian Socialist',
+      'authoritarian-right': 'Authoritarian Capitalist',
+      // Legacy names for backward compatibility
+      'liberal-left': 'Libertarian Socialist',
+      'liberal-right': 'Libertarian Capitalist',
+      'authoritative-left': 'Authoritarian Socialist',
+      'authoritative-right': 'Authoritarian Capitalist',
     },
     si: {
-      'liberal-left': 'ලිබරල් සමාජවාදී',
-      'liberal-right': 'ලිබරල් ධනවාදී',
-      'conservative-left': 'සම්ප්‍රදායික සමාජවාදී',
-      'conservative-right': 'සම්ප්‍රදායික ධනවාදී',
+      'libertarian-left': 'NPP ජෙප්පෙක් ',
+      'libertarian-right': 'ටොයියෙක්',
+      'authoritarian-left': 'පරණ ජෙප්පෙක්',
+      'authoritarian-right': 'බයියෙක්',
+      // Legacy names for backward compatibility
+      'liberal-left': 'NPP ජෙප්පෙක් ',
+      'liberal-right': 'ටොයියෙක්',
+      'authoritative-left': 'පරණ ජෙප්පෙක්',
+      'authoritative-right': 'බයියෙක්',
     }
   };
   

@@ -16,7 +16,7 @@ export interface Answer {
 export interface Result {
   economic: number; // -10 to +10
   social: number;   // -10 to +10
-  quadrant: 'liberal-left' | 'liberal-right' | 'conservative-left' | 'conservative-right';
+  quadrant: 'liberal-left' | 'liberal-right' | 'authoritative-left' | 'authoritative-right';
 }
 
 export interface UserResult {

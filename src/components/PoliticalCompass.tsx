@@ -66,11 +66,11 @@ export function PoliticalCompass({
             </text>
             <text x={center/2} y={center + center/2} textAnchor="middle" dominantBaseline="middle" 
                   className="fill-gray-700 text-sm font-medium">
-              Conservative
+              authoritative
             </text>
             <text x={center + center/2} y={center + center/2} textAnchor="middle" dominantBaseline="middle" 
                   className="fill-gray-700 text-sm font-medium">
-              Conservative
+              authoritative
             </text>
             
             {/* Smaller quadrant labels */}
