@@ -4,6 +4,7 @@ import React, { useState, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Image from 'next/image';
 import { useLanguage } from '../lib/LanguageContext';
+import { politicalFigures, getGridIdFromCoordinates as getGridIdFromCoords } from '../lib/politicalFigures';
 
 interface GridBlock {
   id: number;
@@ -51,71 +52,11 @@ const gridData: GridBlock[] = Array.from({ length: 100 }, (_, i) => {
 // 8 (-9,-7) (-7,-7) (-5,-7) (-3,-7) (-1,-7) (1,-7) (3,-7) (5,-7) (7,-7) (9,-7)
 // 9 (-9,-9) (-7,-9) (-5,-9) (-3,-9) (-1,-9) (1,-9) (3,-9) (5,-9) (7,-9) (9,-9)
 
-// Helper function to convert x, y coordinates to grid ID
-const getGridIdFromCoordinates = (x: number, y: number): number => {
-  // Convert coordinates (-10 to +10) to grid position (0-9)
-  // Each grid cell represents 2 units, so we need to map accordingly
-  const col = Math.round((x + 9) / 2); // Map x (-9 to +9) to col (0-9)
-  const row = Math.round((9 - y) / 2); // Map y (+9 to -9) to row (0-9)
-  
-  // Clamp values to valid grid range
-  const clampedCol = Math.max(0, Math.min(9, col));
-  const clampedRow = Math.max(0, Math.min(9, row));
-  
-  return clampedRow * 10 + clampedCol;
-};
 
-// Political figures data using simple x, y coordinates (-10 to +10 range)
-// Economic axis (x): -10 = Far Left, 0 = Center, +10 = Far Right
-// Social axis (y): +10 = Very Authoritarian, 0 = Center, -10 = Very Libertarian
-const peopleCoordinates: Array<{ x: number; y: number; image: string; name: string }> = [
-  // Authoritarian Left Quadrant (Top Left: x < 0, y > 0)
-  { x: -9, y: 6, image: 'tilvin.jpg', name: 'Tilvin Silva' },
-  { x: -7, y: 8, image: 'mathini.jpg', name: 'Sirimawo Bandaranyake' }, //?
-  { x: -5, y: 8, image: 'dayan.jpg', name: 'Dayan Jayatilaka' },
-
-  
-  // Authoritarian Right Quadrant (Top Right: x > 0, y > 0)
-  { x: 1, y: 7, image: 'mahinda.jpeg', name: 'Mahinda Rajapaksa' },
-  { x: 7, y: 7, image: 'nalin.jpeg', name: 'Nalin De Silva' },
-  { x: 7, y: 5, image: 'thamalu.jpg', name: 'Thamalu Piyadigama' }, 
-  { x: 1, y: 4, image: 'upali_kohomban.jpg', name: 'Upali Kohomban' },
-  { x: 9, y: 9, image: 'JR.jpg', name: 'JR Jayawardena' },
-  { x: 5, y: 4, image: 'swrd.jpg', name: 'S.W.R.D. Bandaranaike' },
-  { x: 8, y: 6, image: 'eranda.jpg', name: 'Eranda Ginige' },
-
-
-
-  // Libertarian Left Quadrant (Bottom Left: x < 0, y < 0)
-  { x: -2, y: -1, image: 'bruno.jpeg', name: 'Burno Diwakara' },
-  { x: -4, y: -5, image: 'wangeesa.jpg', name: 'Wangeesa Sumanasekara' },
-  { x: -9, y: -2, image: 'pubudu_jagoda.jpg', name: 'Pubudu Jagoda' },
-  { x: -9, y: -8, image: 'melani.jpeg', name: 'Melani Gunathilake' },
-  { x: -4, y: -4, image: 'harini.jpg', name: 'Harini Amarasooriya' },
-  { x: -9, y: -7, image: 'sandakath.jpg', name: 'Sandakath Mahagamaarachchi' },
-  { x: -2, y: -5, image: 'nirmal_dewasiri.jpg', name: 'Nirmal Dewasiri' },
-  { x: -7, y: -6, image: 'deepthi.jpg', name: 'Deepthi Kumara' },
-  //{ x: 1, y: -1, image: 'anura.jpg', name: 'AKD' },
-
-
-  // Libertarian Right Quadrant (Bottom Right: x > 0, y < 0)
-  { x: 4, y: -3, image: 'sajithpremadasa.jpg', name: 'Sajith Premdasa' },
-  { x: 7, y: -4, image: 'ranil.jpg', name: 'Ranil Wickremesinghe' },
-  { x: 7, y: -1, image: 'iraj.jpg', name: 'Iraj' },
-  { x: 7, y: -8, image: 'chinthana.jpg', name: 'Chinthana Darmadasa' },
-
-
-
-  // Dont know
-  //{ x: 1, y: -1, image: 'shiral_lakthilaka.jpg', name: 'Shiral Lakthilaka' },
-  // { x: 1, y: 9, image: 'Sarath_Wijesuriya.jpg', name: 'Sarath Wijesuriya' },
-
-];
-
-// Convert coordinate-based data to grid ID-based data for compatibility
+// Convert imported political figures data to grid ID-based data for compatibility
 const peopleData: { [key: number]: { image: string; name: string } } = {};
-peopleCoordinates.forEach(person => {
-  const gridId = getGridIdFromCoordinates(person.x, person.y);
+politicalFigures.forEach(person => {
+  const gridId = getGridIdFromCoords(person.x, person.y);
   peopleData[gridId] = {
     image: person.image,
     name: person.name
@@ -288,9 +229,9 @@ export function InteractiveGrid({ userPosition, className = '' }: InteractiveGri
         {/* Economic scale arrow and label */}
         <div className="absolute left-8 top-1/2 transform -translate-y-1/2 -translate-x-4">
           <div className="flex items-center text-xs text-gray-500">
-            <span className="mr-1">←</span>
-            <span className="transform -rotate-90 whitespace-nowrap">{t('economicScale')}</span>
-            <span className="ml-1">→</span>
+            <span>←</span>
+            <span className="transform -rotate-90 whitespace-nowrap text-xs sm:text-xs">{t('economicScale')}</span>
+            <span>→</span>
           </div>
         </div>
         
@@ -298,7 +239,7 @@ export function InteractiveGrid({ userPosition, className = '' }: InteractiveGri
         <div className="absolute left-1/2 top-8 transform -translate-x-1/2 -translate-y-4">
           <div className="flex flex-col items-center text-xs text-gray-500">
             <span>↑</span>
-            <span className="whitespace-nowrap">{t('socialScale')}</span>
+            <span className="whitespace-nowrap text-[10px] sm:text-xs">{t('socialScale')}</span>
             <span>↓</span>
           </div>
         </div>

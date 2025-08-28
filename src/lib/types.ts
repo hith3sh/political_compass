@@ -51,3 +51,11 @@ export interface LanguageContextType {
   setLanguage: (lang: Language) => void;
   t: (key: string) => string;
 }
+
+export interface MatchedFigure {
+  name: string;
+  image: string;
+  matchType: 'exact' | 'close';
+  distance: number;
+  message: string;
+}

@@ -10,12 +10,14 @@ import { ConfettiAnimation } from '../../components/ConfettiAnimation';
 import { LanguageSelector } from '../../components/LanguageSelector';
 import { AvatarSelector } from '../../components/AvatarSelector';
 import { MahindaEasterEgg } from '../../components/MahindaEasterEgg';
+import { PoliticalFigureModal } from '../../components/PoliticalFigureModal';
 import { useLanguage } from '../../lib/LanguageContext';
 import { useLocalStorage } from '../../hooks/useLocalStorage';
-import { QuizState, Result, SaveResultRequest } from '../../lib/types';
+import { QuizState, Result, SaveResultRequest, MatchedFigure } from '../../lib/types';
 import { calculateScore, getTotalPages } from '../../lib/scoring';
 import { getQuadrantLabel, formatScore } from '../../lib/utils';
 import { getRandomAvatar, type Avatar } from '../../lib/avatars';
+import { findMatchingFigure } from '../../lib/politicalFigures';
 
 export default function ResultPage() {
   const { language, setLanguage, t } = useLanguage();
@@ -28,6 +30,8 @@ export default function ResultPage() {
   const [selectedAvatar, setSelectedAvatar] = useState<Avatar | null>(null);
   const [saveStatus, setSaveStatus] = useState<'idle' | 'saving' | 'saved' | 'error'>('idle');
   const [isSaved, setIsSaved] = useState(false);
+  const [showPoliticalFigureModal, setShowPoliticalFigureModal] = useState(false);
+  const [matchedFigure, setMatchedFigure] = useState<MatchedFigure | null>(null);
 
   const [quizState] = useLocalStorage<QuizState>('political-compass-quiz', {
     answers: [],
@@ -46,6 +50,27 @@ export default function ResultPage() {
         const calculatedResult = calculateScore(quizState.answers);
         setResult(calculatedResult);
         setShowConfetti(true);
+        
+        // Check for political figure match immediately
+        const figureMatch = findMatchingFigure(calculatedResult.economic, calculatedResult.social);
+        if (figureMatch && figureMatch.figure.name !== 'Mahinda Rajapaksa') {
+          // Don't show modal for Mahinda (easter egg handles it)
+          setMatchedFigure({
+            name: figureMatch.figure.name,
+            image: figureMatch.figure.image,
+            matchType: figureMatch.matchType,
+            distance: figureMatch.distance,
+            message: figureMatch.matchType === 'exact' 
+              ? `You have the same political views as ${figureMatch.figure.name}!`
+              : `Your political views are very similar to ${figureMatch.figure.name}!`
+          });
+          
+          // Show modal after confetti finishes (around 4 seconds)
+          setTimeout(() => {
+            setShowPoliticalFigureModal(true);
+          }, 4500);
+        }
+        
         setIsLoading(false);
       } else {
         router.push('/quiz');
@@ -93,6 +118,11 @@ export default function ResultPage() {
         console.error('API Error:', response.status, errorData);
         throw new Error(errorData.error || `Failed to save result: ${response.status}`);
       }
+
+      await response.json();
+      
+      // Note: Political figure matching now happens immediately on results page load
+      // No need to handle it here during save
 
       setSaveStatus('saved');
       setIsSaved(true);
@@ -223,8 +253,8 @@ export default function ResultPage() {
           <div className="text-center mb-8">
             <div className="text-2xl font-bold text-gray-800">
               {language === 'en'
-                ? <>You&apos;re a <span className="font-extrabold">{getQuadrantLabel(result.quadrant, language)}</span></>
-                : <>ඔබ <span className="font-extrabold">{getQuadrantLabel(result.quadrant, language)}</span></>
+                ? <>You&apos;re a &ldquo;<span className="font-extrabold">{getQuadrantLabel(result.quadrant, language)}</span>&rdquo;</>
+                : <>ඔබ &ldquo;<span className="font-extrabold">{getQuadrantLabel(result.quadrant, language)}</span>&rdquo;</>
               }
             </div>
           </div>
@@ -475,7 +505,7 @@ export default function ResultPage() {
                 className="w-full px-4 py-3 border border-gray-300 rounded-lg mb-4 focus:outline-none focus:ring-2 focus:ring-slate-500 focus:border-transparent text-black"
                 maxLength={50}
                 autoFocus
-                onKeyPress={(e) => {
+                onKeyDown={(e) => {
                   if (e.key === 'Enter' && userName.trim() && selectedAvatar) {
                     handleSaveToDatabase();
                   }
@@ -530,6 +560,15 @@ export default function ResultPage() {
       {result && (
         <MahindaEasterEgg 
           userPosition={{ economic: result.economic, social: result.social }}
+        />
+      )}
+
+      {/* Political Figure Match Modal */}
+      {matchedFigure && (
+        <PoliticalFigureModal
+          isOpen={showPoliticalFigureModal}
+          onClose={() => setShowPoliticalFigureModal(false)}
+          matchedFigure={matchedFigure}
         />
       )}
     </main>
