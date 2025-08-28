@@ -331,7 +331,7 @@ export default function ResultPage() {
                 {result.quadrant === 'authoritarian-left' && (
                   language === 'en'
                     ? 'You combine traditional social values with support for economic equality. You likely support government programs for economic justice while maintaining more authoritarian views on social issues.'
-                    : 'ඔයා හිතනවා දුප්පත් අයට උදව් කරන්න රජය ටිකක් වැඩ කරලා යුතුයි කියලා. ආර්ථිකය සමානව හැදෙන වැඩසටහන්වලට සහය දිය යුතුයි කියලා. සමාජයේ තියෙන  නීති, විනය, සම්ප්‍රදාය ටික පවත්වාගෙන යන්න ඕන කියන එකේ විශ්වාසයක් තියෙනවා. බෞද්ධ චරිතය, සංස්කෘතිය රැකෙන්න ඕන කියලා හිතනවා. මිනිසුන්ට ඕන ඕන විදිහට නිදහසක් දෙනවට කැමති නෑ '
+                    : 'ඔයා හිතනවා දුප්පත් අයට උදව් කරන්න රජය ටිකක් වැඩ කරලා යුතුයි කියලා. ආර්ථිකය සමානව හැදෙන වැඩසටහන්වලට සහය දිය යුතුයි කියලා. සමාජයේ තියෙන  නීති, විනය, සම්ප්‍රදාය ටික පවත්වාගෙන යන්න ඕන කියන එකේ විශ්වාසයක් තියෙනවා. සංස්කෘතිය රැකෙන්න ඕන කියලා හිතනවා. මිනිසුන්ට ඕන ඕන විදිහට නිදහසක් දෙනවට කැමති නෑ '
                 )}
                 {result.quadrant === 'authoritarian-right' && (
                   language === 'en'
