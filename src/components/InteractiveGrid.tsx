@@ -77,7 +77,7 @@ const peopleCoordinates: Array<{ x: number; y: number; image: string; name: stri
   
   // Authoritarian Right Quadrant (Top Right: x > 0, y > 0)
   { x: 1, y: 7, image: 'mahinda.jpeg', name: 'Mahinda Rajapaksa' },
-  { x: 7, y: 7, image: 'nalin.jpg', name: 'Nalin De Silva' },
+  { x: 7, y: 7, image: 'nalin.jpeg', name: 'Nalin De Silva' },
   { x: 7, y: 5, image: 'thamalu.jpg', name: 'Thamalu Piyadigama' }, 
   { x: 1, y: 4, image: 'upali_kohomban.jpg', name: 'Upali Kohomban' },
   { x: 9, y: 9, image: 'JR.jpg', name: 'JR Jayawardena' },
