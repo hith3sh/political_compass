@@ -70,17 +70,16 @@ const getGridIdFromCoordinates = (x: number, y: number): number => {
 // Social axis (y): +10 = Very Authoritarian, 0 = Center, -10 = Very Libertarian
 const peopleCoordinates: Array<{ x: number; y: number; image: string; name: string }> = [
   // Authoritarian Left Quadrant (Top Left: x < 0, y > 0)
-  { x: -9, y: 6, image: 'tilvin.jpg', name: 'Tilvin Perera' },
+  { x: -9, y: 6, image: 'tilvin.jpg', name: 'Tilvin Silva' },
   { x: -7, y: 8, image: 'mathini.jpg', name: 'Sirimawo Bandaranyake' }, //?
   { x: -5, y: 8, image: 'dayan.jpg', name: 'Dayan Jayatilaka' },
-  { x: -6, y: 5, image: 'deepthi.jpg', name: 'Deepthi Kumara' },
 
   
   // Authoritarian Right Quadrant (Top Right: x > 0, y > 0)
   { x: 1, y: 7, image: 'mahinda.jpeg', name: 'Mahinda Rajapaksa' },
   { x: 7, y: 7, image: 'nalin.jpg', name: 'Nalin De Silva' },
   { x: 7, y: 5, image: 'thamalu.jpg', name: 'Thamalu Piyadigama' }, 
-  { x: 6, y: 3, image: 'upali_kohomban.jpg', name: 'Upali Kohomban' },
+  { x: 1, y: 4, image: 'upali_kohomban.jpg', name: 'Upali Kohomban' },
   { x: 9, y: 9, image: 'JR.jpg', name: 'JR Jayawardena' },
   { x: 5, y: 4, image: 'swrd.jpg', name: 'S.W.R.D. Bandaranaike' },
   { x: 8, y: 6, image: 'eranda.jpg', name: 'Eranda Ginige' },
@@ -95,6 +94,8 @@ const peopleCoordinates: Array<{ x: number; y: number; image: string; name: stri
   { x: -4, y: -4, image: 'harini.jpg', name: 'Harini Amarasooriya' },
   { x: -9, y: -7, image: 'sandakath.jpg', name: 'Sandakath Mahagamaarachchi' },
   { x: -2, y: -5, image: 'nirmal_dewasiri.jpg', name: 'Nirmal Dewasiri' },
+  { x: -7, y: -6, image: 'deepthi.jpg', name: 'Deepthi Kumara' },
+  //{ x: 1, y: -1, image: 'anura.jpg', name: 'AKD' },
 
 
   // Libertarian Right Quadrant (Bottom Right: x > 0, y < 0)
