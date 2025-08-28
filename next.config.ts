@@ -29,8 +29,8 @@ const nextConfig: NextConfig = {
           {
             key: 'Content-Security-Policy',
             value: process.env.NODE_ENV === 'production' 
-              ? "default-src 'self'; script-src 'self' 'unsafe-eval' 'unsafe-inline' *.vercel-analytics.com va.vercel-scripts.com; connect-src 'self' *.supabase.co *.vercel-analytics.com vitals.vercel-insights.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self';"
-              : "default-src 'self' 'unsafe-eval' 'unsafe-inline'; connect-src 'self' *.supabase.co *.vercel-analytics.com vitals.vercel-insights.com ws: wss:;"
+              ? "default-src 'self'; script-src 'self' 'unsafe-eval' 'unsafe-inline' *.vercel-analytics.com va.vercel-scripts.com *.effectivecpmrate.com; connect-src 'self' *.supabase.co *.vercel-analytics.com vitals.vercel-insights.com *.effectivecpmrate.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: *.effectivecpmrate.com; font-src 'self';"
+              : "default-src 'self' 'unsafe-eval' 'unsafe-inline' *.effectivecpmrate.com; connect-src 'self' *.supabase.co *.vercel-analytics.com vitals.vercel-insights.com *.effectivecpmrate.com ws: wss:;"
           },
         ],
       },
