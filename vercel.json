@@ -5,7 +5,7 @@
       "headers": [
         {
           "key": "X-Frame-Options",
-          "value": "DENY"
+          "value": "SAMEORIGIN"
         },
         {
           "key": "X-Content-Type-Options",
@@ -75,10 +75,6 @@
       "source": "/(.*).config.(.*)",
       "destination": "/404"
     },
-    {
-      "source": "/(.*).map",
-      "destination": "/404"
-    }
   ],
   "redirects": [
     {

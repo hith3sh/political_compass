@@ -3,7 +3,7 @@ import type { NextConfig } from "next";
 const nextConfig: NextConfig = {
   reactStrictMode: true,
   
-  // Security headers
+  // Security headers - Balanced for production compatibility
   async headers() {
     return [
       {
@@ -11,7 +11,7 @@ const nextConfig: NextConfig = {
         headers: [
           {
             key: 'X-Frame-Options',
-            value: 'DENY',
+            value: 'SAMEORIGIN', // Changed from DENY to allow analytics
           },
           {
             key: 'X-Content-Type-Options',
@@ -24,6 +24,13 @@ const nextConfig: NextConfig = {
           {
             key: 'X-DNS-Prefetch-Control',
             value: 'off',
+          },
+          // Add CSP that allows Vercel Analytics and Supabase
+          {
+            key: 'Content-Security-Policy',
+            value: process.env.NODE_ENV === 'production' 
+              ? "default-src 'self'; script-src 'self' 'unsafe-eval' 'unsafe-inline' *.vercel-analytics.com va.vercel-scripts.com; connect-src 'self' *.supabase.co *.vercel-analytics.com vitals.vercel-insights.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self';"
+              : "default-src 'self' 'unsafe-eval' 'unsafe-inline'; connect-src 'self' *.supabase.co *.vercel-analytics.com vitals.vercel-insights.com ws: wss:;"
           },
         ],
       },
@@ -110,11 +117,11 @@ const nextConfig: NextConfig = {
           source: '/.well-known/:path*',
           destination: '/404',
         },
-        // Block access to source maps in production
-        {
+        // Block access to source maps in production only
+        ...(process.env.NODE_ENV === 'production' ? [{
           source: '/:path*.map',
           destination: '/404',
-        },
+        }] : []),
         // Block access to backup files
         {
           source: '/:path*~',
