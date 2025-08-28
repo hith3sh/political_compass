@@ -19,14 +19,7 @@ async function ensureDbInitialized() {
 // POST - Save a new result
 export async function POST(request: NextRequest) {
   try {
-    await ensureDbInitialized();
-    
-    if (!dbInitialized) {
-      return NextResponse.json(
-        { error: 'Database not available' },
-        { status: 503 }
-      );
-    }
+    // No initialization needed for Supabase - it's ready to use
 
     const body: SaveResultRequest = await request.json();
     
@@ -52,11 +45,19 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    if (!body.avatar || typeof body.avatar !== 'string') {
+      return NextResponse.json(
+        { error: 'Avatar is required' },
+        { status: 400 }
+      );
+    }
+
     const resultId = await saveUserResult(
       body.name.trim(),
       body.economicScore,
       body.socialScore,
-      body.quadrant
+      body.quadrant,
+      body.avatar
     );
 
     return NextResponse.json({
@@ -66,6 +67,21 @@ export async function POST(request: NextRequest) {
 
   } catch (error) {
     console.error('POST /api/results error:', error);
+    
+    // Provide more specific error messages
+    if (error instanceof Error) {
+      if (error.message.includes('column "avatar" does not exist')) {
+        return NextResponse.json(
+          { error: 'Database schema needs to be updated. Please run the migration to add the avatar column.' },
+          { status: 500 }
+        );
+      }
+      return NextResponse.json(
+        { error: `Database error: ${error.message}` },
+        { status: 500 }
+      );
+    }
+    
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }
@@ -76,16 +92,7 @@ export async function POST(request: NextRequest) {
 // GET - Fetch results with optional pagination and search
 export async function GET(request: NextRequest) {
   try {
-    await ensureDbInitialized();
-    
-    if (!dbInitialized) {
-      // Return mock data if database is not available
-      return NextResponse.json({
-        results: [],
-        total: 0,
-        totalPages: 0
-      });
-    }
+    // No initialization needed for Supabase - it's ready to use
 
     const { searchParams } = new URL(request.url);
     const page = parseInt(searchParams.get('page') || '1');

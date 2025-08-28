@@ -3,7 +3,7 @@ import './globals.css'
 import { LanguageProvider } from '../lib/LanguageContext'
 
 export const metadata: Metadata = {
-  title: 'Political Compass Quiz',
+  title: 'පොලිටික්ස් මීටරේ',
   description: 'Discover your political position on the economic and social axes through our comprehensive political compass quiz.',
 }
 

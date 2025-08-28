@@ -4,10 +4,12 @@ import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { formatDistanceToNow } from 'date-fns';
 import Link from 'next/link';
+import Image from 'next/image';
 import { LanguageSelector } from '../../components/LanguageSelector';
 import { useLanguage } from '../../lib/LanguageContext';
 import { UserResult } from '../../lib/types';
 import { formatScore, getQuadrantLabel } from '../../lib/utils';
+import { getAvatarUrl } from '../../lib/avatars';
 
 interface StatsData {
   totalUsers: number;
@@ -89,7 +91,7 @@ export default function CommunityResults() {
         <div className="max-w-6xl mx-auto px-4 py-8">
           <div className="text-center">
             <h1 className="text-2xl font-bold text-gray-800 mb-4">
-              {language === 'en' ? 'Community Results' : 'ප්‍රජා ප්‍රතිඵල'}
+              {language === 'en' ? 'Community Results' : 'සමූහයෙ ප්‍රතිඵල'}
             </h1>
             <p className="text-gray-500">
               {language === 'en' ? 'Unable to load results' : 'ප්‍රතිඵල පූරණය කළ නොහැක'}
@@ -113,13 +115,17 @@ export default function CommunityResults() {
           animate={{ opacity: 1, y: 0 }}
         >
           <div>
-            <h1 className="text-3xl font-bold text-gray-900 mb-2">
-              {language === 'en' ? 'Community Results' : 'ප්‍රජා ප්‍රතිඵල'}
-            </h1>
+            <div className="flex items-center mb-2">
+              {stats && (
+                <span className="ml-4 text-2xl font-bold text-blue-600">
+                  {stats.totalUsers}
+                </span>
+              )}
+            </div>
             <p className="text-gray-600">
               {language === 'en' 
-                ? 'See how others scored on the political compass quiz' 
-                : 'දේශපාලන කොම්පාස් ප්‍රශ්නාවලියේ අනෙක් අය කෙසේ ලකුණු ලබා ගත්දැයි බලන්න'}
+                ? 'Results of others' 
+                : 'අනිත් අය අරන් තියෙන ප්‍රතිපල '}
             </p>
           </div>
           <LanguageSelector 
@@ -128,21 +134,7 @@ export default function CommunityResults() {
           />
         </motion.div>
 
-        {/* Stats */}
-        {stats && (
-          <motion.div 
-            className="bg-white rounded-xl shadow-lg p-6 mb-8"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.1 }}
-          >
-            <div className="text-center">
-              <div className="text-4xl font-bold text-blue-600 mb-2">
-                {stats.totalUsers}
-              </div>
-            </div>
-          </motion.div>
-        )}
+
 
         {/* Results Grid */}
         <motion.div 
@@ -159,13 +151,27 @@ export default function CommunityResults() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.1 * index }}
             >
-              <div className="flex justify-between items-start mb-4">
-                <h3 className="text-lg font-semibold text-gray-900 truncate">
-                  {result.name}
-                </h3>
-                <span className={`px-2 py-1 rounded-full text-xs font-medium border ${getQuadrantColor(result.quadrant)}`}>
-                  {getQuadrantLabel(result.quadrant, language)}
-                </span>
+              <div className="flex items-center gap-4 mb-4">
+                {/* Avatar */}
+                <div className="relative w-12 h-12 rounded-full overflow-hidden flex-shrink-0">
+                  <Image
+                    src={getAvatarUrl(result.avatar || 'memo_1.png')}
+                    alt={`${result.name}'s avatar`}
+                    fill
+                    className="object-cover"
+                    sizes="48px"
+                  />
+                </div>
+                
+                {/* Name and Quadrant */}
+                <div className="flex-1 min-w-0">
+                  <h3 className="text-lg font-semibold text-gray-900 truncate">
+                    {result.name}
+                  </h3>
+                  <span className={`inline-block px-2 py-1 rounded-full text-xs font-medium border ${getQuadrantColor(result.quadrant)}`}>
+                    {getQuadrantLabel(result.quadrant, language)}
+                  </span>
+                </div>
               </div>
               
               <div className="space-y-3">

@@ -1,25 +1,30 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import domtoimage from 'dom-to-image';
 import { InteractiveGrid } from '../../components/InteractiveGrid';
 import { ConfettiAnimation } from '../../components/ConfettiAnimation';
 import { LanguageSelector } from '../../components/LanguageSelector';
+import { AvatarSelector } from '../../components/AvatarSelector';
 import { useLanguage } from '../../lib/LanguageContext';
 import { useLocalStorage } from '../../hooks/useLocalStorage';
 import { QuizState, Result, SaveResultRequest } from '../../lib/types';
 import { calculateScore, getTotalPages } from '../../lib/scoring';
 import { getQuadrantLabel, formatScore } from '../../lib/utils';
+import { getRandomAvatar, type Avatar } from '../../lib/avatars';
 
 export default function ResultPage() {
   const { language, setLanguage, t } = useLanguage();
   const router = useRouter();
   const [showConfetti, setShowConfetti] = useState(false);
-  const [shareStatus, setShareStatus] = useState<'idle' | 'copying' | 'copied'>('idle');
+  const [screenshotStatus, setScreenshotStatus] = useState<'idle' | 'generating' | 'downloading'>('idle');
+  const screenshotRef = useRef<HTMLDivElement>(null);
   const [showNameModal, setShowNameModal] = useState(false);
   const [userName, setUserName] = useState('');
+  const [selectedAvatar, setSelectedAvatar] = useState<Avatar | null>(null);
   const [saveStatus, setSaveStatus] = useState<'idle' | 'saving' | 'saved' | 'error'>('idle');
   const [isSaved, setIsSaved] = useState(false);
 
@@ -34,20 +39,14 @@ export default function ResultPage() {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    console.log('Result page useEffect triggered');
-    console.log('Quiz answers length:', quizState.answers.length);
-    console.log('Quiz answers:', quizState.answers);
-    
     // Give localStorage time to load
     const timer = setTimeout(() => {
       if (quizState.answers.length === 24) {
-        console.log('Quiz complete, calculating results...');
         const calculatedResult = calculateScore(quizState.answers);
         setResult(calculatedResult);
         setShowConfetti(true);
         setIsLoading(false);
       } else {
-        console.log('Quiz incomplete, redirecting to quiz page');
         router.push('/quiz');
       }
     }, 100); // Small delay to ensure localStorage has loaded
@@ -67,7 +66,7 @@ export default function ResultPage() {
   };
 
   const handleSaveToDatabase = async () => {
-    if (!result) return;
+    if (!result || !selectedAvatar) return;
 
     setSaveStatus('saving');
 
@@ -76,7 +75,8 @@ export default function ResultPage() {
         name: userName.trim(),
         economicScore: result.economic,
         socialScore: result.social,
-        quadrant: result.quadrant
+        quadrant: result.quadrant,
+        avatar: selectedAvatar.filename
       };
 
       const response = await fetch('/api/results', {
@@ -88,15 +88,20 @@ export default function ResultPage() {
       });
 
       if (!response.ok) {
-        throw new Error('Failed to save result');
+        const errorData = await response.json().catch(() => ({}));
+        console.error('API Error:', response.status, errorData);
+        throw new Error(errorData.error || `Failed to save result: ${response.status}`);
       }
 
       setSaveStatus('saved');
       setIsSaved(true);
       setShowNameModal(false);
       
-      // Show success message briefly
-      setTimeout(() => setSaveStatus('idle'), 3000);
+      // Show success message briefly, then redirect to community page
+      setTimeout(() => {
+        setSaveStatus('idle');
+        router.push('/community-results');
+      }, 2000);
     } catch (error) {
       console.error('Error saving result:', error);
       setSaveStatus('error');
@@ -106,37 +111,53 @@ export default function ResultPage() {
 
   const handleSaveClick = () => {
     if (isSaved) return;
+    if (!selectedAvatar) {
+      setSelectedAvatar(getRandomAvatar());
+    }
     setShowNameModal(true);
   };
 
-  const handleShare = async () => {
-    if (!result) return;
+  const handleDownloadScreenshot = async () => {
+    if (!result || !screenshotRef.current) return;
 
-    const shareText = `${t('yourResult')} 
-${t('economicAxis')}: ${formatScore(result.economic)}
-${t('socialAxis')}: ${formatScore(result.social)}
-${getQuadrantLabel(result.quadrant, language)}
-
-${window.location.origin}`;
-
-    setShareStatus('copying');
+    setScreenshotStatus('generating');
 
     try {
-      if (navigator.share && /mobile|android|iphone|ipad/i.test(navigator.userAgent)) {
-        await navigator.share({
-          title: t('title'),
-          text: shareText,
-          url: window.location.origin
-        });
-        setShareStatus('idle');
-      } else {
-        await navigator.clipboard.writeText(shareText);
-        setShareStatus('copied');
-        setTimeout(() => setShareStatus('idle'), 2000);
-      }
+      // Wait for any animations to complete
+      await new Promise(resolve => setTimeout(resolve, 500));
+      
+      const dataUrl = await domtoimage.toPng(screenshotRef.current, {
+        quality: 0.95,
+        bgcolor: '#ffffff',
+        style: {
+          transform: 'scale(2)',
+          transformOrigin: 'top left'
+        },
+        width: screenshotRef.current.offsetWidth * 2,
+        height: screenshotRef.current.offsetHeight * 2
+      });
+
+      setScreenshotStatus('downloading');
+      
+      // Create download link
+      const link = document.createElement('a');
+      link.href = dataUrl;
+      link.download = `political-compass-result-${Date.now()}.png`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      
+      setTimeout(() => setScreenshotStatus('idle'), 1000);
+      
     } catch (error) {
-      console.error('Failed to share:', error);
-      setShareStatus('idle');
+      console.error('Failed to generate screenshot:', error);
+      setScreenshotStatus('idle');
+      
+      // Show user-friendly error message
+      alert(language === 'en' 
+        ? 'Failed to generate screenshot. Please try again.' 
+        : 'ඡායාරූපය සෑදීම අසාර්ථකයි. කරුණාකර නැවත උත්සාහ කරන්න.'
+      );
     }
   };
 
@@ -184,16 +205,24 @@ ${window.location.origin}`;
           <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
             🎉 {t('congratulations')}
           </h1>
-          <h2 className="text-2xl md:text-3xl font-semibold text-gray-700 mb-2">
-            {t('yourResult')}
-          </h2>
           <div className="text-lg text-gray-600">
             {getQuadrantLabel(result.quadrant, language)}
           </div>
         </motion.div>
 
-        {/* Results Display */}
-        <div className="grid lg:grid-cols-2 gap-12 items-start mb-12">
+        {/* Screenshot Capture Area */}
+        <div 
+          ref={screenshotRef}
+          className="px-8 py-12 mb-8"
+          style={{
+            background: '#ffffff',
+            borderRadius: '16px',
+            border: '1px solid #e5e7eb',
+            boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)'
+          }}
+        >
+          {/* Results Display */}
+          <div className="grid lg:grid-cols-2 gap-12 items-start">
           {/* Interactive Grid */}
           <motion.div
             className="flex justify-center"
@@ -202,9 +231,8 @@ ${window.location.origin}`;
             transition={{ delay: 0.4, type: "spring", stiffness: 100 }}
           >
             <InteractiveGrid 
-              result={result}
+              userPosition={{ x: result.economic, y: result.social }}
               className="max-w-lg w-full"
-              showUserPosition={true}
             />
           </motion.div>
 
@@ -271,7 +299,7 @@ ${window.location.origin}`;
                   </div>
                   <div className="flex justify-between text-sm text-gray-500 mt-1">
                     <span>{t('libertarian')}</span>
-                    <span>{t('authoritarian')}</span>
+                    <span>{t('conservative')}</span>
                   </div>
                 </div>
               </div>
@@ -306,6 +334,7 @@ ${window.location.origin}`;
               </p>
             </div>
           </motion.div>
+          </div>
         </div>
 
         {/* Action Buttons */}
@@ -339,27 +368,32 @@ ${window.location.origin}`;
             ) : saveStatus === 'error' ? (
               <span>{language === 'en' ? 'Error - Try Again' : 'දෝෂය - නැවත උත්සාහ කරන්න'}</span>
             ) : (
-              language === 'en' ? 'Save to Community' : 'ප්‍රජාවට එකතු කරන්න'
+              language === 'en' ? 'Save to Community' : 'ප්‍රජාවට එකතු කරමු'
             )}
           </motion.button>
 
           <motion.button
-            onClick={handleShare}
-            disabled={shareStatus === 'copying'}
-            className="bg-green-600 text-white px-8 py-3 rounded-xl font-semibold shadow-lg hover:bg-green-700 transition-all duration-300 min-w-[160px] cursor-pointer"
-            whileHover={{ scale: 1.05, y: -2 }}
-            whileTap={{ scale: 0.95 }}
+            onClick={handleDownloadScreenshot}
+            disabled={screenshotStatus !== 'idle'}
+            className="bg-green-600 text-white px-8 py-3 rounded-xl font-semibold shadow-lg hover:bg-green-700 transition-all duration-300 min-w-[160px] cursor-pointer disabled:bg-gray-400 disabled:cursor-not-allowed"
+            whileHover={screenshotStatus === 'idle' ? { scale: 1.05, y: -2 } : {}}
+            whileTap={screenshotStatus === 'idle' ? { scale: 0.95 } : {}}
           >
-            {shareStatus === 'copying' && (
+            {screenshotStatus === 'generating' && (
               <div className="flex items-center">
                 <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
-                {language === 'en' ? 'Copying...' : 'පිටපත් කරමින්...'}
+                {language === 'en' ? 'Generating...' : 'සාදමින්...'}
               </div>
             )}
-            {shareStatus === 'copied' && (
-              <span>✓ {language === 'en' ? 'Copied!' : 'පිටපත් කළා!'}</span>
+            {screenshotStatus === 'downloading' && (
+              <div className="flex items-center">
+                <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
+                {language === 'en' ? 'Downloading...' : 'බාගන්නමින්...'}
+              </div>
             )}
-            {shareStatus === 'idle' && t('shareResult')}
+            {screenshotStatus === 'idle' && (
+              <span>📷 {t('downloadScreenshot')}</span>
+            )}
           </motion.button>
 
           <Link href="/community-results">
@@ -368,7 +402,7 @@ ${window.location.origin}`;
               whileHover={{ scale: 1.05, y: -2 }}
               whileTap={{ scale: 0.95 }}
             >
-              👥 {language === 'en' ? 'View Community' : 'ප්‍රජාව බලන්න'}
+              👥 {language === 'en' ? 'View Community' : 'අනිත් අයගේ ලකුණු බලමු'}
             </motion.button>
           </Link>
 
@@ -381,17 +415,9 @@ ${window.location.origin}`;
             {t('retakeTest')}
           </motion.button>
         </motion.div>
-
-        <motion.p 
-          className="text-center text-sm text-gray-500 mt-8"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 1 }}
-        >
-          {language === 'en' 
-            ? 'Your quiz results are saved locally. Optionally save to community to appear in recent results.' 
-            : 'ඔබේ ප්‍රශ්නාවලි ප්‍රතිඵල දේශීයව සුරකිනි. අවශ්‍ය නම් ප්‍රජාවට සුරැකීමෙන් මෑත ප්‍රතිඵලවල දිස්වේ.'}
-        </motion.p>
+        <p className="text-center text-xs text-gray-400 mt-5">
+          product of ESDLG creations
+        </p>
       </div>
 
       {/* Name Input Modal */}
@@ -411,12 +437,12 @@ ${window.location.origin}`;
               transition={{ type: "spring", stiffness: 300, damping: 30 }}
             >
               <h3 className="text-2xl font-bold text-gray-800 mb-4">
-                {language === 'en' ? 'Join the Community' : 'ප්‍රජාවට එකතු වන්න'}
+                {language === 'en' ? 'Join the Community' : 'ප්‍රජාවට එකතු වෙමු'}
               </h3>
               <p className="text-gray-600 mb-6">
                 {language === 'en' 
                   ? 'Enter your name to save your result and see it in our community results. This will help others see the diversity of political views.'
-                  : 'ඔබේ ප්‍රතිඵලය සුරැකීමට සහ අපගේ ප්‍රජා ප්‍රතිඵලවල එය දැකීමට ඔබේ නම ඇතුළත් කරන්න. මෙය අන්‍යයන්ට දේශපාලන අදහස්වල විවිධත්වය දැකීමට උපකාරී වේ.'
+                  : 'ඔබේ ප්‍රතිඵලය සුරැකීමට සහ අපගේ සමූහයෙ ප්‍රතිඵලවල එය දැකීමට ඔබේ නම ඇතුළත් කරන්න. මෙය අන්‍යයන්ට දේශපාලන අදහස්වල විවිධත්වය දැකීමට උපකාරී වේ.'
                 }
               </p>
               
@@ -429,10 +455,16 @@ ${window.location.origin}`;
                 maxLength={50}
                 autoFocus
                 onKeyPress={(e) => {
-                  if (e.key === 'Enter' && userName.trim()) {
+                  if (e.key === 'Enter' && userName.trim() && selectedAvatar) {
                     handleSaveToDatabase();
                   }
                 }}
+              />
+
+              <AvatarSelector
+                selectedAvatar={selectedAvatar}
+                onAvatarSelect={setSelectedAvatar}
+                language={language}
               />
               
               <div className="flex gap-4">
@@ -444,9 +476,9 @@ ${window.location.origin}`;
                 </button>
                 <button
                   onClick={handleSaveToDatabase}
-                  disabled={!userName.trim() || saveStatus === 'saving'}
+                  disabled={!userName.trim() || !selectedAvatar || saveStatus === 'saving'}
                   className={`flex-1 px-4 py-3 rounded-lg font-semibold transition-colors ${
-                    !userName.trim()
+                    !userName.trim() || !selectedAvatar
                       ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
                       : 'bg-slate-600 text-white hover:bg-slate-700 cursor-pointer'
                   }`}

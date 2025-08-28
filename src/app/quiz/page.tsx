@@ -91,18 +91,10 @@ function QuizContent() {
   };
 
   const handleSubmit = async () => {
-    console.log('Submit button clicked');
-    console.log('Quiz state answers:', quizState.answers);
-    console.log('Answers length:', quizState.answers.length);
-    console.log('Is quiz complete:', isQuizComplete(quizState.answers));
-    
     if (isQuizComplete(quizState.answers)) {
-      console.log('Quiz is complete, navigating to results...');
       setIsLoading(true);
       await new Promise(resolve => setTimeout(resolve, 1000)); // Simulate processing
       router.push('/result');
-    } else {
-      console.log('Quiz is not complete, missing answers');
     }
   };
 
@@ -130,10 +122,10 @@ function QuizContent() {
           <div className="flex items-center gap-4">
             <button
               onClick={handleResetQuiz}
-              className="text-red-600 hover:text-red-700 font-medium text-sm"
+              className="text-red-600 hover:text-red-700 font-medium text-sm cursor-pointer"
               title={language === 'en' ? 'Start fresh quiz' : 'නව ප්‍රශ්නාවලියක් ආරම්භ කරන්න'}
             >
-              {language === 'en' ? 'Reset Quiz' : 'ප්‍රශ්නාවලිය යළි සකස් කරන්න'}
+              {language === 'en' ? 'Reset' : 'යලි පටන් ගමු'}
             </button>
             <LanguageSelector 
               currentLanguage={language}

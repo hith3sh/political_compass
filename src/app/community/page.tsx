@@ -111,12 +111,12 @@ export default function Community() {
           transition={{ delay: 0.2 }}
         >
           <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
-            {language === 'en' ? 'Community Results' : 'ප්‍රජා ප්‍රතිඵල'}
+            {language === 'en' ? 'Community Results' : 'සමූහයෙ ප්‍රතිඵල'}
           </h1>
           <p className="text-xl text-gray-600 mb-4">
             {language === 'en' 
               ? 'See how others scored on the political compass'
-              : 'අන්‍යයන් දේශපාලන මාලිමාවෙන් ලබාගත් ලකුණු බලන්න'
+              : 'අනිත් අය දේශපාලන මාලිමාවෙන් ලබාගත් ලකුණු බලන්න'
             }
           </p>
           {totalUsers > 0 && (

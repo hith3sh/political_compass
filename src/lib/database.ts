@@ -6,6 +6,7 @@ export interface UserResult {
   economic_score: number;
   social_score: number;
   quadrant: string;
+  avatar: string;
   created_at: string;
 }
 
@@ -13,10 +14,17 @@ export interface DatabaseStats {
   total_users: number;
 }
 
-// Create Supabase client
+// Check environment variables
+if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
+  console.error('Missing Supabase environment variables');
+  console.error('NEXT_PUBLIC_SUPABASE_URL:', !!process.env.NEXT_PUBLIC_SUPABASE_URL);
+  console.error('NEXT_PUBLIC_SUPABASE_ANON_KEY:', !!process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY);
+}
+
+// Create Supabase client for server-side operations (bypasses RLS)
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+  process.env.SUPABASE_SERVICE_ROLE_KEY!
 );
 
 // Initialize database schema
@@ -43,21 +51,36 @@ export async function saveUserResult(
   name: string,
   economicScore: number,
   socialScore: number,
-  quadrant: string
+  quadrant: string,
+  avatar: string
 ): Promise<string> {
   try {
+    console.log('Attempting to save user result:', {
+      name,
+      economicScore,
+      socialScore,
+      quadrant,
+      avatar
+    });
+
     const { data, error } = await supabase
       .from('user_results')
       .insert({
         name,
         economic_score: economicScore,
         social_score: socialScore,
-        quadrant
+        quadrant,
+        avatar
       })
       .select('id')
       .single();
 
-    if (error) throw error;
+    if (error) {
+      console.error('Supabase error:', error);
+      throw error;
+    }
+
+    console.log('Successfully saved user result:', data);
     return data.id;
   } catch (error) {
     console.error('Failed to save user result:', error);
@@ -70,7 +93,7 @@ export async function getRecentResults(limit: number = 10, offset: number = 0): 
   try {
     const { data, error } = await supabase
       .from('user_results')
-      .select('id, name, economic_score, social_score, quadrant, created_at')
+      .select('id, name, economic_score, social_score, quadrant, avatar, created_at')
       .order('created_at', { ascending: false })
       .range(offset, offset + limit - 1);
 
@@ -82,6 +105,7 @@ export async function getRecentResults(limit: number = 10, offset: number = 0): 
       economic_score: parseFloat(row.economic_score),
       social_score: parseFloat(row.social_score),
       quadrant: row.quadrant,
+      avatar: row.avatar || 'memo_1.png',
       created_at: row.created_at
     }));
   } catch (error) {
@@ -116,7 +140,7 @@ export async function getResultsWithPagination(
     
     let query = supabase
       .from('user_results')
-      .select('id, name, economic_score, social_score, quadrant, created_at')
+      .select('id, name, economic_score, social_score, quadrant, avatar, created_at')
       .order('created_at', { ascending: false });
 
     let countQuery = supabase
@@ -147,6 +171,7 @@ export async function getResultsWithPagination(
         economic_score: parseFloat(row.economic_score),
         social_score: parseFloat(row.social_score),
         quadrant: row.quadrant,
+        avatar: row.avatar || 'memo_1.png',
         created_at: row.created_at
       })),
       total,

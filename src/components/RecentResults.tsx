@@ -72,7 +72,7 @@ export function RecentResults({ language, limit = 5 }: RecentResultsProps) {
     return (
       <div className="bg-white rounded-xl shadow-lg p-8">
         <h3 className="text-xl font-bold text-gray-800 mb-4">
-          {language === 'en' ? 'Community Results' : 'ප්‍රජා ප්‍රතිඵල'}
+          {language === 'en' ? 'Community Results' : 'සමූහයෙ ප්‍රතිඵල'}
         </h3>
         <p className="text-gray-500 text-center py-8">
           {language === 'en' ? 'Unable to load results' : 'ප්‍රතිඵල පූරණය කළ නොහැක'}
@@ -90,7 +90,7 @@ export function RecentResults({ language, limit = 5 }: RecentResultsProps) {
     >
       <div className="flex justify-between items-center mb-6">
         <h3 className="text-xl font-bold text-gray-800">
-          {language === 'en' ? 'Community Results' : 'ප්‍රජා ප්‍රතිඵල'}
+          {language === 'en' ? 'Community Results' : 'අනිත් අයගේ ප්‍රතිඵල'}
         </h3>
         {stats && (
           <div className="text-sm text-gray-600 bg-blue-50 px-3 py-1 rounded-full">
@@ -103,7 +103,7 @@ export function RecentResults({ language, limit = 5 }: RecentResultsProps) {
         <p className="text-gray-500 text-center py-8">
           {language === 'en' 
             ? 'No results yet. Be the first to share your result!' 
-            : 'තවම ප්‍රතිඵල නැත. ඔබේ ප්‍රතිඵලය බෙදා ගන්න!'
+            : 'තවම කවුරුත් නැ, ඔබේ ප්‍රතිඵලය බෙදා ගන්න!'
           }
         </p>
       ) : (

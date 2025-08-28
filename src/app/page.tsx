@@ -35,7 +35,7 @@ export default function Home() {
       <div className="max-w-6xl mx-auto px-4 py-8">
         {/* Header */}
         <motion.div 
-          className="flex justify-between items-center mb-12"
+          className="flex justify-between items-center"
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
@@ -47,7 +47,7 @@ export default function Home() {
                 whileHover={{ scale: 1.02, y: -1 }}
                 whileTap={{ scale: 0.98 }}
               >
-                {isClient ? (language === 'en' ? '👥 Community Results' : '👥 ප්‍රජා ප්‍රතිඵල') : '👥 Community Results'}
+                {isClient ? (language === 'en' ? '👥 Community Results' : '👥 සමූහයෙ ප්‍රතිඵල') : '👥 Community Results'}
               </motion.button>
             </Link>
           </div>
@@ -84,22 +84,19 @@ export default function Home() {
 
         {/* Title Section */}
         <motion.div 
-          className="text-center mb-12"
+          className="text-center mb-6"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.2 }}
         >
-          <h1 className="text-5xl md:text-6xl font-bold text-gray-900 mb-4">
+          <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4 pb-6">
             {isClient ? t('title') : 'Political Compass'}
           </h1>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            {isClient ? t('subtitle') : 'Discover where you stand on the political spectrum'}
-          </p>
         </motion.div>
 
         {/* Interactive Political Compass Grid */}
         <motion.div 
-          className="flex justify-center mb-12"
+          className="flex justify-center mb-10"
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.5, delay: 0.4 }}

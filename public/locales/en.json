@@ -1,9 +1,9 @@
 {
   "title": "Political Compass Quiz",
-  "subtitle": "Discover where you stand on the political spectrum",
   "takeTest": "Take the Test",
   "retakeTest": "Retake Test",
   "shareResult": "Share Result",
+  "downloadScreenshot": "Download Screenshot",
   "yourResult": "Your Political Compass Result",
   "page": "Page",
   "of": "of",
@@ -16,17 +16,19 @@
   "stronglyAgree": "Strongly Agree",
   "economicAxis": "Economic Axis",
   "socialAxis": "Social Axis",
-  "left": "Left",
-  "right": "Right",
+  "economicScale": "economic scale",
+  "socialScale": "social scale",
+  "left": "Socialist",
+  "right": "Capitalist",
   "libertarian": "Libertarian",
   "authoritarian": "Authoritarian",
   "quadrants": {
     "liberal-left": "Liberal Socialist",
     "liberal-right": "Liberal Capitalist",
-    "conservative-left": "Conservative Socialist",
-    "conservative-right": "Conservative Capitalist"
+    "authoritarian-left": "Authoritative Socialist",
+    "authoritarian-right": "Authoritative Capitalist"
   },
   "loading": "Loading...",
   "error": "An error occurred",
-  "congratulations": "Congratulations! You've completed the Political Compass Quiz."
+  "congratulations": "You've completed Quiz."
 }

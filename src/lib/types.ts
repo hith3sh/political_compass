@@ -25,6 +25,7 @@ export interface UserResult {
   economic_score: number;
   social_score: number;
   quadrant: string;
+  avatar: string;
   created_at: string;
 }
 
@@ -33,6 +34,7 @@ export interface SaveResultRequest {
   economicScore: number;
   socialScore: number;
   quadrant: string;
+  avatar: string;
 }
 
 export interface QuizState {
