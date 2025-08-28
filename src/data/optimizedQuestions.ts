@@ -114,7 +114,7 @@ export const optimizedQuestions: Question[] = [
     id: 13,
     text: {
       en: "Goverment should focus more on investigating the Chemmani mass grave in Sri Lanka.",
-      si: "චෙම්මනි මිනි වල ගැන පරීක්ශන කරනවට කැමති."
+      si: "චෙම්මනි මිනි වල ගැන පරීක්ශන කරනවට කැමතියි"
     },
     category: 'social',
     reversed: true

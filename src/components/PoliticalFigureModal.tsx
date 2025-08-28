@@ -145,7 +145,7 @@ export function PoliticalFigureModal({ isOpen, onClose, matchedFigure }: Politic
                   onClick={onClose}
                   className="w-full bg-gradient-to-r from-blue-600 to-teal-600 hover:from-blue-700 hover:to-teal-700 text-white font-semibold py-3 rounded-lg transition-all duration-200 shadow-lg cursor-pointer"
                 >
-                  {language === 'si' ? 'අවබෝධයි!' : 'Got it!'}
+                  {language === 'si' ? 'එල!' : 'Got it!'}
                 </motion.button>
               </div>
             </div>
