@@ -182,7 +182,7 @@ export const optimizedQuestions: Question[] = [
     id: 21,
     text: {
       en: "Since this is the only country for Sinhalese, Sinhalese should get more privileges.",
-      si: "ලාංකිකයන් සිටින එකම රට නිසා, සිංහල ජාතියට වැඩි වරප්‍රසාදයක් ලැබිය යුතුයි"
+      si: "සිංහලයන් සිටින එකම රට නිසා, සිංහල ජාතියට වැඩි වරප්‍රසාදයක් ලැබිය යුතුයි"
     },
     category: 'social',
   },
