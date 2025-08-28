@@ -74,7 +74,7 @@
     {
       "source": "/(.*).config.(.*)",
       "destination": "/404"
-    },
+    }
   ],
   "redirects": [
     {
