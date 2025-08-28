@@ -123,7 +123,7 @@ export const optimizedQuestions: Question[] = [
     id: 14,
     text: {
       en: "Buddhism should have a place in government.",
-      si: "රජයෙන් බුද්දාගමට තැනක් ලැබිය යුතුවේ "
+      si: "රජයෙන් බුද්දාගමට විශේෂ තැනක් ලැබිය යුතුවේ "
     },
     category: 'social',
   },

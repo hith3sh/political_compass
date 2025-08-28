@@ -9,6 +9,7 @@ import { InteractiveGrid } from '../../components/InteractiveGrid';
 import { ConfettiAnimation } from '../../components/ConfettiAnimation';
 import { LanguageSelector } from '../../components/LanguageSelector';
 import { AvatarSelector } from '../../components/AvatarSelector';
+import { MahindaEasterEgg } from '../../components/MahindaEasterEgg';
 import { useLanguage } from '../../lib/LanguageContext';
 import { useLocalStorage } from '../../hooks/useLocalStorage';
 import { QuizState, Result, SaveResultRequest } from '../../lib/types';
@@ -237,10 +238,18 @@ export default function ResultPage() {
             animate={{ opacity: 1, scale: 1 }}
             transition={{ delay: 0.4, type: "spring", stiffness: 100 }}
           >
-            <InteractiveGrid 
-              userPosition={{ x: result.economic, y: result.social }}
-              className="max-w-lg w-full"
-            />
+            <div className="w-full max-w-sm sm:max-w-md lg:max-w-lg">
+              <InteractiveGrid 
+                userPosition={{ x: result.economic, y: result.social }}
+                className="w-full"
+              />
+              {/* Mobile Instructions */}
+              <p className="text-xs text-gray-500 text-center mt-2 sm:hidden">
+                {language === 'en' 
+                  ? 'Tap dots to see political figures' 
+                  : 'දේශපාලන චරිත බලන්න ඇස් තියන්න'}
+              </p>
+            </div>
           </motion.div>
 
           {/* Score Breakdown */}
@@ -321,22 +330,27 @@ export default function ResultPage() {
                 {result.quadrant === 'libertarian-left' && (
                   language === 'en' 
                     ? 'You tend to support social equality, progressive policies, and personal freedoms. You likely favor government intervention in economics while supporting individual liberties in social matters.'
-                    : 'ඔයා සාමාජික සමානත්වයට, හැමෝටම සමාන අවස්ථා තියෙන්න ඕන කියන අදහසට කැමැත්තෙන් ඉන්නව වගේ. පුද්ගලයෙක්ට තමන්ගේ ජීවිතේ තීරණ අරගෙන ජීවිතේ යන්න පුළුවන් වෙන්න ඕන කියන එකේවත් විශ්වාසයක් තියෙනවා. ඒත් ඒ අතරෙ, රජයත් ආර්ථිකය ටිකක් හොඳට හැදෙන්න මැදිහත්වෙන්න ඕන කියලා හිතනවා.'
+                    : 'ඔයා හැමෝටම සමාන අවස්ථා තියෙන්න ඕන කියන අදහසට කැමති. මිනිස්සුන්ට තමන්ගේ ජිවිතේ ගැන පුද්ගලික තීරණ ගන්න නිදහස තියෙන්න ඕනේ කියල හිතනවා. රජය ආර්ථිකය දියුණු කරන්න මැදිහත් වෙන්නොනේ කියලත් හිතනවා.'
                 )}
                 {result.quadrant === 'libertarian-right' && (
                   language === 'en'
                     ? 'You value free markets, individual choice, and minimal government intervention. You support both economic freedom and personal liberties, favoring private solutions over government programs.'
-                    : 'ඔයා කියන්නේ “අපිට අපේ ජීවිතේ තීරණ අපිම ගන්න එක හරි” කියන එක. වෙළඳපොළ නිදහස්ව ක්‍රියාකරලා, රජය ගොඩක්ම මැදිහත්වෙන්න එපා කියන අදහසට කැමති. පෞද්ගලික ව්‍යාපාර, ව්‍යාපාරිකයින්ට ඉඩ තියෙන්න ඕන, එහෙම අය තමයි රටේ ආර්ථිකය ඉස්සරහට ගන්නෙ. සමාජයෙත් හැමෝම තමන්ට කැමති විදිහට ජීවත් වෙන්න ඉඩ තියෙන්න ඕන කියන එකේ විශ්වාසයක් තියෙනවා.'
+                    : 'ඔයා හිතන්නේ ජිවිතේ තීරණ අපිටම ගන්න පුළුවන් රජය ඒවාට මැදිහත් වෙන්නොනේ නැ කියල. වෙළඳපොළ නිදහස්ව ක්‍රියාකරලා, රජය ගොඩක්ම මැදිහත්වෙන්න එපා කියන අදහසට කැමති. පෞද්ගලික ව්‍යාපාර, ව්‍යාපාරිකයින්ට ඉඩ තියෙන්න ඕන, එහෙම අය තමයි රටේ ආර්ථිකය ඉස්සරහට ගෙනියන්නේ කියන අදහසේ ඉන්නේ ඔයා. සමාජයෙ හැමෝම තමන්ට කැමති විදිහට ජීවත් වෙන්න ඉඩ තියෙන්න ඕන කියන එකේ විශ්වාසයක් තියෙනවා.'
                 )}
                 {result.quadrant === 'authoritarian-left' && (
                   language === 'en'
                     ? 'You combine traditional social values with support for economic equality. You likely support government programs for economic justice while maintaining more authoritarian views on social issues.'
-                    : 'ඔයා හිතනවා දුප්පත් අයට උදව් කරන්න රජය ටිකක් වැඩ කරලා යුතුයි කියලා. ආර්ථිකය සමානව හැදෙන වැඩසටහන්වලට සහය දිය යුතුයි කියලා. සමාජයේ තියෙන  නීති, විනය, සම්ප්‍රදාය ටික පවත්වාගෙන යන්න ඕන කියන එකේ විශ්වාසයක් තියෙනවා. සංස්කෘතිය රැකෙන්න ඕන කියලා හිතනවා. මිනිසුන්ට ඕන ඕන විදිහට නිදහසක් දෙනවට කැමති නෑ '
+                    : 'ඔයා හිතනවා දුප්පත් අයට උදව් කරන්න රජය ටිකක් වැඩ කර යුතුයි කියලා. ආර්ථිකය සමානව හැදෙන වැඩසටහන්වලට සහය දිය යුතුයි කියලා. සමාජයේ තියෙන නීති, විනය, සම්ප්‍රදාය ටික පවත්වාගෙන යන්න ඕන කියන එකේ විශ්වාසයක් තියෙනවා. සංස්කෘතිය රැකෙන්න ඕන කියලා හිතනවා. මිනිසුන්ට ඕන ඕන විදිහට නිදහසක් දෙනවට කැමති නෑ '
                 )}
                 {result.quadrant === 'authoritarian-right' && (
                   language === 'en'
                     ? 'You support free enterprise combined with traditional authority and values. You likely favor limited government in economics while supporting stronger social institutions and traditional norms.'
-                    : 'ඔයාට අනුව අපේ රටේ සම්ප්‍රදාය, බෞද්ධ සංස්කෘතිය, ජාතික ගෞරවය අනිවාර්ය දෙයක්. රටේ ආර්ථිකය සඳහා ව්‍යාපාරිකයෝට ඉඩ දෙන්න ඕන. රජය වැඩිපුරම මැදිහත් වෙනවට කැමති නැ. සමාජයේ විනයක් තිබ්බොත්, සම්ප්‍රදායන්ට ගරුයක් තිබ්බොත් තමා රටට යහපතක් වෙන්නෙ කියලා හිතනවා. නීතිය, ආචාරධර්ම, ගරුත්වය මේවා අත්හැරීම අසභ්‍යත්වයක් කියලා හිතන අයෙක් ඔයා.'
+                    : 'ඔයාට අනුව අපේ රටේ සම්ප්‍රදාය, බෞද්ධ සංස්කෘතිය, ජාතික ගෞරවය අනිවාර්ය දෙයක්. රටේ ආර්ථිකය සඳහා ව්‍යාපාරිකයෝට ඉඩ දෙන්න ඕන. රජය වැඩිපුරම මැදිහත් වෙනවට කැමති නැ. සමාජයේ විනයක්, සම්ප්‍රදායන්ට ගරුත්වයක් තිබ්බොත් තමා රටට යහපතක් වෙන්නෙ කියලා හිතනවා.'
+                )}
+                {result.quadrant === 'centrist' && (
+                  language === 'en'
+                    ? 'You hold moderate views across both economic and social issues. You likely seek balanced solutions, supporting both market mechanisms and government intervention where needed, while taking pragmatic approaches to social policies without extreme positions.'
+                    : 'ඔයා ආර්ථික සහ සමාජ ප්‍රශ්න දෙකටම මධ්‍යස්ථ මතයක් තියෙනවා. වෙළඳපොළ ක්‍රමයත්, අවශ්‍ය තැන්වල රජයේ මැදිහත්වීමත් දෙකම සුදුසු කියලා හිතනවා. සමාජ ප්‍රශ්නවලටත් අන්තවාදී මතයක් නෙවෙයි, ප්‍රායෝගික විසඳුම් සොයන අයෙක්.'
                 )}
               </p>
             </div>
@@ -511,6 +525,13 @@ export default function ResultPage() {
           </motion.div>
         )}
       </AnimatePresence>
+
+      {/* Mahinda Easter Egg */}
+      {result && (
+        <MahindaEasterEgg 
+          userPosition={{ economic: result.economic, social: result.social }}
+        />
+      )}
     </main>
   );
 }

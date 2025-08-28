@@ -1,0 +1,107 @@
+{
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        {
+          "key": "X-Frame-Options",
+          "value": "DENY"
+        },
+        {
+          "key": "X-Content-Type-Options",
+          "value": "nosniff"
+        },
+        {
+          "key": "X-XSS-Protection",
+          "value": "1; mode=block"
+        },
+        {
+          "key": "Strict-Transport-Security",
+          "value": "max-age=31536000; includeSubDomains"
+        },
+        {
+          "key": "Referrer-Policy",
+          "value": "origin-when-cross-origin"
+        },
+        {
+          "key": "Permissions-Policy",
+          "value": "camera=(), microphone=(), geolocation=()"
+        }
+      ]
+    }
+  ],
+  "rewrites": [
+    {
+      "source": "/robots.txt",
+      "destination": "/404"
+    },
+    {
+      "source": "/sitemap.xml", 
+      "destination": "/404"
+    },
+    {
+      "source": "/.env",
+      "destination": "/404"
+    },
+    {
+      "source": "/.env.local",
+      "destination": "/404"
+    },
+    {
+      "source": "/package.json",
+      "destination": "/404"
+    },
+    {
+      "source": "/package-lock.json",
+      "destination": "/404"
+    },
+    {
+      "source": "/.git/(.*)",
+      "destination": "/404"
+    },
+    {
+      "source": "/node_modules/(.*)",
+      "destination": "/404"
+    },
+    {
+      "source": "/.next/(.*)",
+      "destination": "/404"
+    },
+    {
+      "source": "/(.*).log",
+      "destination": "/404"
+    },
+    {
+      "source": "/(.*).config.(.*)",
+      "destination": "/404"
+    },
+    {
+      "source": "/(.*).map",
+      "destination": "/404"
+    }
+  ],
+  "redirects": [
+    {
+      "source": "/admin/(.*)",
+      "destination": "/",
+      "permanent": false
+    },
+    {
+      "source": "/api/admin/(.*)",
+      "destination": "/",
+      "permanent": false
+    },
+    {
+      "source": "/debug/(.*)",
+      "destination": "/",
+      "permanent": false
+    },
+    {
+      "source": "/logs/(.*)",
+      "destination": "/",
+      "permanent": false
+    }
+  ],
+  "trailingSlash": false,
+  "cleanUrls": true
+}
