@@ -34,6 +34,7 @@ export default function RootLayout({
         <script
           type="text/javascript"
           src="//pl27528342.effectivecpmrate.com/85/7e/86/857e869bf5537eb6a0890a31fc212317.js"
+          async
         />
       </body>
     </html>
