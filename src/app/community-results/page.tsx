@@ -15,43 +15,95 @@ interface StatsData {
   totalUsers: number;
 }
 
+interface PaginatedResults {
+  results: UserResult[];
+  total: number;
+  totalPages: number;
+  currentPage: number;
+}
+
 export default function CommunityResults() {
   const { language, setLanguage } = useLanguage();
   const [results, setResults] = useState<UserResult[]>([]);
   const [stats, setStats] = useState<StatsData | null>(null);
   const [loading, setLoading] = useState(true);
+  const [pageLoading, setPageLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  
+  // Pagination state
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  // Remove unused totalResults state since we show results.length instead
+  const itemsPerPage = 18; // 3x6 grid looks good
 
+  // Fetch stats only once on mount
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchStats = async () => {
       try {
-        setLoading(true);
-        
-        // Fetch recent results and stats in parallel
-        const [resultsResponse, statsResponse] = await Promise.all([
-          fetch('/api/results?limit=50'), // Get more results for the dedicated page
-          fetch('/api/stats')
-        ]);
-
-        if (!resultsResponse.ok || !statsResponse.ok) {
-          throw new Error('Failed to fetch data');
+        const response = await fetch('/api/stats');
+        if (response.ok) {
+          const statsData = await response.json();
+          setStats(statsData);
         }
-
-        const resultsData = await resultsResponse.json();
-        const statsData = await statsResponse.json();
-
-        setResults(resultsData.results || []);
-        setStats(statsData);
       } catch (err) {
-        console.error('Error fetching results:', err);
-        setError('Failed to load data');
-      } finally {
-        setLoading(false);
+        console.error('Error fetching stats:', err);
       }
     };
 
-    fetchData();
+    fetchStats();
   }, []);
+
+  // Fetch data when page changes (including initial load)
+  useEffect(() => {
+    const fetchPageData = async () => {
+      try {
+        // Use loading for first page, pageLoading for subsequent pages
+        if (currentPage === 1) {
+          setLoading(true);
+        } else {
+          setPageLoading(true);
+        }
+        
+        const response = await fetch(`/api/results?page=${currentPage}&limit=${itemsPerPage}`);
+        if (!response.ok) {
+          throw new Error('Failed to fetch page data');
+        }
+
+        const data: PaginatedResults = await response.json();
+        setResults(data.results || []);
+        setTotalPages(data.totalPages || 1);
+      } catch (err) {
+        console.error('Error fetching page data:', err);
+        setError('Failed to load page data');
+      } finally {
+        setLoading(false);
+        setPageLoading(false);
+      }
+    };
+
+    fetchPageData();
+  }, [currentPage, itemsPerPage]);
+
+  // Pagination handlers
+  const handlePageChange = (page: number) => {
+    if (page >= 1 && page <= totalPages && page !== currentPage) {
+      setCurrentPage(page);
+      // Scroll to top when page changes
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  };
+
+  const handlePrevious = () => {
+    if (currentPage > 1) {
+      handlePageChange(currentPage - 1);
+    }
+  };
+
+  const handleNext = () => {
+    if (currentPage < totalPages) {
+      handlePageChange(currentPage + 1);
+    }
+  };
 
   const getQuadrantColor = (quadrant: string) => {
     switch (quadrant) {
@@ -116,17 +168,28 @@ export default function CommunityResults() {
         >
           <div>
             <div className="flex items-center mb-2">
+              <h1 className="text-2xl font-bold text-gray-900">
+                {language === 'en' ? 'Community Results' : 'සමූහයෙ ප්‍රතිඵල'}
+              </h1>
               {stats && (
-                <span className="ml-4 text-2xl font-bold text-blue-600">
-                  {stats.totalUsers}
+                <span className="ml-4 text-lg font-semibold text-blue-600">
+                  ({stats.totalUsers} {language === 'en' ? 'total' : 'මුළු'})
                 </span>
               )}
             </div>
-            <p className="text-gray-600">
-              {language === 'en' 
-                ? 'Results of others' 
-                : 'අනිත් අය අරන් තියෙන ප්‍රතිපල '}
-            </p>
+            <div className="flex items-center gap-4 text-sm text-gray-600">
+              <span>
+                {language === 'en' 
+                  ? `Page ${currentPage} of ${totalPages}` 
+                  : `පිටුව ${currentPage} න් ${totalPages}`}
+              </span>
+              <span>•</span>
+              <span>
+                {language === 'en' 
+                  ? `Showing ${results.length} results` 
+                  : `ප්‍රතිඵල ${results.length} ක් පෙන්වනවා`}
+              </span>
+            </div>
           </div>
           <LanguageSelector 
             currentLanguage={language}
@@ -136,13 +199,26 @@ export default function CommunityResults() {
 
 
 
-        {/* Results Grid */}
-        <motion.div 
-          className="grid gap-4 md:grid-cols-2 lg:grid-cols-3"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.2 }}
-        >
+        {/* Results Grid with Loading Overlay */}
+        <div className="relative">
+          {/* Page Loading Overlay */}
+          {pageLoading && (
+            <div className="absolute inset-0 bg-white bg-opacity-75 backdrop-blur-sm z-10 flex items-center justify-center rounded-lg">
+              <div className="flex items-center gap-3">
+                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+                <span className="text-gray-600">
+                  {language === 'en' ? 'Loading...' : 'පූරණය වෙමින්...'}
+                </span>
+              </div>
+            </div>
+          )}
+
+          <motion.div 
+            className="grid gap-4 md:grid-cols-2 lg:grid-cols-3"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2 }}
+          >
           {results.map((result, index) => (
             <motion.div
               key={result.id}
@@ -201,7 +277,85 @@ export default function CommunityResults() {
               </div>
             </motion.div>
           ))}
-        </motion.div>
+          </motion.div>
+        </div>
+
+        {/* Pagination Controls */}
+        {!loading && totalPages > 1 && (
+          <motion.div 
+            className="flex justify-center items-center gap-4 mt-12"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.4 }}
+          >
+            {/* Previous Button */}
+            <button
+              onClick={handlePrevious}
+              disabled={currentPage === 1 || pageLoading}
+              className={`flex items-center gap-2 px-4 py-2 rounded-lg font-medium transition-all ${
+                currentPage === 1 || pageLoading
+                  ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
+                  : 'bg-white text-gray-700 border border-gray-300 hover:bg-gray-50 cursor-pointer'
+              }`}
+            >
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+              </svg>
+              {language === 'en' ? 'Previous' : 'පෙර'}
+            </button>
+
+            {/* Page Numbers */}
+            <div className="flex items-center gap-2">
+              {Array.from({ length: Math.min(5, totalPages) }, (_, i) => {
+                let pageNum;
+                if (totalPages <= 5) {
+                  pageNum = i + 1;
+                } else if (currentPage <= 3) {
+                  pageNum = i + 1;
+                } else if (currentPage >= totalPages - 2) {
+                  pageNum = totalPages - 4 + i;
+                } else {
+                  pageNum = currentPage - 2 + i;
+                }
+
+                const isActive = pageNum === currentPage;
+                
+                return (
+                  <button
+                    key={pageNum}
+                    onClick={() => handlePageChange(pageNum)}
+                    disabled={pageLoading}
+                    className={`w-10 h-10 rounded-lg font-medium transition-all ${
+                      isActive
+                        ? 'bg-blue-600 text-white'
+                        : pageLoading
+                        ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
+                        : 'bg-white text-gray-700 border border-gray-300 hover:bg-gray-50 cursor-pointer'
+                    }`}
+                  >
+                    {pageNum}
+                  </button>
+                );
+              })}
+            </div>
+
+            {/* Next Button */}
+            <button
+              onClick={handleNext}
+              disabled={currentPage === totalPages || pageLoading}
+              className={`flex items-center gap-2 px-4 py-2 rounded-lg font-medium transition-all ${
+                currentPage === totalPages || pageLoading
+                  ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
+                  : 'bg-white text-gray-700 border border-gray-300 hover:bg-gray-50 cursor-pointer'
+              }`}
+            >
+              {language === 'en' ? 'Next' : 'ඊළඟ'}
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+              </svg>
+            </button>
+          </motion.div>
+        )}
 
         {/* Empty State */}
         {results.length === 0 && !loading && (

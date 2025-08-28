@@ -29,7 +29,7 @@ export function RecentResults({ language, limit = 5 }: RecentResultsProps) {
         
         // Fetch recent results and stats in parallel
         const [resultsResponse, statsResponse] = await Promise.all([
-          fetch(`/api/results?limit=${limit}`),
+          fetch(`/api/results?page=1&limit=${limit}`),
           fetch('/api/stats')
         ]);
 

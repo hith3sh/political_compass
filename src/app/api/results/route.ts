@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { saveUserResult, getRecentResults, getResultsWithPagination } from '../../../lib/database';
+import { saveUserResult, getResultsWithPagination } from '../../../lib/database';
 import { SaveResultRequest } from '../../../lib/types';
 
 // POST - Save a new result
@@ -85,17 +85,7 @@ export async function GET(request: NextRequest) {
     const limit = parseInt(searchParams.get('limit') || '20');
     const search = searchParams.get('search') || undefined;
 
-    // If no search and no page specified, return recent results
-    if (!search && page === 1 && limit <= 50) {
-      const results = await getRecentResults(limit);
-      return NextResponse.json({
-        results,
-        total: results.length,
-        totalPages: 1
-      });
-    }
-
-    // Otherwise, return paginated results
+    // Always use proper pagination for consistent results
     const { results, total, totalPages } = await getResultsWithPagination(page, limit, search);
 
     return NextResponse.json({
