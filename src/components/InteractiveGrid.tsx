@@ -324,13 +324,10 @@ export function InteractiveGrid({ userPosition, className = '' }: InteractiveGri
                 />
               </div>
               {hoveredBlock.personName && (
-                <p className="text-xs text-center mt-1 font-medium">
+                <p className="text-xs text-center mt-1 font-medium text-black">
                   {hoveredBlock.personName}
                 </p>
               )}
-              <p className="text-xs text-center text-gray-500">
-                ({hoveredBlock.x}, {hoveredBlock.y})
-              </p>
             </div>
           </motion.div>
         )}
