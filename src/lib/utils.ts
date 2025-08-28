@@ -46,7 +46,7 @@ export function getQuadrantLabel(quadrant: string, language: 'en' | 'si'): strin
       'libertarian-right': 'ටොයියෙක්',
       'authoritarian-left': 'පරණ ජෙප්පෙක්',
       'authoritarian-right': 'බයියෙක්',
-      'centrist': 'මධ්‍යස්ථවාදී',
+      'centrist': 'මධ්‍යස්ථවාදී පොරක්',
       // Legacy names for backward compatibility
       'liberal-left': 'NPP ජෙප්පෙක් ',
       'liberal-right': 'ටොයියෙක්',
