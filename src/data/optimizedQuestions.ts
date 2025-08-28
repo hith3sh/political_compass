@@ -84,8 +84,8 @@ export const optimizedQuestions: Question[] = [
   {
     id: 10,
     text: {
-      en: "Private institutions like SLIIT and KDU should not be taken over by the government.",
-      si: "SLIIT, KDU වැනි ආයතන රජයට පවරා ගත යුතු නොවේ "
+      en: "Private institutions like SLIIT should not be taken over by the government.",
+      si: "SLIIT වැනි ආයතන රජයට පවරා ගත යුතු නොවේ "
     },
     category: 'economic'
   },
