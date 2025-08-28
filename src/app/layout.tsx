@@ -20,6 +20,23 @@ export default function RootLayout({
           {children}
         </LanguageProvider>
         <Analytics />
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              atOptions = {
+                'key' : 'b34a8ef0e6cd2bcb0679b13b9843c7ca',
+                'format' : 'iframe',
+                'height' : 300,
+                'width' : 160,
+                'params' : {}
+              };
+            `,
+          }}
+        />
+        <script
+          src="//www.highperformanceformat.com/b34a8ef0e6cd2bcb0679b13b9843c7ca/invoke.js"
+          async
+        />
       </body>
     </html>
   )
