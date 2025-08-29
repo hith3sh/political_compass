@@ -224,7 +224,7 @@ export default function SuggestPoliticians() {
         >
           
           <div className="text-center mb-6">
-            <div className="inline-flex items-center gap-4 text-sm text-gray-600 bg-gray-50 px-4 py-2 rounded-lg">
+            <div className="inline-flex items-center gap-4 text-sm text-gray-600 bg-gray-50 px-4 py-2 rounded-lg mb-4">
               <div className="flex items-center gap-2">
                 <div className="w-4 h-4 bg-blue-500 rounded-full"></div>
                 <span>{language === 'en' ? 'Clickable' : 'ක්ලික් කළ හැකි'}</span>
@@ -234,6 +234,8 @@ export default function SuggestPoliticians() {
                 <span>{language === 'en' ? 'Occupied' : 'අල්ලාගෙන'}</span>
               </div>
             </div>
+            
+
           </div>
           
           <div className="flex justify-center">
@@ -241,6 +243,7 @@ export default function SuggestPoliticians() {
               onGridClick={handleGridClick}
               className="w-full max-w-6xl"
               showOccupiedLabel
+              showGridNumbers
             />
           </div>
         </motion.div>
@@ -252,6 +255,19 @@ export default function SuggestPoliticians() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.4 }}
         >
+            {/* Vote requirement notice */}
+            <div className="bg-blue-50 border border-blue-200 rounded-lg p-3 max-w-md mx-auto">
+              <div className="flex items-center gap-2 text-blue-800">
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                <span className="text-sm font-medium">
+                  {language === 'en' 
+                    ? 'At least 5 votes to appear on the main grid'
+                    : 'ප්‍රධාන ජාලකයේ දිස්වීමට අවම වශයෙන් ඡන්ද 5 ක් අවශ්‍ය වේ'}
+                </span>
+              </div>
+            </div>
           <h2 className="text-2xl font-bold text-gray-800 mb-6">
             {language === 'en' ? 'Current Suggestions' : 'වර්තමාන යෝජනා'}
           </h2>
@@ -290,18 +306,25 @@ export default function SuggestPoliticians() {
                            {language === 'en' ? 'Suggested by' : 'යෝජනා කරන ලද්දේ'} {suggestion.suggestedBy}
                          </p>
                          <p className="text-xs text-gray-500">
-                           {language === 'en' ? 'Position' : 'ස්ථානය'}: ({suggestion.x}, {suggestion.y})
+                           {language === 'en' ? 'Grid Position' : 'ජාලක ස්ථානය'}: #{suggestion.gridId}
                          </p>
                        </div>
                      </div>
                     
-                    <div className="flex items-center space-x-4">
-                      <div className="text-center">
-                        <div className="text-lg font-bold text-blue-600">{suggestion.votes}</div>
-                        <div className="text-xs text-gray-500">
-                          {language === 'en' ? 'votes' : 'ඡන්ද'}
-                        </div>
-                      </div>
+                                         <div className="flex items-center space-x-4">
+                       <div className="text-center">
+                         <div className={`text-lg font-bold ${suggestion.votes >= 5 ? 'text-green-600' : suggestion.votes >= 3 ? 'text-orange-600' : 'text-blue-600'}`}>
+                           {suggestion.votes}
+                         </div>
+                         <div className="text-xs text-gray-500">
+                           {language === 'en' ? 'votes' : 'ඡන්ද'}
+                         </div>
+                         {suggestion.votes >= 5 && (
+                           <div className="text-xs text-green-600 font-medium">
+                             {language === 'en' ? 'Will update!' : 'සූදානම්!'}
+                           </div>
+                         )}
+                       </div>
                       
                       <motion.button
                         onClick={() => handleVote(suggestion.id)}

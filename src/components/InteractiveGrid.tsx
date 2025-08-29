@@ -19,6 +19,7 @@ interface InteractiveGridProps {
   className?: string;
   onGridClick?: (x: number, y: number, gridId: number) => void;
   showOccupiedLabel?: boolean;
+  showGridNumbers?: boolean;
 }
 
 // Sample data - you can expand this with actual person data
@@ -73,7 +74,7 @@ gridData.forEach(block => {
   }
 });
 
-export function InteractiveGrid({ userPosition, className = '', onGridClick, showOccupiedLabel = false }: InteractiveGridProps) {
+export function InteractiveGrid({ userPosition, className = '', onGridClick, showOccupiedLabel = false, showGridNumbers = false }: InteractiveGridProps) {
   const { t, language } = useLanguage();
   const [hoveredBlock, setHoveredBlock] = useState<GridBlock | null>(null);
   const [popupPosition, setPopupPosition] = useState({ x: 0, y: 0 });
@@ -166,9 +167,18 @@ export function InteractiveGrid({ userPosition, className = '', onGridClick, sho
             )}
             
             {/* Click indicator for empty blocks */}
-            {!block.personImage && (
+            {!block.personImage && !showGridNumbers && (
               <div className="absolute inset-0 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity">
                 <div className="w-4 h-4 bg-blue-500 rounded-full shadow-sm"></div>
+              </div>
+            )}
+            
+            {/* Grid number display for suggest-politicians page */}
+            {showGridNumbers && (
+              <div className="absolute inset-0 flex items-center justify-center">
+                <span className="text-xs font-bold text-gray-600 bg-white bg-opacity-80 px-1 py-0.5 rounded">
+                  {block.id}
+                </span>
               </div>
             )}
             
