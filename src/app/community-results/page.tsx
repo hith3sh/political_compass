@@ -398,6 +398,13 @@ export default function CommunityResults() {
           </Link>
         </motion.div>
       </div>
+      
+      {/* Popunder Ad - Community Results Page Only */}
+      <script
+        type="text/javascript"
+        src="//pl27528300.effectivecpmrate.com/12/0c/4b/120c4bcb1c2545ec2113195288dcad95.js"
+        async
+      />
     </main>
   );
 }
