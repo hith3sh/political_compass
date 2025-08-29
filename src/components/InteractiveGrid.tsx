@@ -18,6 +18,7 @@ interface InteractiveGridProps {
   userPosition?: { x: number; y: number };
   className?: string;
   onGridClick?: (x: number, y: number, gridId: number) => void;
+  showOccupiedLabel?: boolean;
 }
 
 // Sample data - you can expand this with actual person data
@@ -72,7 +73,7 @@ gridData.forEach(block => {
   }
 });
 
-export function InteractiveGrid({ userPosition, className = '', onGridClick }: InteractiveGridProps) {
+export function InteractiveGrid({ userPosition, className = '', onGridClick, showOccupiedLabel = false }: InteractiveGridProps) {
   const { t, language } = useLanguage();
   const [hoveredBlock, setHoveredBlock] = useState<GridBlock | null>(null);
   const [popupPosition, setPopupPosition] = useState({ x: 0, y: 0 });
@@ -171,8 +172,8 @@ export function InteractiveGrid({ userPosition, className = '', onGridClick }: I
               </div>
             )}
             
-            {/* Occupied indicator for blocks with people */}
-            {block.personImage && (
+            {/* Occupied indicator for blocks with people (optional) */}
+            {block.personImage && showOccupiedLabel && (
               <div className="absolute inset-0 flex items-center justify-center">
                 <div className="bg-red-500 text-white text-xs px-2 py-1 rounded-full shadow-sm">
                   {language === 'en' ? 'Occupied' : 'අල්ලාගෙන'}

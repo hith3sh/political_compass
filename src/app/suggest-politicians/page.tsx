@@ -240,6 +240,7 @@ export default function SuggestPoliticians() {
             <InteractiveGrid 
               onGridClick={handleGridClick}
               className="w-full max-w-6xl"
+              showOccupiedLabel
             />
           </div>
         </motion.div>

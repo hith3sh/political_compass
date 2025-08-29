@@ -28,6 +28,8 @@ export const politicalFigures: PoliticalFigure[] = [
   { x: 9, y: 9, image: 'JR.jpg', name: 'JR Jayawardena' },
   { x: 5, y: 4, image: 'swrd.jpg', name: 'S.W.R.D. Bandaranaike' },
   { x: 8, y: 6, image: 'eranda.jpg', name: 'Eranda Ginige' },
+  { x: 5, y: 3, image: 'anurudda.jpeg', name: 'Anuruddha Pradeep' },
+  { x: 4, y: 2, image: 'samila.jpeg', name: 'Samila Muthumini' },
 
   // Libertarian Left Quadrant (Bottom Left: x < 0, y < 0)
   { x: -2, y: -1, image: 'bruno.jpeg', name: 'Bruno Diwakara' },
@@ -38,6 +40,7 @@ export const politicalFigures: PoliticalFigure[] = [
   { x: -9, y: -7, image: 'sandakath.jpg', name: 'Sandakath Mahagamaarachchi' },
   { x: -2, y: -5, image: 'nirmal_dewasiri.jpg', name: 'Nirmal Dewasiri' },
   { x: -7, y: -6, image: 'deepthi.jpg', name: 'Deepthi Kumara' },
+  { x: -5, y: -5, image: 'anton.jpeg', name: 'Anton Fernando' },
 
   // Libertarian Right Quadrant (Bottom Right: x > 0, y < 0)
   { x: 4, y: -3, image: 'sajithpremadasa.jpg', name: 'Sajith Premdasa' },
