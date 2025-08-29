@@ -311,7 +311,7 @@ export default function SuggestPoliticians() {
                        </div>
                      </div>
                     
-                                         <div className="flex items-center space-x-4">
+                      <div className="flex items-center space-x-4">
                        <div className="text-center">
                          <div className={`text-lg font-bold ${suggestion.votes >= 5 ? 'text-green-600' : suggestion.votes >= 3 ? 'text-orange-600' : 'text-blue-600'}`}>
                            {suggestion.votes}

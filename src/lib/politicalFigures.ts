@@ -30,6 +30,7 @@ export const politicalFigures: PoliticalFigure[] = [
   { x: 8, y: 6, image: 'eranda.jpg', name: 'Eranda Ginige' },
   { x: 5, y: 3, image: 'anurudda.jpeg', name: 'Anuruddha Pradeep' },
   { x: 4, y: 2, image: 'samila.jpeg', name: 'Samila Muthumini' },
+  { x: 2, y: 1, image: 'patali.jpeg', name: 'Patali Ranawaka' },
 
   // Libertarian Left Quadrant (Bottom Left: x < 0, y < 0)
   { x: -2, y: -1, image: 'bruno.jpeg', name: 'Bruno Diwakara' },
