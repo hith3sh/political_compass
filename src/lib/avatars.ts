@@ -39,6 +39,7 @@ export const availableAvatars: Avatar[] = [
   { id: 'anurudda', filename: 'anurudda.jpeg', name: 'Anuruddha pradeep' },
   { id: 'samila', filename: 'samila.jpeg', name: 'Samila Muthumini' },
   { id: 'anton', filename: 'anton.jpeg', name: 'Anton Fernando' },
+  { id: 'ritta', filename: 'ritta.jpeg', name: 'Ritigala Jayasena' },
 ];
 
 // Get avatar by ID
