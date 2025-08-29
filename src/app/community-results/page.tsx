@@ -2,123 +2,43 @@
 
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { formatDistanceToNow } from 'date-fns';
 import Link from 'next/link';
-import Image from 'next/image';
 import { LanguageSelector } from '../../components/LanguageSelector';
+import { QuadrantPieChart } from '../../components/QuadrantPieChart';
 import { useLanguage } from '../../lib/LanguageContext';
-import { UserResult } from '../../lib/types';
-import { formatScore, getQuadrantLabel } from '../../lib/utils';
-import { getAvatarUrl } from '../../lib/avatars';
 
 interface StatsData {
   totalUsers: number;
-}
-
-interface PaginatedResults {
-  results: UserResult[];
-  total: number;
-  totalPages: number;
-  currentPage: number;
+  quadrantDistribution: Record<string, number>;
 }
 
 export default function CommunityResults() {
   const { language, setLanguage } = useLanguage();
-  const [results, setResults] = useState<UserResult[]>([]);
   const [stats, setStats] = useState<StatsData | null>(null);
   const [loading, setLoading] = useState(true);
-  const [pageLoading, setPageLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  
-  // Pagination state
-  const [currentPage, setCurrentPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(1);
-  // Remove unused totalResults state since we show results.length instead
-  const itemsPerPage = 18; // 3x6 grid looks good
 
-  // Fetch stats only once on mount
+  // Fetch stats on mount
   useEffect(() => {
     const fetchStats = async () => {
       try {
+        setLoading(true);
         const response = await fetch('/api/stats');
-        if (response.ok) {
-          const statsData = await response.json();
-          setStats(statsData);
+        if (!response.ok) {
+          throw new Error('Failed to fetch stats');
         }
+        const statsData = await response.json();
+        setStats(statsData);
       } catch (err) {
         console.error('Error fetching stats:', err);
+        setError('Failed to load community stats');
+      } finally {
+        setLoading(false);
       }
     };
 
     fetchStats();
   }, []);
-
-  // Fetch data when page changes (including initial load)
-  useEffect(() => {
-    const fetchPageData = async () => {
-      try {
-        // Use loading for first page, pageLoading for subsequent pages
-        if (currentPage === 1) {
-          setLoading(true);
-        } else {
-          setPageLoading(true);
-        }
-        
-        const response = await fetch(`/api/results?page=${currentPage}&limit=${itemsPerPage}`);
-        if (!response.ok) {
-          throw new Error('Failed to fetch page data');
-        }
-
-        const data: PaginatedResults = await response.json();
-        setResults(data.results || []);
-        setTotalPages(data.totalPages || 1);
-      } catch (err) {
-        console.error('Error fetching page data:', err);
-        setError('Failed to load page data');
-      } finally {
-        setLoading(false);
-        setPageLoading(false);
-      }
-    };
-
-    fetchPageData();
-  }, [currentPage, itemsPerPage]);
-
-  // Pagination handlers
-  const handlePageChange = (page: number) => {
-    if (page >= 1 && page <= totalPages && page !== currentPage) {
-      setCurrentPage(page);
-      // Scroll to top when page changes
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
-  };
-
-  const handlePrevious = () => {
-    if (currentPage > 1) {
-      handlePageChange(currentPage - 1);
-    }
-  };
-
-  const handleNext = () => {
-    if (currentPage < totalPages) {
-      handlePageChange(currentPage + 1);
-    }
-  };
-
-  const getQuadrantColor = (quadrant: string) => {
-    switch (quadrant) {
-      case 'libertarian-left':
-        return 'bg-yellow-100 text-yellow-800 border-yellow-200';
-      case 'libertarian-right':
-        return 'bg-slate-100 text-slate-800 border-slate-200';
-      case 'authoritarian-left':
-        return 'bg-red-100 text-red-800 border-red-200';
-      case 'authoritarian-right':
-        return 'bg-green-100 text-green-800 border-green-200';
-      default:
-        return 'bg-gray-100 text-gray-800 border-gray-200';
-    }
-  };
 
   if (loading) {
     return (
@@ -126,11 +46,7 @@ export default function CommunityResults() {
         <div className="max-w-6xl mx-auto px-4 py-8">
           <div className="animate-pulse">
             <div className="h-8 bg-gray-200 rounded mb-6 w-1/3"></div>
-            <div className="space-y-4">
-              {[...Array(10)].map((_, i) => (
-                <div key={i} className="h-20 bg-gray-200 rounded"></div>
-              ))}
-            </div>
+            <div className="h-96 bg-gray-200 rounded-xl"></div>
           </div>
         </div>
       </main>
@@ -168,28 +84,20 @@ export default function CommunityResults() {
         >
           <div>
             <div className="flex items-center mb-2">
-              <h1 className="text-2xl font-bold text-gray-900">
+              <h1 className="text-3xl font-bold text-gray-900">
                 {language === 'en' ? 'Community Results' : 'සමූහයෙ ප්‍රතිඵල'}
               </h1>
               {stats && (
                 <span className="ml-4 text-lg font-semibold text-blue-600">
-                  ({stats.totalUsers} {language === 'en' ? 'total' : 'මුළු'})
+                  ({stats.totalUsers} {language === 'en' ? 'participants' : 'සහභාගිවූවන්'})
                 </span>
               )}
             </div>
-            <div className="flex items-center gap-4 text-sm text-gray-600">
-              <span>
-                {language === 'en' 
-                  ? `Page ${currentPage} of ${totalPages}` 
-                  : `පිටුව ${currentPage} න් ${totalPages}`}
-              </span>
-              <span>•</span>
-              <span>
-                {language === 'en' 
-                  ? `Showing ${results.length} results` 
-                  : `ප්‍රතිඵල ${results.length} ක් පෙන්වනවා`}
-              </span>
-            </div>
+            <p className="text-gray-600">
+              {language === 'en' 
+                ? 'See how our community\'s political views are distributed across different quadrants'
+                : 'අපේ ප්‍රජාවේ දේශපාලන අදහස් විවිධ ප්‍රදේශවල ව්‍යාප්ත වන ආකාරය බලන්න'}
+            </p>
           </div>
           <LanguageSelector 
             currentLanguage={language}
@@ -197,168 +105,133 @@ export default function CommunityResults() {
           />
         </motion.div>
 
-
-
-        {/* Results Grid with Loading Overlay */}
-        <div className="relative">
-          {/* Page Loading Overlay */}
-          {pageLoading && (
-            <div className="absolute inset-0 bg-white bg-opacity-75 backdrop-blur-sm z-10 flex items-center justify-center rounded-lg">
-              <div className="flex items-center gap-3">
-                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
-                <span className="text-gray-600">
-                  {language === 'en' ? 'Loading...' : 'පූරණය වෙමින්...'}
-                </span>
-              </div>
-            </div>
-          )}
-
-          <motion.div 
-            className="grid gap-4 md:grid-cols-2 lg:grid-cols-3"
+        {/* Pie Chart */}
+        {stats && (
+          <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2 }}
+            className="mb-12"
           >
-          {results.map((result, index) => (
-            <motion.div
-              key={result.id}
-              className="bg-white rounded-xl shadow-lg p-6 hover:shadow-xl transition-shadow"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.1 * index }}
-            >
-              <div className="flex items-center gap-4 mb-4">
-                {/* Avatar */}
-                <div className="relative w-12 h-12 rounded-full overflow-hidden flex-shrink-0">
-                  <Image
-                    src={getAvatarUrl(result.avatar || 'memo_1.png')}
-                    alt={`${result.name}'s avatar`}
-                    fill
-                    className="object-cover"
-                    sizes="48px"
-                  />
-                </div>
-                
-                {/* Name and Quadrant */}
-                <div className="flex-1 min-w-0">
-                  <h3 className="text-lg font-semibold text-gray-900 truncate">
-                    {result.name}
-                  </h3>
-                  <span className={`inline-block px-2 py-1 rounded-full text-xs font-medium border ${getQuadrantColor(result.quadrant)}`}>
-                    {getQuadrantLabel(result.quadrant, language)}
-                  </span>
-                </div>
-              </div>
-              
-              <div className="space-y-3">
-                <div className="flex justify-between items-center">
-                  <span className="text-sm text-gray-600">
-                    {language === 'en' ? 'Economic' : 'ආර්ථික'}
-                  </span>
-                  <span className={`font-semibold ${result.economic_score > 0 ? 'text-blue-600' : 'text-red-600'}`}>
-                    {formatScore(result.economic_score)}
-                  </span>
-                </div>
-                
-                <div className="flex justify-between items-center">
-                  <span className="text-sm text-gray-600">
-                    {language === 'en' ? 'Social' : 'සමාජ'}
-                  </span>
-                  <span className={`font-semibold ${result.social_score > 0 ? 'text-blue-600' : 'text-red-600'}`}>
-                    {formatScore(result.social_score)}
-                  </span>
-                </div>
-              </div>
-              
-              <div className="mt-4 pt-4 border-t border-gray-100">
-                <div className="text-xs text-gray-500">
-                  {language === 'en' ? 'Completed' : 'සම්පූර්ණ කරන ලදී'} {formatDistanceToNow(new Date(result.created_at), { addSuffix: true })}
-                </div>
-              </div>
-            </motion.div>
-          ))}
+            <QuadrantPieChart 
+              distribution={stats.quadrantDistribution}
+              language={language}
+              className="mx-auto max-w-5xl"
+            />
           </motion.div>
-        </div>
+        )}
 
-        {/* Pagination Controls */}
-        {!loading && totalPages > 1 && (
-          <motion.div 
-            className="flex justify-center items-center gap-4 mt-12"
+        {/* Action Buttons */}
+        <motion.div 
+          className="flex flex-col sm:flex-row gap-6 justify-center items-center mb-12"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.4 }}
+        >
+          <Link href="/community-results/individual">
+            <motion.button
+              className="bg-blue-600 text-white px-8 py-4 rounded-xl font-semibold shadow-lg hover:bg-blue-700 transition-all duration-300 text-lg min-w-[200px]"
+              whileHover={{ scale: 1.05, y: -2 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              👥 {language === 'en' ? 'See Individual Results' : 'පුද්ගල ප්‍රතිඵල බලන්න'}
+            </motion.button>
+          </Link>
+
+          <Link href="/">
+            <motion.button
+              className="bg-green-600 text-white px-8 py-4 rounded-xl font-semibold shadow-lg hover:bg-green-700 transition-all duration-300 text-lg min-w-[200px]"
+              whileHover={{ scale: 1.05, y: -2 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              🧭 {language === 'en' ? 'Take the Test' : 'ටෙස්ට් එක ගන්න'}
+            </motion.button>
+          </Link>
+        </motion.div>
+
+        {/* Insights Section */}
+        {stats && stats.totalUsers > 0 && (
+          <motion.div
+            className="bg-white rounded-xl shadow-lg p-8 mb-12"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.4 }}
+            transition={{ delay: 0.6 }}
           >
-            {/* Previous Button */}
-            <button
-              onClick={handlePrevious}
-              disabled={currentPage === 1 || pageLoading}
-              className={`flex items-center gap-2 px-4 py-2 rounded-lg font-medium transition-all ${
-                currentPage === 1 || pageLoading
-                  ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
-                  : 'bg-white text-gray-700 border border-gray-300 hover:bg-gray-50 cursor-pointer'
-              }`}
-            >
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-              </svg>
-              {language === 'en' ? 'Previous' : 'පෙර'}
-            </button>
+            <h2 className="text-2xl font-bold text-gray-800 mb-6 text-center">
+              {language === 'en' ? 'Community Insights' : 'ප්‍රජා අවබෝධය'}
+            </h2>
+            
+            <div className="grid md:grid-cols-2 gap-8">
+              {/* Most Popular Quadrant */}
+              <div className="text-center p-6 bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl">
+                <h3 className="text-lg font-semibold text-gray-800 mb-2">
+                  {language === 'en' ? 'Most Popular Quadrant' : 'ජනප්‍රියම කොටස'}
+                </h3>
+                {(() => {
+                  const mostPopular = Object.entries(stats.quadrantDistribution)
+                    .reduce((a, b) => a[1] > b[1] ? a : b);
+                  const percentage = ((mostPopular[1] / stats.totalUsers) * 100).toFixed(1);
+                  
+                  return (
+                    <div>
+                      <div className="text-2xl font-bold text-blue-600 mb-1">
+                        {percentage}%
+                      </div>
+                      <div className="text-gray-700">
+                        {language === 'en' ? (
+                          mostPopular[0].split('-').map(word => 
+                            word.charAt(0).toUpperCase() + word.slice(1)
+                          ).join(' ')
+                        ) : (
+                          {
+                            'libertarian-left': 'ලිබරල් වාමාංශික',
+                            'libertarian-right': 'ලිබරල් දක්ෂිණාංශික',
+                            'authoritarian-left': 'අධිකාරීවාදී වාමාංශික',
+                            'authoritarian-right': 'අධිකාරීවාදී දක්ෂිණාංශික',
+                            'centrist': 'මධ්‍යස්ථවාදී'
+                          }[mostPopular[0] as keyof typeof stats.quadrantDistribution] || mostPopular[0]
+                        )}
+                      </div>
+                    </div>
+                  );
+                })()}
+              </div>
 
-            {/* Page Numbers */}
-            <div className="flex items-center gap-2">
-              {Array.from({ length: Math.min(5, totalPages) }, (_, i) => {
-                let pageNum;
-                if (totalPages <= 5) {
-                  pageNum = i + 1;
-                } else if (currentPage <= 3) {
-                  pageNum = i + 1;
-                } else if (currentPage >= totalPages - 2) {
-                  pageNum = totalPages - 4 + i;
-                } else {
-                  pageNum = currentPage - 2 + i;
-                }
-
-                const isActive = pageNum === currentPage;
-                
-                return (
-                  <button
-                    key={pageNum}
-                    onClick={() => handlePageChange(pageNum)}
-                    disabled={pageLoading}
-                    className={`w-10 h-10 rounded-lg font-medium transition-all ${
-                      isActive
-                        ? 'bg-blue-600 text-white'
-                        : pageLoading
-                        ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
-                        : 'bg-white text-gray-700 border border-gray-300 hover:bg-gray-50 cursor-pointer'
-                    }`}
-                  >
-                    {pageNum}
-                  </button>
-                );
-              })}
+              {/* Diversity Index */}
+              <div className="text-center p-6 bg-gradient-to-br from-green-50 to-emerald-50 rounded-xl">
+                <h3 className="text-lg font-semibold text-gray-800 mb-2">
+                  {language === 'en' ? 'Political Diversity' : 'දේශපාලන විවිධත්වය'}
+                </h3>
+                {(() => {
+                  const nonZeroQuadrants = Object.values(stats.quadrantDistribution)
+                    .filter(count => count > 0).length;
+                  const diversityLabel = nonZeroQuadrants >= 4 ? 
+                    (language === 'en' ? 'High' : 'ඉහළ') :
+                    nonZeroQuadrants >= 3 ?
+                    (language === 'en' ? 'Medium' : 'මධ්‍යම') :
+                    (language === 'en' ? 'Low' : 'අඩු');
+                  
+                  return (
+                    <div>
+                      <div className="text-2xl font-bold text-green-600 mb-1">
+                        {diversityLabel}
+                      </div>
+                      <div className="text-gray-700">
+                        {language === 'en' 
+                          ? `${nonZeroQuadrants} quadrants represented`
+                          : `කොටස් ${nonZeroQuadrants} ක් නියෝජනය වේ`
+                        }
+                      </div>
+                    </div>
+                  );
+                })()}
+              </div>
             </div>
-
-            {/* Next Button */}
-            <button
-              onClick={handleNext}
-              disabled={currentPage === totalPages || pageLoading}
-              className={`flex items-center gap-2 px-4 py-2 rounded-lg font-medium transition-all ${
-                currentPage === totalPages || pageLoading
-                  ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
-                  : 'bg-white text-gray-700 border border-gray-300 hover:bg-gray-50 cursor-pointer'
-              }`}
-            >
-              {language === 'en' ? 'Next' : 'ඊළඟ'}
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-              </svg>
-            </button>
           </motion.div>
         )}
 
         {/* Empty State */}
-        {results.length === 0 && !loading && (
+        {stats && stats.totalUsers === 0 && (
           <motion.div 
             className="text-center py-12"
             initial={{ opacity: 0 }}
@@ -374,8 +247,8 @@ export default function CommunityResults() {
             </h3>
             <p className="text-gray-500 mb-6">
               {language === 'en' 
-                ? '' 
-                : ''}
+                ? 'Be the first to take the political compass test and contribute to our community data!'
+                : 'දේශපාලන කොම්පස් ටෙස්ට් එක ගත්ත පළමු පුද්ගලයා වෙන්න සහ අපේ ප්‍රජා දත්තවලට දායක වෙන්න!'}
             </p>
           </motion.div>
         )}
@@ -385,7 +258,7 @@ export default function CommunityResults() {
           className="text-center mt-12"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ delay: 0.5 }}
+          transition={{ delay: 0.8 }}
         >
           <Link 
             href="/"

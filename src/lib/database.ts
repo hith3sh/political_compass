@@ -129,6 +129,37 @@ export async function getTotalUserCount(): Promise<number> {
   }
 }
 
+// Get quadrant distribution for pie chart
+export async function getQuadrantDistribution(): Promise<Record<string, number>> {
+  try {
+    const { data, error } = await supabase
+      .from('user_results')
+      .select('quadrant');
+
+    if (error) throw error;
+
+    // Count occurrences of each quadrant
+    const distribution: Record<string, number> = {
+      'libertarian-left': 0,
+      'libertarian-right': 0,
+      'authoritarian-left': 0,
+      'authoritarian-right': 0,
+      'centrist': 0
+    };
+
+    data.forEach(result => {
+      if (distribution.hasOwnProperty(result.quadrant)) {
+        distribution[result.quadrant]++;
+      }
+    });
+
+    return distribution;
+  } catch (error) {
+    console.error('Failed to get quadrant distribution:', error);
+    throw error;
+  }
+}
+
 // Get results with search and pagination
 export async function getResultsWithPagination(
   page: number = 1,
