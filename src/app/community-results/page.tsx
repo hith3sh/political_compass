@@ -121,114 +121,45 @@ export default function CommunityResults() {
           </motion.div>
         )}
 
-        {/* Action Buttons */}
-        <motion.div 
-          className="flex flex-col sm:flex-row gap-6 justify-center items-center mb-12"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.4 }}
-        >
-          <Link href="/community-results/individual">
-            <motion.button
-              className="bg-blue-600 text-white px-8 py-4 rounded-xl font-semibold shadow-lg hover:bg-blue-700 transition-all duration-300 text-lg min-w-[200px]"
-              whileHover={{ scale: 1.05, y: -2 }}
-              whileTap={{ scale: 0.95 }}
-            >
-              👥 {language === 'en' ? 'See Individual Results' : 'පුද්ගල ප්‍රතිඵල බලන්න'}
-            </motion.button>
-          </Link>
+                 {/* Action Buttons */}
+         <motion.div 
+           className="flex flex-col sm:flex-row gap-6 justify-center items-center mb-12"
+           initial={{ opacity: 0, y: 20 }}
+           animate={{ opacity: 1, y: 0 }}
+           transition={{ delay: 0.4 }}
+         >
+           <Link href="/community-results/individual">
+             <motion.button
+               className="bg-blue-600 text-white px-8 py-4 rounded-xl font-semibold shadow-lg hover:bg-blue-700 transition-all duration-300 text-lg min-w-[200px]"
+               whileHover={{ scale: 1.05, y: -2 }}
+               whileTap={{ scale: 0.95 }}
+             >
+               👥 {language === 'en' ? 'See Individual Results' : 'පුද්ගල ප්‍රතිඵල බලන්න'}
+             </motion.button>
+           </Link>
 
-          <Link href="/">
-            <motion.button
-              className="bg-green-600 text-white px-8 py-4 rounded-xl font-semibold shadow-lg hover:bg-green-700 transition-all duration-300 text-lg min-w-[200px]"
-              whileHover={{ scale: 1.05, y: -2 }}
-              whileTap={{ scale: 0.95 }}
-            >
-              🧭 {language === 'en' ? 'Take the Test' : 'ටෙස්ට් එක ගන්න'}
-            </motion.button>
-          </Link>
-        </motion.div>
+           <Link href="/suggest-politicians">
+             <motion.button
+               className="bg-purple-600 text-white px-8 py-4 rounded-xl font-semibold shadow-lg hover:bg-purple-700 transition-all duration-300 text-lg min-w-[200px]"
+               whileHover={{ scale: 1.05, y: -2 }}
+               whileTap={{ scale: 0.95 }}
+             >
+               🗳️ {language === 'en' ? 'Suggest Political theorists' : 'ප්‍රසිද්ද මතවාදීන්ව යෝජනා කරන්න'}
+             </motion.button>
+           </Link>
 
-        {/* Insights Section */}
-        {stats && stats.totalUsers > 0 && (
-          <motion.div
-            className="bg-white rounded-xl shadow-lg p-8 mb-12"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.6 }}
-          >
-            <h2 className="text-2xl font-bold text-gray-800 mb-6 text-center">
-              {language === 'en' ? 'Community Insights' : 'ප්‍රජා අවබෝධය'}
-            </h2>
-            
-            <div className="grid md:grid-cols-2 gap-8">
-              {/* Most Popular Quadrant */}
-              <div className="text-center p-6 bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl">
-                <h3 className="text-lg font-semibold text-gray-800 mb-2">
-                  {language === 'en' ? 'Most Popular Quadrant' : 'ජනප්‍රියම කොටස'}
-                </h3>
-                {(() => {
-                  const mostPopular = Object.entries(stats.quadrantDistribution)
-                    .reduce((a, b) => a[1] > b[1] ? a : b);
-                  const percentage = ((mostPopular[1] / stats.totalUsers) * 100).toFixed(1);
-                  
-                  return (
-                    <div>
-                      <div className="text-2xl font-bold text-blue-600 mb-1">
-                        {percentage}%
-                      </div>
-                      <div className="text-gray-700">
-                        {language === 'en' ? (
-                          mostPopular[0].split('-').map(word => 
-                            word.charAt(0).toUpperCase() + word.slice(1)
-                          ).join(' ')
-                        ) : (
-                          {
-                            'libertarian-left': 'ලිබරල් වාමාංශික',
-                            'libertarian-right': 'ලිබරල් දක්ෂිණාංශික',
-                            'authoritarian-left': 'අධිකාරීවාදී වාමාංශික',
-                            'authoritarian-right': 'අධිකාරීවාදී දක්ෂිණාංශික',
-                            'centrist': 'මධ්‍යස්ථවාදී'
-                          }[mostPopular[0] as keyof typeof stats.quadrantDistribution] || mostPopular[0]
-                        )}
-                      </div>
-                    </div>
-                  );
-                })()}
-              </div>
+           <Link href="/">
+             <motion.button
+               className="bg-green-600 text-white px-8 py-4 rounded-xl font-semibold shadow-lg hover:bg-green-700 transition-all duration-300 text-lg min-w-[200px]"
+               whileHover={{ scale: 1.05, y: -2 }}
+               whileTap={{ scale: 0.95 }}
+             >
+               🧭 {language === 'en' ? 'Take the Test' : 'ටෙස්ට් එක ගන්න'}
+             </motion.button>
+           </Link>
+         </motion.div>
 
-              {/* Diversity Index */}
-              <div className="text-center p-6 bg-gradient-to-br from-green-50 to-emerald-50 rounded-xl">
-                <h3 className="text-lg font-semibold text-gray-800 mb-2">
-                  {language === 'en' ? 'Political Diversity' : 'දේශපාලන විවිධත්වය'}
-                </h3>
-                {(() => {
-                  const nonZeroQuadrants = Object.values(stats.quadrantDistribution)
-                    .filter(count => count > 0).length;
-                  const diversityLabel = nonZeroQuadrants >= 4 ? 
-                    (language === 'en' ? 'High' : 'ඉහළ') :
-                    nonZeroQuadrants >= 3 ?
-                    (language === 'en' ? 'Medium' : 'මධ්‍යම') :
-                    (language === 'en' ? 'Low' : 'අඩු');
-                  
-                  return (
-                    <div>
-                      <div className="text-2xl font-bold text-green-600 mb-1">
-                        {diversityLabel}
-                      </div>
-                      <div className="text-gray-700">
-                        {language === 'en' 
-                          ? `${nonZeroQuadrants} quadrants represented`
-                          : `කොටස් ${nonZeroQuadrants} ක් නියෝජනය වේ`
-                        }
-                      </div>
-                    </div>
-                  );
-                })()}
-              </div>
-            </div>
-          </motion.div>
-        )}
+        
 
         {/* Empty State */}
         {stats && stats.totalUsers === 0 && (

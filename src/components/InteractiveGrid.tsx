@@ -17,6 +17,7 @@ interface GridBlock {
 interface InteractiveGridProps {
   userPosition?: { x: number; y: number };
   className?: string;
+  onGridClick?: (x: number, y: number, gridId: number) => void;
 }
 
 // Sample data - you can expand this with actual person data
@@ -71,7 +72,7 @@ gridData.forEach(block => {
   }
 });
 
-export function InteractiveGrid({ userPosition, className = '' }: InteractiveGridProps) {
+export function InteractiveGrid({ userPosition, className = '', onGridClick }: InteractiveGridProps) {
   const { t, language } = useLanguage();
   const [hoveredBlock, setHoveredBlock] = useState<GridBlock | null>(null);
   const [popupPosition, setPopupPosition] = useState({ x: 0, y: 0 });
@@ -96,11 +97,11 @@ export function InteractiveGrid({ userPosition, className = '' }: InteractiveGri
   };
 
   const getQuadrantColor = (x: number, y: number) => {
-    if (x < 0 && y > 0) return 'bg-red-200 hover:bg-red-300'; // Authoritarian Left
-    if (x > 0 && y > 0) return 'bg-blue-200 hover:bg-blue-300'; // Authoritarian Right  
-    if (x < 0 && y < 0) return 'bg-green-200 hover:bg-green-300'; // Libertarian Left
-    if (x > 0 && y < 0) return 'bg-purple-200 hover:bg-purple-300'; // Libertarian Right
-    return 'bg-gray-100 hover:bg-gray-200'; // Center
+    if (x < 0 && y > 0) return 'bg-red-200 hover:bg-red-300 border-red-300'; // Authoritarian Left
+    if (x > 0 && y > 0) return 'bg-blue-200 hover:bg-blue-300 border-blue-300'; // Authoritarian Right  
+    if (x < 0 && y < 0) return 'bg-green-200 hover:bg-green-300 border-green-300'; // Libertarian Left
+    if (x > 0 && y < 0) return 'bg-purple-200 hover:bg-purple-300 border-purple-300'; // Libertarian Right
+    return 'bg-gray-100 hover:bg-gray-200 border-gray-300'; // Center
   };
 
   const isUserPosition = (block: GridBlock) => {
@@ -125,12 +126,13 @@ export function InteractiveGrid({ userPosition, className = '' }: InteractiveGri
 
   return (
     <div className={`relative ${className}`} ref={gridRef}>
-      <div className="grid grid-cols-10 gap-1 sm:gap-2 p-3 sm:p-4 bg-white rounded-lg shadow-lg relative">
+      <div className="grid grid-cols-10 gap-2 sm:gap-3 p-4 sm:p-6 bg-white rounded-lg shadow-lg relative">
         {gridData.map((block) => (
           <motion.div
             key={block.id}
             className={`
-              aspect-square relative cursor-pointer transition-all duration-200 rounded-sm
+              aspect-square relative transition-all duration-200 rounded-md border-2 shadow-sm
+              ${block.personImage ? 'cursor-not-allowed opacity-80' : 'cursor-pointer hover:shadow-md'}
               ${getQuadrantColor(block.x, block.y)}
             `}
             onMouseEnter={(e) => handleBlockHover(block, e)}
@@ -140,20 +142,41 @@ export function InteractiveGrid({ userPosition, className = '' }: InteractiveGri
               if ('ontouchstart' in window) {
                 handleBlockHover(block, e);
               }
+              
+              // Handle grid click for suggestions (only if block is not occupied)
+              if (onGridClick && !block.personImage) {
+                onGridClick(block.x, block.y, block.id);
+              }
             }}
-            whileHover={{ scale: 1.1 }}
-            whileTap={{ scale: 0.95 }}
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.98 }}
           >
             {/* Person icon for people */}
             {block.personImage && (
               <div className="absolute inset-0 flex items-center justify-center">
                 <svg 
-                  className="w-4 h-4 sm:w-3 sm:h-3 text-gray-700 drop-shadow-sm" 
+                  className="w-5 h-5 sm:w-4 sm:h-4 text-gray-700 drop-shadow-sm" 
                   fill="currentColor" 
                   viewBox="0 0 24 24"
                 >
                   <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
                 </svg>
+              </div>
+            )}
+            
+            {/* Click indicator for empty blocks */}
+            {!block.personImage && (
+              <div className="absolute inset-0 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity">
+                <div className="w-4 h-4 bg-blue-500 rounded-full shadow-sm"></div>
+              </div>
+            )}
+            
+            {/* Occupied indicator for blocks with people */}
+            {block.personImage && (
+              <div className="absolute inset-0 flex items-center justify-center">
+                <div className="bg-red-500 text-white text-xs px-2 py-1 rounded-full shadow-sm">
+                  {language === 'en' ? 'Occupied' : 'අල්ලාගෙන'}
+                </div>
               </div>
             )}
           </motion.div>
@@ -207,40 +230,40 @@ export function InteractiveGrid({ userPosition, className = '' }: InteractiveGri
       {/* Axis Labels */}
       <div className="absolute inset-0 pointer-events-none">
         {/* Authoritarian label at top */}
-        <div className="absolute -top-3 left-1/2 transform -translate-x-1/2 text-sm font-medium text-gray-700">
+        <div className="absolute -top-6 left-1/2 transform -translate-x-1/2 text-lg font-semibold text-gray-800">
           {t('authoritarian')}
         </div>
         
         {/* Libertarian label at bottom */}
-        <div className="absolute -bottom-8 left-1/2 transform -translate-x-1/2 text-sm font-medium text-gray-700">
+        <div className="absolute -bottom-10 left-1/2 transform -translate-x-1/2 text-lg font-semibold text-gray-800">
           {t('libertarian')}
         </div>
         
         {/* Left label */}
-        <div className="absolute left-0 top-1/2 transform -translate-y-1/2 -translate-x-8 text-sm font-medium text-gray-700">
+        <div className="absolute left-0 top-1/2 transform -translate-y-1/2 -translate-x-12 text-lg font-semibold text-gray-800">
           {t('left')}
         </div>
         
         {/* Right label */}
-        <div className="absolute right-0 top-1/2 transform -translate-y-1/2 translate-x-8 text-sm font-medium text-gray-700">
+        <div className="absolute right-0 top-1/2 transform -translate-y-1/2 translate-x-12 text-lg font-semibold text-gray-800">
           {t('right')}
         </div>
         
         {/* Economic scale arrow and label */}
-        <div className="absolute left-8 top-1/2 transform -translate-y-1/2 -translate-x-4">
-          <div className="flex items-center text-xs text-gray-500">
-            <span>←</span>
-            <span className="transform -rotate-90 whitespace-nowrap text-xs sm:text-xs">{t('economicScale')}</span>
-            <span>→</span>
+        <div className="absolute left-12 top-1/2 transform -translate-y-1/2 -translate-x-6">
+          <div className="flex items-center text-sm text-gray-600">
+            <span className="text-lg">←</span>
+            <span className="transform -rotate-90 whitespace-nowrap text-sm font-medium">{t('economicScale')}</span>
+            <span className="text-lg">→</span>
           </div>
         </div>
         
         {/* Social scale arrow and label */}
-        <div className="absolute left-1/2 top-8 transform -translate-x-1/2 -translate-y-4">
-          <div className="flex flex-col items-center text-xs text-gray-500">
-            <span>↑</span>
-            <span className="whitespace-nowrap text-[10px] sm:text-xs">{t('socialScale')}</span>
-            <span>↓</span>
+        <div className="absolute left-1/2 top-12 transform -translate-x-1/2 -translate-y-6">
+          <div className="flex flex-col items-center text-sm text-gray-600">
+            <span className="text-lg">↑</span>
+            <span className="whitespace-nowrap text-sm font-medium">{t('socialScale')}</span>
+            <span className="text-lg">↓</span>
           </div>
         </div>
       </div>
