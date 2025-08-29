@@ -7,6 +7,8 @@ import { LanguageSelector } from '../../components/LanguageSelector';
 import { QuadrantPieChart } from '../../components/QuadrantPieChart';
 import { useLanguage } from '../../lib/LanguageContext';
 
+
+
 interface StatsData {
   totalUsers: number;
   quadrantDistribution: Record<string, number>;

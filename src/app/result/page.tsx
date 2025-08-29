@@ -19,6 +19,8 @@ import { getQuadrantLabel, formatScore } from '../../lib/utils';
 import { getRandomAvatar, type Avatar } from '../../lib/avatars';
 import { findMatchingFigure } from '../../lib/politicalFigures';
 
+
+
 export default function ResultPage() {
   const { language, setLanguage, t } = useLanguage();
   const router = useRouter();
@@ -365,7 +367,7 @@ export default function ResultPage() {
                 {result.quadrant === 'libertarian-right' && (
                   language === 'en'
                     ? 'You value free markets, individual choice, and minimal government intervention. You support both economic freedom and personal liberties, favoring private solutions over government programs.'
-                    : 'ඔයා හිතන්නේ ජිවිතේ තීරණ අපිටම ගන්න පුළුවන් රජය ඒවාට මැදිහත් වෙන්නොනේ නැ කියල. වෙළඳපොළ නිදහස්ව ක්‍රියාකරලා, රජය ගොඩක්ම මැදිහත්වෙන්න එපා කියන අදහසට කැමති. පෞද්ගලික ව්‍යාපාර, ව්‍යාපාරිකයින්ට ඉඩ තියෙන්න ඕන, එහෙම අය තමයි රටේ ආර්ථිකය ඉස්සරහට ගෙනියන්නේ කියන අදහසේ ඉන්නේ ඔයා. සමාජයෙ හැමෝම තමන්ට කැමති විදිහට ජීවත් වෙන්න ඉඩ තියෙන්න ඕන කියන එකේ විශ්වාසයක් තියෙනවා.'
+                    : 'ඔයා හිතන්නේ ජිවිතේ තීරණ අපිටම ගන්න පුළුවන් රජය ඒවාට මැදිහත් වෙන්නොනේ නැ කියල. වෙළඳපොළ නිදහස්ව ක්‍රියාකරලා, රජය ගොඩක්ම මැදිහත්වෙන්න එපා කියන අදහසේ කැමති. පෞද්ගලික ව්‍යාපාර, ව්‍යාපාරිකයින්ට ඉඩ තියෙන්න ඕන, එහෙම අය තමයි රටේ ආර්ථිකය ඉස්සරහට ගෙනියන්නේ කියන අදහසේ ඉන්නේ ඔයා. සමාජයෙ හැමෝම තමන්ට කැමති විදිහට ජීවත් වෙන්න ඉඩ තියෙන්න ඕන කියන එකේ විශ්වාසයක් තියෙනවා.'
                 )}
                 {result.quadrant === 'authoritarian-left' && (
                   language === 'en'

@@ -7,6 +7,8 @@ import { LanguageSelector } from '../../components/LanguageSelector';
 import { InteractiveGrid } from '../../components/InteractiveGrid';
 import { useLanguage } from '../../lib/LanguageContext';
 
+
+
 interface PoliticianSuggestion {
   id: string;
   name: string;

@@ -4,8 +4,9 @@ import { LanguageProvider } from '../lib/LanguageContext'
 import { Analytics } from "@vercel/analytics/next"
 
 export const metadata: Metadata = {
-  title: 'පොලිටික්ස් මීටරේ',
-  description: 'Discover your political position on the economic and social axes through our comprehensive political compass quiz.',
+  title: 'Political Compass Sri Lanka | Discover Your Political Position',
+  description: 'Take the Sri Lanka politics test to discover your position on the political compass. Find out if you are authoritarian, libertarian, left, or right in Sri Lankan politics.',
+  keywords: 'political compass Sri Lanka, Sri Lanka politics test, political position test, Sri Lankan political spectrum',
 }
 
 export default function RootLayout({

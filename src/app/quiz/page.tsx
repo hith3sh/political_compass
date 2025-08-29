@@ -10,6 +10,8 @@ import { useLocalStorage } from '../../hooks/useLocalStorage';
 import { QuizState } from '../../lib/types';
 import { getQuestionsForPage, getTotalPages, isQuizComplete, getProgress } from '../../lib/scoring';
 
+
+
 function QuizContent() {
   const { language, setLanguage, t } = useLanguage();
   const router = useRouter();
