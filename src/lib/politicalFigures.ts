@@ -19,6 +19,8 @@ export const politicalFigures: PoliticalFigure[] = [
   { x: -9, y: 6, image: 'tilvin.jpg', name: 'Tilvin Silva' },
   { x: -7, y: 8, image: 'mathini.jpg', name: 'Sirimawo Bandaranyake' },
   { x: -5, y: 8, image: 'dayan.jpg', name: 'Dayan Jayatilaka' },
+  { x: -5, y: 6, image: 'anura.jpg', name: 'Anura Kumara Dissanayake' },
+
   
   // Authoritarian Right Quadrant (Top Right: x > 0, y > 0)
   { x: 1, y: 7, image: 'mahinda.jpeg', name: 'Mahinda Rajapaksa' },
@@ -38,12 +40,12 @@ export const politicalFigures: PoliticalFigure[] = [
   { x: -9, y: -2, image: 'pubudu_jagoda.jpg', name: 'Pubudu Jagoda' },
   { x: -9, y: -8, image: 'melani.jpeg', name: 'Melani Gunathilake' },
   { x: -4, y: -4, image: 'harini.jpg', name: 'Harini Amarasooriya' },
+  { x: -4, y: -6, image: 'chathuranga.jpeg', name: 'Chathuranga Abeysinghe' },
   { x: -9, y: -7, image: 'sandakath.jpg', name: 'Sandakath Mahagamaarachchi' },
   { x: -2, y: -5, image: 'nirmal_dewasiri.jpg', name: 'Nirmal Dewasiri' },
   { x: -7, y: -6, image: 'deepthi.jpg', name: 'Deepthi Kumara' },
   { x: -5, y: -5, image: 'anton.jpeg', name: 'Anton Fernando' },
   { x: -5, y: -4, image: 'ritta.jpeg', name: 'Ritigala Jayasena' },
-  { x: -4, y: -3, image: 'anura.jpg', name: 'Anura Kumara Dissanayake' },
 
   // Libertarian Right Quadrant (Bottom Right: x > 0, y < 0)
   { x: 4, y: -3, image: 'sajithpremadasa.jpg', name: 'Sajith Premdasa' },
