@@ -22,7 +22,11 @@ export default function RootLayout({
         </LanguageProvider>
         <Analytics />
         
-        {/* Iframe Ad */}
+        <script
+            src="https://app.rybbit.io/api/script.js"
+            data-site-id="2302"
+            defer
+        ></script>
         
         {/* Popunder Ad - One per page */}
         {/* <script
